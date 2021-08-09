@@ -10,6 +10,7 @@
 #include <AUnit.h>
 #include <AceSegment.h>
 #include <ace_segment/testing/TestableLedModule.h>
+#include <AceSegmentWriter.h>
 
 using aunit::TestRunner;
 using aunit::TestOnce;

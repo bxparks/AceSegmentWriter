@@ -46,6 +46,7 @@
 #include <AceTMI.h>
 #include <AceWire.h>
 #include <AceSegment.h>
+#include <AceSegmentWriter.h>
 
 #if defined(ARDUINO_ARCH_AVR) || defined(EPOXY_DUINO)
   #include <digitalWriteFast.h>

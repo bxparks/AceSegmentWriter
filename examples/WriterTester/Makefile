@@ -3,5 +3,5 @@
 
 APP_NAME := WriterTester
 ARDUINO_LIBS := EpoxyMockDigitalWriteFast EpoxyMockTimerOne \
-	AceButton AUnit AceCommon AceSPI AceTMI AceWire AceSegment
+	AceButton AUnit AceCommon AceSPI AceTMI AceWire AceSegment AceSegmentWriter
 include ../../../EpoxyDuino/EpoxyDuino.mk

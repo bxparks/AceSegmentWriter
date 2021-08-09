@@ -84,7 +84,11 @@ This library library has a direct, compile-time dependency on:
 
 * AceCommon (https://github.com/bxparks/AceCommon)
 
-The following libraries are recommended, but not absolutely required:
+The following libraries are recommended, and they are added in the `depends`
+property of `library.properties` so that they are automatically installed by the
+Arduino Library Manager for convenience. However, client applications are not
+required to use these. Other libraries with the same interface and functionality
+can be substituted if desired.
 
 * AceSegment (https://github.com/bxparks/AceSegment)
 * AceSPI (https://github.com/bxparks/AceSPI)
@@ -95,7 +99,8 @@ The unit tests depend on:
 
 * AUnit (https://github.com/bxparks/AUnit)
 
-Some of the examples may depend on:
+Some of the examples may depend on the following which may need to be installed
+manually:
 
 * AceButton (https://github.com/bxparks/AceButton)
 
@@ -254,12 +259,12 @@ using namespace ace_segment;
 ### `T_LED_MODULE`
 
 All Writer classes directly (or indirectly) wrap around an underlying LED module
-class of the generic `T_LED_MODULE` type. It is assumed to implement the same
-public interfaces of the
+class with the generic `T_LED_MODULE` type. It is assumed to implement the same
+public methods of the
 [LedModule](https://github.com/bxparks/AceSegment/blob/develop/src/ace_segment/LedModule.h)
 class from AceSegment. However, the Writer classes in this library are
 implemented as C++ templates, so the `T_LED_MODULE` type does **not** need to
-inherit from the `LedModule` class. The public interface of `T_LED_MODULE`
+inherit from the `LedModule` class. The public methods of `T_LED_MODULE`
 should look like this:
 
 ```C++

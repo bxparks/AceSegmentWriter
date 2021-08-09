@@ -26,6 +26,7 @@ SOFTWARE.
 #define ACE_SEGMENT_CLOCK_WRITER_H
 
 #include <stdint.h>
+#include <AceCommon.h>
 #include "NumberWriter.h"
 
 namespace ace_segment {

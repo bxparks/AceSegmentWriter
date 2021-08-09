@@ -30,6 +30,15 @@ SOFTWARE.
 
 namespace ace_segment {
 
+/** The superscript degree symbol for temperature. */
+const uint8_t kPatternDegree = 0b01100011;
+
+/** The "C" character for "Celcius". */
+const uint8_t kPatternC = 0b00111001;
+
+/** The "F" character for "Farenheit". */
+const uint8_t kPatternF = 0b01110001;
+
 /**
  * The TemperatureWriter supports writing integer temperature values in Celcius
  * or Farenheit. Negative values are supported.
@@ -40,15 +49,6 @@ namespace ace_segment {
 template <typename T_LED_MODULE>
 class TemperatureWriter {
   public:
-    /** The superscript degree symbol for temperature. */
-    static const uint8_t kPatternDegree = 0b01100011;
-
-    /** The "C" character for "Celcius". */
-    static const uint8_t kPatternC = 0b00111001;
-
-    /** The "F" character for "Farenheit". */
-    static const uint8_t kPatternF = 0b01110001;
-
     /**
      * Constructor.
      *

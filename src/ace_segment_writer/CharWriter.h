@@ -38,7 +38,7 @@ namespace ace_segment {
  * modules which don't have an active decimal point on all digits. Use a blank
  * digit instead.
  */
-const uint8_t kCharUnknown = 0b00000000;
+const uint8_t kPatternUnknown = 0b00000000;
 
 /** Number of characters in the kCharPatterns default ASCII character set. */
 const uint8_t kNumCharPatterns = 128;
@@ -97,7 +97,7 @@ class CharWriter {
     uint8_t getPattern(char c) const {
       uint8_t pattern = ((mNumChars == 0) || ((uint8_t) c < mNumChars))
           ? pgm_read_byte(&mCharPatterns[(uint8_t) c])
-          : kCharUnknown;
+          : kPatternUnknown;
       return pattern;
     }
 

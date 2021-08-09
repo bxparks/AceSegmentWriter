@@ -43,38 +43,38 @@ namespace ace_segment {
 //    Bits: 7  6 5 4 3 2 1 0
 //
 const uint8_t kCharPatterns[] PROGMEM = {
-  kCharUnknown, /* 00 */
-  kCharUnknown, /* 01 */
-  kCharUnknown, /* 02 */
-  kCharUnknown, /* 03 */
-  kCharUnknown, /* 04 */
-  kCharUnknown, /* 05 */
-  kCharUnknown, /* 06 */
-  kCharUnknown, /* 07 */
-  kCharUnknown, /* 08 */
-  kCharUnknown, /* 09 */
-  kCharUnknown, /* 10 */
-  kCharUnknown, /* 11 */
-  kCharUnknown, /* 12 */
-  kCharUnknown, /* 13 */
-  kCharUnknown, /* 14 */
-  kCharUnknown, /* 15 */
-  kCharUnknown, /* 16 */
-  kCharUnknown, /* 17 */
-  kCharUnknown, /* 18 */
-  kCharUnknown, /* 19 */
-  kCharUnknown, /* 20 */
-  kCharUnknown, /* 21 */
-  kCharUnknown, /* 22 */
-  kCharUnknown, /* 23 */
-  kCharUnknown, /* 24 */
-  kCharUnknown, /* 25 */
-  kCharUnknown, /* 26 */
-  kCharUnknown, /* 27 */
-  kCharUnknown, /* 28 */
-  kCharUnknown, /* 29 */
-  kCharUnknown, /* 30 */
-  kCharUnknown, /* 31 */
+  kPatternUnknown, /* 00 */
+  kPatternUnknown, /* 01 */
+  kPatternUnknown, /* 02 */
+  kPatternUnknown, /* 03 */
+  kPatternUnknown, /* 04 */
+  kPatternUnknown, /* 05 */
+  kPatternUnknown, /* 06 */
+  kPatternUnknown, /* 07 */
+  kPatternUnknown, /* 08 */
+  kPatternUnknown, /* 09 */
+  kPatternUnknown, /* 10 */
+  kPatternUnknown, /* 11 */
+  kPatternUnknown, /* 12 */
+  kPatternUnknown, /* 13 */
+  kPatternUnknown, /* 14 */
+  kPatternUnknown, /* 15 */
+  kPatternUnknown, /* 16 */
+  kPatternUnknown, /* 17 */
+  kPatternUnknown, /* 18 */
+  kPatternUnknown, /* 19 */
+  kPatternUnknown, /* 20 */
+  kPatternUnknown, /* 21 */
+  kPatternUnknown, /* 22 */
+  kPatternUnknown, /* 23 */
+  kPatternUnknown, /* 24 */
+  kPatternUnknown, /* 25 */
+  kPatternUnknown, /* 26 */
+  kPatternUnknown, /* 27 */
+  kPatternUnknown, /* 28 */
+  kPatternUnknown, /* 29 */
+  kPatternUnknown, /* 30 */
+  kPatternUnknown, /* 31 */
   0b00000000, /* (space) */
   0b10000110, /* ! */
   0b00100010, /* " */
@@ -170,7 +170,7 @@ const uint8_t kCharPatterns[] PROGMEM = {
   0b00110000, /* | */
   0b01110000, /* } */
   0b00000001, /* ~ */
-  kCharUnknown, /* (del) */
+  kPatternUnknown, /* (del) */
 };
 
 }

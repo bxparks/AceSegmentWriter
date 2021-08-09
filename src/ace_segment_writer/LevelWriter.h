@@ -30,6 +30,12 @@ SOFTWARE.
 
 namespace ace_segment {
 
+/** left vertical bar */
+const uint8_t kPatternLevelLeft = 0b00110000;
+
+/** right vertical bar */
+const uint8_t kPatternLevelRight = 0b00000110;
+
 /**
  * Emulate a level led module using a left vertical bar and a right
  * vertical bar on each digit. Since each digit can represent 2 levels, the
@@ -40,17 +46,11 @@ namespace ace_segment {
  */
 template <typename T_LED_MODULE>
 class LevelWriter {
-  private:
-    // left vertical bar
-    static const uint8_t kLevelLeftPattern = 0b00110000;
-    // right vertical bar
-    static const uint8_t kLevelRightPattern = 0b00000110;
-
   public:
     /** Constructor. */
     explicit LevelWriter(T_LED_MODULE& ledModule) :
         mPatternWriter(ledModule)
-        {}
+    {}
 
     /** Get the underlying LedModule. */
     T_LED_MODULE& ledModule() { return mPatternWriter.ledModule(); }
@@ -60,7 +60,7 @@ class LevelWriter {
 
     /**
      * Return the maximum level supported by this LED display. The range is [0,
-     * maxLevel].
+     * maxLevel] inclusive.
      */
     uint8_t getMaxLevel() const {
       return mPatternWriter.getNumDigits() * 2;
@@ -75,10 +75,10 @@ class LevelWriter {
       uint8_t pos = 0;
       while (pos < fullDigits && pos < numDigits) {
         mPatternWriter.writePatternAt(
-            pos++, kLevelLeftPattern | kLevelRightPattern);
+            pos++, kPatternLevelLeft | kPatternLevelRight);
       }
       if (partialDigit && pos < numDigits) {
-        mPatternWriter.writePatternAt(pos++, kLevelLeftPattern);
+        mPatternWriter.writePatternAt(pos++, kPatternLevelLeft);
       }
       mPatternWriter.clearToEnd(pos);
     }

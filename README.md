@@ -117,19 +117,27 @@ manually:
 The following example sketches are provided:
 
 * Basic
+    * [PatternWriterDemo](examples/PatternWriterDemo)
+    * [NumberWriterDemo](examples/NumberWriterDemo)
+    * [ClockWriterDemo](examples/ClockWriterDemo)
+    * [TemperatureWriterDemo](examples/TemperatureWriterDemo)
+    * [CharWriterDemo](examples/CharWriterDemo)
+    * [StringWriterDemo](examples/StringWriterDemo)
+    * [LevelWriterDemo](examples/LevelWriterDemo)
+    * [StringScrollerDemo](examples/StringScrollerDemo)
 * Intermediate
-    * [WriterTester.ino](examples/WriterTester)
+    * [WriterTester](examples/WriterTester)
         * demo of the various `src/writer` classes
         * depends on AceButton (https://github.com/bxparks/AceButton) library
         * uses 2 buttons for "single step" debugging mode
 * Benchmarks
-    * [MemoryBenchmark.ino](examples/MemoryBenchmark): determines the size of
+    * [MemoryBenchmark](examples/MemoryBenchmark): determines the size of
       the various components of the library
-    * Normally, I write an `AutoBenchmark.ino program to determine the CPU
-      speed of my library code. But these Writer classes simply right into the
-      in-memory buffer provided by the underying `T_LED_MODULE` class, so the
-      execution time is too fast to be easily measured and does not seem worth
-      the effort.
+    * No `AutoBenchmark` program.
+        * These Writer classes simply write into the in-memory buffer provided
+          by the underying `T_LED_MODULE` class.
+        * The execution time is too fast to be easily measured and does not seem
+          worth the effort.
 
 <a name="HighLevelOverview"></a>
 ## High Level Overview
@@ -320,7 +328,7 @@ byte for a given digit. This bit is cleared by the other `writePatternAt()` or
 **after** the other write methods are called.
 
 ```C++
-PatternWriter patternWriter(ledModule);
+PatternWriter<LedModule> patternWriter(ledModule);
 ```
 
 <a name="NumberWriter"></a>
@@ -345,10 +353,6 @@ const hexchar_t kHexCharMinus = 0x11;
 template <typename T_LED_MODULE>
 class NumberWriter {
   public:
-    typedef uint8_t hexchar_t;
-    static const hexchar_t kCharSpace = 0x10;
-    static const hexchar_t kCharMinus = 0x11;
-
     explicit NumberWriter(T_LED_MODULE& ledModule);
 
     T_LED_MODULE& ledModule();
@@ -364,6 +368,8 @@ class NumberWriter {
     void writeSignedDecimalAt(uint8_t pos, int16_t num, int8_t boxSize = 0);
     void writeUnsignedDecimal2At(uint8_t pos, uint8_t num);
 
+    void writeDecimalPointAt(uint8_t pos, bool state = true);
+
     void clear();
     void clearToEnd(uint8_t pos);
 };
@@ -377,8 +383,8 @@ that the C++ compiler will not warn about mixing this type with another
 `uint8_t`. The range of this character set is from `[0,15]` plus 2 additional
 symbols, so `[0,17]`:
 
-* `NumberWriter::kCharSpace`
-* `NumberWriter::kCharMinus`
+* `ace_segment::kHexCharSpace`
+* `ace_segment::kHexCharMinus`
 
 ![NumberWriter](docs/writers/number_writer_hex.jpg)
 
@@ -426,8 +432,8 @@ You can write the letters `A` and `P` using the underlying `patternWriter()`:
 
 ```C++
 uint8_t pos = ...;
-ClockWriter clockWriter(...);
-clockWriter.patternWriter().writePatternAt(pos, ClockWriter::kPatternA);
+ClockWriter<LedModule> clockWriter(...);
+clockWriter.patternWriter().writePatternAt(pos, ace_segment::kPatternA);
 ```
 
 ![ClockWriter](docs/writers/clock_writer.jpg)
@@ -558,8 +564,8 @@ The following sequence of calls will write the given string and clear all digits
 after the end of the string:
 
 ```C++
-CharWriter charWriter(ledModule);
-StringWriter stringWriter(charWriter);
+CharWriter<LedModule> charWriter(ledModule);
+StringWriter<LedModule> stringWriter(charWriter);
 
 uint8_t written = stringWriter.writeStringAt(0, s);
 stringWriter.clearToEnd(written);

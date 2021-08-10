@@ -2,17 +2,20 @@
 
 [![AUnit Tests](https://github.com/bxparks/AceSegmentWriter/actions/workflows/aunit_tests.yml/badge.svg)](https://github.com/bxparks/AceSegmentWriter/actions/workflows/aunit_tests.yml)
 
-This is a companion library to the
-[AceSegment](https://github.com/bxparks/AceSegment) library. It provides 
-higher-level convenience classes to write decimal numbers, hex numbers,
-temperature, clock digits, characters, and strings to seven segment LED modules.
+A companion library to the [AceSegment](https://github.com/bxparks/AceSegment)
+library. This provides higher-level convenience classes for writing decimal
+numbers, hex numbers, temperature, clock digits, characters, and strings to
+seven segment LED modules. The following classes are provided: `PatternWriter`,
+`NumberWriter`, `ClockWriter`, `TemperatureWriter`, `CharWriter`,
+`StringWriter`, `LevelWriter`, and `StringScroller`.
+
 Initially, this code was part of the AceSegment library and depended directly on
-the `LedModule` class of that library. Later the direct dependency to the
-`LedModule` class was removing by converting the Writer classes into C++
-templates. The classes now depend on the generic `T_LED_MODULE` template type
-which is assumed to implement the public methods defined by the `LedModule` in
-the `AceSegment` library. There is no longer a direct compile-time dependency to
-the AceSegment library.
+the `LedModule` class of that library. Later the direct dependency was removed
+by converting the Writer classes into generic code using C++ templates. The
+classes now depend on the `T_LED_MODULE` template type which should implement
+the public methods that appear in the `LedModule` class. But `T_LED_MODULE` is
+*not* required to inherit from `LedModule` which preserves the decoupling
+between the AceSegmentWriter and AceSegment libraries.
 
 **Version**: 0.1.0 (2021-08-09)
 
@@ -87,8 +90,8 @@ This library library has a direct, compile-time dependency on:
 The following libraries are recommended, and they are added in the `depends`
 property of `library.properties` so that they are automatically installed by the
 Arduino Library Manager for convenience. However, client applications are not
-required to use these. Other libraries with the same interface and functionality
-can be substituted if desired.
+*required* to use these. Other libraries with the same interface and
+functionality can be substituted if desired.
 
 * AceSegment (https://github.com/bxparks/AceSegment)
 * AceSPI (https://github.com/bxparks/AceSPI)
@@ -117,6 +120,9 @@ manually:
 The following example sketches are provided:
 
 * Basic
+    * All of the examples assume an LED module based on the TM1637 controller
+      chip. These LED modules are readily found on retail outlets like eBay or
+      Amazon. You can reconfigure the examples to use a different LED module.
     * [PatternWriterDemo](examples/PatternWriterDemo)
     * [NumberWriterDemo](examples/NumberWriterDemo)
     * [ClockWriterDemo](examples/ClockWriterDemo)
@@ -128,6 +134,8 @@ The following example sketches are provided:
 * Intermediate
     * [WriterTester](examples/WriterTester)
         * demo of the various `src/writer` classes
+        * supports multiple LED modules based on different controller chips
+          though `#define` macros
         * depends on AceButton (https://github.com/bxparks/AceButton) library
         * uses 2 buttons for "single step" debugging mode
 * Benchmarks

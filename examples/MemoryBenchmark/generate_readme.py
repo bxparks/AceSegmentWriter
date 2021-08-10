@@ -161,6 +161,12 @@ program for various Writer classes.
 {esp8266_results}
 ```
 
+NOTE:
+
+* The `-4` bytes of RAM is probably an artifact of compiler optimizations that
+  were triggered when additional code was added to the
+  `MemoryBenchmark.ino` program compared to the `baseline` condition.
+
 ### ESP32
 
 * ESP32-01 Dev Board, 240 MHz Tensilica LX6

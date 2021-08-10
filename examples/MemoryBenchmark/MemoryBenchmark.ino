@@ -135,35 +135,37 @@ void loop() {
   foo->doit();
 #endif
 
-  stubModule.setPatternAt(0, 0xff);
+  stubModule.setPatternAt(0, disableCompilerOptimization);
+  disableCompilerOptimization = stubModule.getPatternAt(0);
 
 #if FEATURE == FEATURE_BASELINE
   // do nothing
 
 #elif FEATURE == FEATURE_PATTERN_WRITER
-  patternWriter.writePatternAt(0, 0x3C);
+  patternWriter.writePatternAt(0, disableCompilerOptimization);
 
 #elif FEATURE == FEATURE_NUMBER_WRITER
-  numberWriter.writeUnsignedDecimalAt(0, 42);
+  numberWriter.writeUnsignedDecimalAt(0, disableCompilerOptimization);
 
 #elif FEATURE == FEATURE_CLOCK_WRITER
-  clockWriter.writeHourMinute(10, 45);
+  clockWriter.writeHourMinute(10, disableCompilerOptimization);
 
 #elif FEATURE == FEATURE_TEMPERATURE_WRITER
-  temperatureWriter.writeTempDegCAt(0, 22 /*temp*/, 4 /*boxSize*/);
+  temperatureWriter.writeTempDegCAt(
+      0, disableCompilerOptimization /*temp*/, 4 /*boxSize*/);
 
 #elif FEATURE == FEATURE_CHAR_WRITER
-  charWriter.writeCharAt(0, 'a');
+  charWriter.writeCharAt(0, disableCompilerOptimization);
 
 #elif FEATURE == FEATURE_STRING_WRITER
-  stringWriter.writeStringAt(0, "Hello");
+  stringWriter.writeStringAt(0, F("Hello"));
 
 #elif FEATURE == FEATURE_STRING_SCROLLER
-  stringScroller.initScrollLeft("Hello");
+  stringScroller.initScrollLeft(F("Hello"));
   stringScroller.scrollLeft();
 
 #elif FEATURE == FEATURE_LEVEL_WRITER
-  levelWriter.writeLevel(3);
+  levelWriter.writeLevel(disableCompilerOptimization);
 
 #else
   #error Unknown FEATURE

@@ -195,15 +195,15 @@ PatternWriter  CharWriter NumberWriter ClockWriter TemperatureWriter LevelWriter
                             v v v v v v
                            T_LED_MODULE
                                 |
-                                | (optionally)
+                                | (depends on AceSegment if
+                                | T_LED_MODULE is set to LedModule)
                                 v
-                           <AceSegment.h>
-                                |
-                                v
-                            <AceWire.h>
-                            <AceTMI.h>
-                            <AceSPI.h>
-
+                            AceSegment
+                            Library
+                           /    |     \
+                          v     v      v
+                    AceWire  AceTMI   AceSPI
+                    Library  Library  Library
 ```
 
 (The actual dependency among various classes is a bit more complicated than this
@@ -212,8 +212,8 @@ diagram.)
 <a name="DigitAndSegmentAddressing"></a>
 ### Digit and Segment Addressing
 
-The `T_LED_MODULE` type must support the following conventions for addressing
-the digits and segments:
+The `T_LED_MODULE` type must support the same conventions for addressing
+the digits and segments as defined by the AceSegment library:
 
 * digits start at position 0 on the left and increase to the right
 * segments are assigned bits 0 to 7 of an unsigned byte (type `uint8_t`) with
@@ -661,12 +661,43 @@ the flash and static memory consumptions.
 **Arduino Nano (ATmega328)**
 
 ```
++--------------------------------------------------------------+
+| functionality                   |  flash/  ram |       delta |
+|---------------------------------+--------------+-------------|
+| baseline                        |    458/   11 |     0/    0 |
+|---------------------------------+--------------+-------------|
+| PatternWriter                   |    528/   18 |    70/    7 |
+| NumberWriter                    |    578/   18 |   120/    7 |
+| ClockWriter                     |    644/   19 |   186/    8 |
+| TemperatureWriter               |    642/   18 |   184/    7 |
+| CharWriter                      |    690/   21 |   232/   10 |
+| StringWriter                    |    840/   29 |   382/   18 |
+| StringScroller                  |    924/   35 |   466/   24 |
+| LevelWriter                     |    556/   18 |    98/    7 |
++--------------------------------------------------------------+
 ```
 
 **ESP8266**
 
 ```
++--------------------------------------------------------------+
+| functionality                   |  flash/  ram |       delta |
+|---------------------------------+--------------+-------------|
+| baseline                        | 256716/26792 |     0/    0 |
+|---------------------------------+--------------+-------------|
+| PatternWriter                   | 256752/26788 |    36/   -4 |
+| NumberWriter                    | 256992/26788 |   276/   -4 |
+| ClockWriter                     | 257008/26796 |   292/    4 |
+| TemperatureWriter               | 257136/26788 |   420/   -4 |
+| CharWriter                      | 256928/26796 |   212/    4 |
+| StringWriter                    | 257176/26804 |   460/   12 |
+| StringScroller                  | 257096/26812 |   380/   20 |
+| LevelWriter                     | 256832/26788 |   116/   -4 |
++--------------------------------------------------------------+
 ```
+
+(The `-4` bytes of static ram is probably an artifact of compiler optimizations
+that were triggered when additional code was added for those benchmarks.)
 
 <a name="SystemRequirements"></a>
 ## System Requirements

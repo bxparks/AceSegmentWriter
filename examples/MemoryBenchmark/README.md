@@ -85,16 +85,16 @@ program for various Writer classes.
 +--------------------------------------------------------------+
 | functionality                   |  flash/  ram |       delta |
 |---------------------------------+--------------+-------------|
-| baseline                        |    260/   11 |     0/    0 |
+| baseline                        |    274/   11 |     0/    0 |
 |---------------------------------+--------------+-------------|
-| PatternWriter                   |    328/   18 |    68/    7 |
-| NumberWriter                    |    370/   18 |   110/    7 |
-| ClockWriter                     |    430/   19 |   170/    8 |
-| TemperatureWriter               |    436/   18 |   176/    7 |
-| CharWriter                      |    492/   21 |   232/   10 |
-| StringWriter                    |    650/   29 |   390/   18 |
-| StringScroller                  |    708/   35 |   448/   24 |
-| LevelWriter                     |    352/   18 |    92/    7 |
+| PatternWriter                   |    350/   18 |    76/    7 |
+| NumberWriter                    |    534/   18 |   260/    7 |
+| ClockWriter                     |    538/   19 |   264/    8 |
+| TemperatureWriter               |    718/   18 |   444/    7 |
+| CharWriter                      |    522/   21 |   248/   10 |
+| StringWriter                    |    646/   23 |   372/   12 |
+| StringScroller                  |    704/   29 |   430/   18 |
+| LevelWriter                     |    434/   18 |   160/    7 |
 +--------------------------------------------------------------+
 
 ```
@@ -109,16 +109,16 @@ program for various Writer classes.
 +--------------------------------------------------------------+
 | functionality                   |  flash/  ram |       delta |
 |---------------------------------+--------------+-------------|
-| baseline                        |    458/   11 |     0/    0 |
+| baseline                        |    470/   11 |     0/    0 |
 |---------------------------------+--------------+-------------|
-| PatternWriter                   |    528/   18 |    70/    7 |
-| NumberWriter                    |    578/   18 |   120/    7 |
-| ClockWriter                     |    644/   19 |   186/    8 |
-| TemperatureWriter               |    642/   18 |   184/    7 |
-| CharWriter                      |    690/   21 |   232/   10 |
-| StringWriter                    |    840/   29 |   382/   18 |
-| StringScroller                  |    924/   35 |   466/   24 |
-| LevelWriter                     |    556/   18 |    98/    7 |
+| PatternWriter                   |    548/   18 |    78/    7 |
+| NumberWriter                    |    720/   18 |   250/    7 |
+| ClockWriter                     |    752/   19 |   282/    8 |
+| TemperatureWriter               |    906/   18 |   436/    7 |
+| CharWriter                      |    720/   21 |   250/   10 |
+| StringWriter                    |    844/   23 |   374/   12 |
+| StringScroller                  |    920/   29 |   450/   18 |
+| LevelWriter                     |    634/   18 |   164/    7 |
 +--------------------------------------------------------------+
 
 ```
@@ -133,16 +133,16 @@ program for various Writer classes.
 +--------------------------------------------------------------+
 | functionality                   |  flash/  ram |       delta |
 |---------------------------------+--------------+-------------|
-| baseline                        |   3474/  151 |     0/    0 |
+| baseline                        |   3486/  151 |     0/    0 |
 |---------------------------------+--------------+-------------|
-| PatternWriter                   |   3506/  158 |    32/    7 |
-| NumberWriter                    |   3556/  158 |    82/    7 |
-| ClockWriter                     |   3622/  159 |   148/    8 |
-| TemperatureWriter               |   3620/  158 |   146/    7 |
-| CharWriter                      |   3668/  161 |   194/   10 |
-| StringWriter                    |   3796/  169 |   322/   18 |
-| StringScroller                  |   3880/  175 |   406/   24 |
-| LevelWriter                     |   3534/  158 |    60/    7 |
+| PatternWriter                   |   3526/  158 |    40/    7 |
+| NumberWriter                    |   3698/  158 |   212/    7 |
+| ClockWriter                     |   3730/  159 |   244/    8 |
+| TemperatureWriter               |   3884/  158 |   398/    7 |
+| CharWriter                      |   3698/  161 |   212/   10 |
+| StringWriter                    |   3822/  163 |   336/   12 |
+| StringScroller                  |   3898/  169 |   412/   18 |
+| LevelWriter                     |   3612/  158 |   126/    7 |
 +--------------------------------------------------------------+
 
 ```
@@ -157,16 +157,16 @@ program for various Writer classes.
 +--------------------------------------------------------------+
 | functionality                   |  flash/  ram |       delta |
 |---------------------------------+--------------+-------------|
-| baseline                        |   9948/    0 |     0/    0 |
+| baseline                        |   9952/    0 |     0/    0 |
 |---------------------------------+--------------+-------------|
-| PatternWriter                   |   9980/    0 |    32/    0 |
-| NumberWriter                    |  10056/    0 |   108/    0 |
-| ClockWriter                     |  10092/    0 |   144/    0 |
-| TemperatureWriter               |  10068/    0 |   120/    0 |
-| CharWriter                      |  10132/    0 |   184/    0 |
-| StringWriter                    |  10248/    0 |   300/    0 |
-| StringScroller                  |  10248/    0 |   300/    0 |
-| LevelWriter                     |   9996/    0 |    48/    0 |
+| PatternWriter                   |   9984/    0 |    32/    0 |
+| NumberWriter                    |  10108/    0 |   156/    0 |
+| ClockWriter                     |  10136/    0 |   184/    0 |
+| TemperatureWriter               |  10216/    0 |   264/    0 |
+| CharWriter                      |  10148/    0 |   196/    0 |
+| StringWriter                    |  10256/    0 |   304/    0 |
+| StringScroller                  |  10248/    0 |   296/    0 |
+| LevelWriter                     |  10044/    0 |    92/    0 |
 +--------------------------------------------------------------+
 
 ```
@@ -181,16 +181,16 @@ program for various Writer classes.
 +--------------------------------------------------------------+
 | functionality                   |  flash/  ram |       delta |
 |---------------------------------+--------------+-------------|
-| baseline                        |  21428/ 3544 |     0/    0 |
+| baseline                        |  21432/ 3544 |     0/    0 |
 |---------------------------------+--------------+-------------|
-| PatternWriter                   |  21460/ 3548 |    32/    4 |
-| NumberWriter                    |  21544/ 3548 |   116/    4 |
-| ClockWriter                     |  21568/ 3552 |   140/    8 |
-| TemperatureWriter               |  21552/ 3548 |   124/    4 |
-| CharWriter                      |  21616/ 3556 |   188/   12 |
-| StringWriter                    |  21720/ 3560 |   292/   16 |
-| StringScroller                  |  21716/ 3568 |   288/   24 |
-| LevelWriter                     |  21476/ 3548 |    48/    4 |
+| PatternWriter                   |  21464/ 3548 |    32/    4 |
+| NumberWriter                    |  21584/ 3548 |   152/    4 |
+| ClockWriter                     |  21612/ 3552 |   180/    8 |
+| TemperatureWriter               |  21704/ 3548 |   272/    4 |
+| CharWriter                      |  21624/ 3556 |   192/   12 |
+| StringWriter                    |  21724/ 3560 |   292/   16 |
+| StringScroller                  |  21720/ 3568 |   288/   24 |
+| LevelWriter                     |  21536/ 3548 |   104/    4 |
 +--------------------------------------------------------------+
 
 ```
@@ -207,17 +207,23 @@ program for various Writer classes.
 |---------------------------------+--------------+-------------|
 | baseline                        | 256716/26792 |     0/    0 |
 |---------------------------------+--------------+-------------|
-| PatternWriter                   | 256736/26788 |    20/   -4 |
-| NumberWriter                    | 256912/26788 |   196/   -4 |
-| ClockWriter                     | 256976/26796 |   260/    4 |
-| TemperatureWriter               | 256928/26788 |   212/   -4 |
+| PatternWriter                   | 256752/26788 |    36/   -4 |
+| NumberWriter                    | 256992/26788 |   276/   -4 |
+| ClockWriter                     | 257008/26796 |   292/    4 |
+| TemperatureWriter               | 257136/26788 |   420/   -4 |
 | CharWriter                      | 256928/26796 |   212/    4 |
-| StringWriter                    | 257128/26820 |   412/   28 |
-| StringScroller                  | 257064/26828 |   348/   36 |
-| LevelWriter                     | 256784/26788 |    68/   -4 |
+| StringWriter                    | 257176/26804 |   460/   12 |
+| StringScroller                  | 257096/26812 |   380/   20 |
+| LevelWriter                     | 256832/26788 |   116/   -4 |
 +--------------------------------------------------------------+
 
 ```
+
+NOTE:
+
+* The `-4` bytes of RAM is probably an artifact of compiler optimizations that
+  were triggered when additional code was added to the
+  `MemoryBenchmark.ino` program compared to the `baseline` condition.
 
 ### ESP32
 
@@ -229,16 +235,16 @@ program for various Writer classes.
 +--------------------------------------------------------------+
 | functionality                   |  flash/  ram |       delta |
 |---------------------------------+--------------+-------------|
-| baseline                        | 198032/13124 |     0/    0 |
+| baseline                        | 198040/13124 |     0/    0 |
 |---------------------------------+--------------+-------------|
-| PatternWriter                   | 198056/13132 |    24/    8 |
-| NumberWriter                    | 198140/13132 |   108/    8 |
-| ClockWriter                     | 198256/13132 |   224/    8 |
-| TemperatureWriter               | 198152/13132 |   120/    8 |
-| CharWriter                      | 198220/13140 |   188/   16 |
-| StringWriter                    | 198356/13140 |   324/   16 |
-| StringScroller                  | 198300/13148 |   268/   24 |
-| LevelWriter                     | 198092/13132 |    60/    8 |
+| PatternWriter                   | 198068/13132 |    28/    8 |
+| NumberWriter                    | 198212/13132 |   172/    8 |
+| ClockWriter                     | 198272/13132 |   232/    8 |
+| TemperatureWriter               | 198340/13132 |   300/    8 |
+| CharWriter                      | 198236/13140 |   196/   16 |
+| StringWriter                    | 198360/13140 |   320/   16 |
+| StringScroller                  | 198316/13148 |   276/   24 |
+| LevelWriter                     | 198132/13132 |    92/    8 |
 +--------------------------------------------------------------+
 
 ```
@@ -254,16 +260,16 @@ program for various Writer classes.
 +--------------------------------------------------------------+
 | functionality                   |  flash/  ram |       delta |
 |---------------------------------+--------------+-------------|
-| baseline                        |  10892/ 4160 |     0/    0 |
+| baseline                        |  10896/ 4160 |     0/    0 |
 |---------------------------------+--------------+-------------|
-| PatternWriter                   |  10924/ 4164 |    32/    4 |
-| NumberWriter                    |  10956/ 4164 |    64/    4 |
-| ClockWriter                     |  10988/ 4168 |    96/    8 |
-| TemperatureWriter               |  10960/ 4164 |    68/    4 |
-| CharWriter                      |  11080/ 4172 |   188/   12 |
-| StringWriter                    |  11212/ 4176 |   320/   16 |
-| StringScroller                  |  11184/ 4184 |   292/   24 |
-| LevelWriter                     |  10936/ 4164 |    44/    4 |
+| PatternWriter                   |  10928/ 4164 |    32/    4 |
+| NumberWriter                    |  11092/ 4164 |   196/    4 |
+| ClockWriter                     |  11048/ 4168 |   152/    8 |
+| TemperatureWriter               |  11248/ 4164 |   352/    4 |
+| CharWriter                      |  11088/ 4172 |   192/   12 |
+| StringWriter                    |  11216/ 4176 |   320/   16 |
+| StringScroller                  |  11192/ 4184 |   296/   24 |
+| LevelWriter                     |  11016/ 4164 |   120/    4 |
 +--------------------------------------------------------------+
 
 ```

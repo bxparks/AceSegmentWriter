@@ -2,19 +2,22 @@
 
 [![AUnit Tests](https://github.com/bxparks/AceSegmentWriter/actions/workflows/aunit_tests.yml/badge.svg)](https://github.com/bxparks/AceSegmentWriter/actions/workflows/aunit_tests.yml)
 
-This is a companion library to the
-[AceSegment](https://github.com/bxparks/AceSegment) library. It provides 
-higher-level convenience classes to write decimal numbers, hex numbers,
-temperature, clock digits, characters, and strings to seven segment LED modules.
-Initially, this code was part of the AceSegment library and depended directly on
-the `LedModule` class of that library. Later the direct dependency to the
-`LedModule` class was removing by converting the Writer classes into C++
-templates. The classes now depend on the generic `T_LED_MODULE` template type
-which is assumed to implement the public methods defined by the `LedModule` in
-the `AceSegment` library. There is no longer a direct compile-time dependency to
-the AceSegment library.
+A companion library to the [AceSegment](https://github.com/bxparks/AceSegment)
+library. This provides higher-level convenience classes for writing decimal
+numbers, hex numbers, temperature, clock digits, characters, and strings to
+seven segment LED modules. The following classes are provided: `PatternWriter`,
+`NumberWriter`, `ClockWriter`, `TemperatureWriter`, `CharWriter`,
+`StringWriter`, `LevelWriter`, and `StringScroller`.
 
-**Version**: 0.1.0 (2021-08-09)
+Initially, this code was part of the AceSegment library and depended directly on
+the `LedModule` class of that library. Later the direct dependency was removed
+by converting the Writer classes into generic code using C++ templates. The
+classes now depend on the `T_LED_MODULE` template type which should implement
+the public methods that appear in the `LedModule` class. But `T_LED_MODULE` is
+*not* required to inherit from `LedModule` which preserves the decoupling
+between the AceSegmentWriter and AceSegment libraries.
+
+**Version**: 0.1 (2021-08-10)
 
 **Changelog**: [CHANGELOG.md](CHANGELOG.md)
 
@@ -84,7 +87,11 @@ This library library has a direct, compile-time dependency on:
 
 * AceCommon (https://github.com/bxparks/AceCommon)
 
-The following libraries are recommended, but not absolutely required:
+The following libraries are recommended, and they are added in the `depends`
+property of `library.properties` so that they are automatically installed by the
+Arduino Library Manager for convenience. However, client applications are not
+*required* to use these. Other libraries with the same interface and
+functionality can be substituted if desired.
 
 * AceSegment (https://github.com/bxparks/AceSegment)
 * AceSPI (https://github.com/bxparks/AceSPI)
@@ -95,7 +102,8 @@ The unit tests depend on:
 
 * AUnit (https://github.com/bxparks/AUnit)
 
-Some of the examples may depend on:
+Some of the examples may depend on the following which may need to be installed
+manually:
 
 * AceButton (https://github.com/bxparks/AceButton)
 
@@ -112,19 +120,32 @@ Some of the examples may depend on:
 The following example sketches are provided:
 
 * Basic
+    * All of the examples assume an LED module based on the TM1637 controller
+      chip. These LED modules are readily found on retail outlets like eBay or
+      Amazon. You can reconfigure the examples to use a different LED module.
+    * [PatternWriterDemo](examples/PatternWriterDemo)
+    * [NumberWriterDemo](examples/NumberWriterDemo)
+    * [ClockWriterDemo](examples/ClockWriterDemo)
+    * [TemperatureWriterDemo](examples/TemperatureWriterDemo)
+    * [CharWriterDemo](examples/CharWriterDemo)
+    * [StringWriterDemo](examples/StringWriterDemo)
+    * [LevelWriterDemo](examples/LevelWriterDemo)
+    * [StringScrollerDemo](examples/StringScrollerDemo)
 * Intermediate
-    * [WriterTester.ino](examples/WriterTester)
+    * [WriterTester](examples/WriterTester)
         * demo of the various `src/writer` classes
+        * supports multiple LED modules based on different controller chips
+          though `#define` macros
         * depends on AceButton (https://github.com/bxparks/AceButton) library
         * uses 2 buttons for "single step" debugging mode
 * Benchmarks
-    * [MemoryBenchmark.ino](examples/MemoryBenchmark): determines the size of
+    * [MemoryBenchmark](examples/MemoryBenchmark): determines the size of
       the various components of the library
-    * Normally, I write an `AutoBenchmark.ino program to determine the CPU
-      speed of my library code. But these Writer classes simply right into the
-      in-memory buffer provided by the underying `T_LED_MODULE` class, so the
-      execution time is too fast to be easily measured and does not seem worth
-      the effort.
+    * No `AutoBenchmark` program.
+        * These Writer classes simply write into the in-memory buffer provided
+          by the underying `T_LED_MODULE` class.
+        * The execution time is too fast to be easily measured and does not seem
+          worth the effort.
 
 <a name="HighLevelOverview"></a>
 ## High Level Overview
@@ -182,15 +203,15 @@ PatternWriter  CharWriter NumberWriter ClockWriter TemperatureWriter LevelWriter
                             v v v v v v
                            T_LED_MODULE
                                 |
-                                | (optionally)
+                                | (depends on AceSegment if
+                                | T_LED_MODULE is set to LedModule)
                                 v
-                           <AceSegment.h>
-                                |
-                                v
-                            <AceWire.h>
-                            <AceTMI.h>
-                            <AceSPI.h>
-
+                            AceSegment
+                            Library
+                           /    |     \
+                          v     v      v
+                    AceWire  AceTMI   AceSPI
+                    Library  Library  Library
 ```
 
 (The actual dependency among various classes is a bit more complicated than this
@@ -199,8 +220,8 @@ diagram.)
 <a name="DigitAndSegmentAddressing"></a>
 ### Digit and Segment Addressing
 
-The `T_LED_MODULE` type must support the following conventions for addressing
-the digits and segments:
+The `T_LED_MODULE` type must support the same conventions for addressing
+the digits and segments as defined by the AceSegment library:
 
 * digits start at position 0 on the left and increase to the right
 * segments are assigned bits 0 to 7 of an unsigned byte (type `uint8_t`) with
@@ -254,12 +275,12 @@ using namespace ace_segment;
 ### `T_LED_MODULE`
 
 All Writer classes directly (or indirectly) wrap around an underlying LED module
-class of the generic `T_LED_MODULE` type. It is assumed to implement the same
-public interfaces of the
+class with the generic `T_LED_MODULE` type. It is assumed to implement the same
+public methods of the
 [LedModule](https://github.com/bxparks/AceSegment/blob/develop/src/ace_segment/LedModule.h)
 class from AceSegment. However, the Writer classes in this library are
 implemented as C++ templates, so the `T_LED_MODULE` type does **not** need to
-inherit from the `LedModule` class. The public interface of `T_LED_MODULE`
+inherit from the `LedModule` class. The public methods of `T_LED_MODULE`
 should look like this:
 
 ```C++
@@ -315,7 +336,7 @@ byte for a given digit. This bit is cleared by the other `writePatternAt()` or
 **after** the other write methods are called.
 
 ```C++
-PatternWriter patternWriter(ledModule);
+PatternWriter<LedModule> patternWriter(ledModule);
 ```
 
 <a name="NumberWriter"></a>
@@ -340,10 +361,6 @@ const hexchar_t kHexCharMinus = 0x11;
 template <typename T_LED_MODULE>
 class NumberWriter {
   public:
-    typedef uint8_t hexchar_t;
-    static const hexchar_t kCharSpace = 0x10;
-    static const hexchar_t kCharMinus = 0x11;
-
     explicit NumberWriter(T_LED_MODULE& ledModule);
 
     T_LED_MODULE& ledModule();
@@ -359,6 +376,8 @@ class NumberWriter {
     void writeSignedDecimalAt(uint8_t pos, int16_t num, int8_t boxSize = 0);
     void writeUnsignedDecimal2At(uint8_t pos, uint8_t num);
 
+    void writeDecimalPointAt(uint8_t pos, bool state = true);
+
     void clear();
     void clearToEnd(uint8_t pos);
 };
@@ -372,8 +391,8 @@ that the C++ compiler will not warn about mixing this type with another
 `uint8_t`. The range of this character set is from `[0,15]` plus 2 additional
 symbols, so `[0,17]`:
 
-* `NumberWriter::kCharSpace`
-* `NumberWriter::kCharMinus`
+* `ace_segment::kHexCharSpace`
+* `ace_segment::kHexCharMinus`
 
 ![NumberWriter](docs/writers/number_writer_hex.jpg)
 
@@ -421,8 +440,8 @@ You can write the letters `A` and `P` using the underlying `patternWriter()`:
 
 ```C++
 uint8_t pos = ...;
-ClockWriter clockWriter(...);
-clockWriter.patternWriter().writePatternAt(pos, ClockWriter::kPatternA);
+ClockWriter<LedModule> clockWriter(...);
+clockWriter.patternWriter().writePatternAt(pos, ace_segment::kPatternA);
 ```
 
 ![ClockWriter](docs/writers/clock_writer.jpg)
@@ -553,8 +572,8 @@ The following sequence of calls will write the given string and clear all digits
 after the end of the string:
 
 ```C++
-CharWriter charWriter(ledModule);
-StringWriter stringWriter(charWriter);
+CharWriter<LedModule> charWriter(ledModule);
+StringWriter<LedModule> stringWriter(charWriter);
 
 uint8_t written = stringWriter.writeStringAt(0, s);
 stringWriter.clearToEnd(written);
@@ -650,12 +669,43 @@ the flash and static memory consumptions.
 **Arduino Nano (ATmega328)**
 
 ```
++--------------------------------------------------------------+
+| functionality                   |  flash/  ram |       delta |
+|---------------------------------+--------------+-------------|
+| baseline                        |    458/   11 |     0/    0 |
+|---------------------------------+--------------+-------------|
+| PatternWriter                   |    528/   18 |    70/    7 |
+| NumberWriter                    |    578/   18 |   120/    7 |
+| ClockWriter                     |    644/   19 |   186/    8 |
+| TemperatureWriter               |    642/   18 |   184/    7 |
+| CharWriter                      |    690/   21 |   232/   10 |
+| StringWriter                    |    840/   29 |   382/   18 |
+| StringScroller                  |    924/   35 |   466/   24 |
+| LevelWriter                     |    556/   18 |    98/    7 |
++--------------------------------------------------------------+
 ```
 
 **ESP8266**
 
 ```
++--------------------------------------------------------------+
+| functionality                   |  flash/  ram |       delta |
+|---------------------------------+--------------+-------------|
+| baseline                        | 256716/26792 |     0/    0 |
+|---------------------------------+--------------+-------------|
+| PatternWriter                   | 256752/26788 |    36/   -4 |
+| NumberWriter                    | 256992/26788 |   276/   -4 |
+| ClockWriter                     | 257008/26796 |   292/    4 |
+| TemperatureWriter               | 257136/26788 |   420/   -4 |
+| CharWriter                      | 256928/26796 |   212/    4 |
+| StringWriter                    | 257176/26804 |   460/   12 |
+| StringScroller                  | 257096/26812 |   380/   20 |
+| LevelWriter                     | 256832/26788 |   116/   -4 |
++--------------------------------------------------------------+
 ```
+
+(The `-4` bytes of static ram is probably an artifact of compiler optimizations
+that were triggered when additional code was added for those benchmarks.)
 
 <a name="SystemRequirements"></a>
 ## System Requirements

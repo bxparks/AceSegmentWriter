@@ -26,6 +26,18 @@ TemperatureWriter<LedModule> temperatureWriter(ledModule);
 CharWriter<LedModule> charWriter(ledModule);
 StringWriter<LedModule> stringWriter(charWriter);
 
+const uint8_t kPatternSpace = 0b00000000;
+const uint8_t kPatternMinus = 0b01000000;
+const uint8_t kPatternDeg = 0b01100011;
+const uint8_t kPattern0 = 0b00111111;
+const uint8_t kPattern1 = 0b00000110;
+const uint8_t kPattern2 = 0b01011011;
+const uint8_t kPattern3 = 0b01001111;
+const uint8_t kPattern4 = 0b01100110;
+const uint8_t kPattern9 = 0b01101111;
+//const uint8_t kPatternC = 0b00111001;
+//const uint8_t kPatternF = 0b01110001;
+
 // ----------------------------------------------------------------------
 // Tests for CharWriter.
 // ----------------------------------------------------------------------
@@ -42,7 +54,7 @@ class CharWriterTest : public TestOnce {
 
 testF(CharWriterTest, writeAt) {
   charWriter.writeCharAt(0, '0');
-  assertEqual(0b00111111, mPatterns[0]);
+  assertEqual(kPattern0, mPatterns[0]);
 }
 
 testF(CharWriterTest, writeAt_outOfBounds) {
@@ -82,10 +94,10 @@ testF(StringWriterTest, writeStringAt) {
   // Should be (".", "1.", "2.", "3") as the 4 digits
   assertPatternsEqual(
     4,
-    0b10000000,
-    0b00000110 | 0x80,
-    0b01011011 | 0x80,
-    0b01001111
+    kPatternSpace | 0x80,
+    kPattern1 | 0x80,
+    kPattern2 | 0x80,
+    kPattern3
   );
 }
 
@@ -105,14 +117,14 @@ class NumberWriterTest : public TestOnce {
 
 testF(NumberWriterTest, writeHexCharAt) {
   numberWriter.writeHexCharAt(0, 0);
-  assertEqual(0b00111111, mPatterns[0]);
+  assertEqual(kPattern0, mPatterns[0]);
 
   numberWriter.writeHexCharAt(1, 0);
   numberWriter.writeDecimalPointAt(1);
-  assertEqual(0b00111111 | 0x80, mPatterns[1]);
+  assertEqual(kPattern0 | 0x80, mPatterns[1]);
 
   numberWriter.writeDecimalPointAt(1, false);
-  assertEqual(0b00111111, mPatterns[1]);
+  assertEqual(kPattern0, mPatterns[1]);
 }
 
 testF(NumberWriterTest, writeHexCharAt_outOfBounds) {
@@ -125,24 +137,24 @@ testF(NumberWriterTest, writeHexCharAt_outOfBounds) {
 
 testF(NumberWriterTest, writeHexByteAt) {
   numberWriter.writeHexByteAt(0, 0x1F);
-  assertEqual(0b00000110, mPatterns[0]);
-  assertEqual(0b01110001, mPatterns[1]);
+  assertEqual(kPattern1, mPatterns[0]);
+  assertEqual(kPatternF, mPatterns[1]);
 }
 
 testF(NumberWriterTest, writeHexWordAt) {
   numberWriter.writeHexWordAt(0, 0x1FF1);
-  assertEqual(0b00000110, mPatterns[0]);
-  assertEqual(0b01110001, mPatterns[1]);
-  assertEqual(0b01110001, mPatterns[2]);
-  assertEqual(0b00000110, mPatterns[3]);
+  assertEqual(kPattern1, mPatterns[0]);
+  assertEqual(kPatternF, mPatterns[1]);
+  assertEqual(kPatternF, mPatterns[2]);
+  assertEqual(kPattern1, mPatterns[3]);
 }
 
 testF(NumberWriterTest, writeUnsignedDecimalAt) {
   uint8_t written = numberWriter.writeUnsignedDecimalAt(0, 123);
   assertEqual(3, written);
-  assertEqual(0b00000110, mPatterns[0]);
-  assertEqual(0b01011011, mPatterns[1]);
-  assertEqual(0b01001111, mPatterns[2]);
+  assertEqual(kPattern1, mPatterns[0]);
+  assertEqual(kPattern2, mPatterns[1]);
+  assertEqual(kPattern3, mPatterns[2]);
 
   // Even if it off the end, the return value is the number of character that
   // would have been written if the LED module was long enough.
@@ -153,10 +165,10 @@ testF(NumberWriterTest, writeUnsignedDecimalAt) {
 testF(NumberWriterTest, writeUnsignedDecimalAt_boxed) {
   uint8_t written = numberWriter.writeUnsignedDecimalAt(0, 34, 4);
   assertEqual(4, written);
-  assertEqual(0b00000000, mPatterns[0]);
-  assertEqual(0b00000000, mPatterns[1]);
-  assertEqual(0b01001111, mPatterns[2]);
-  assertEqual(0b01100110, mPatterns[3]);
+  assertEqual(kPatternSpace, mPatterns[0]);
+  assertEqual(kPatternSpace, mPatterns[1]);
+  assertEqual(kPattern3, mPatterns[2]);
+  assertEqual(kPattern4, mPatterns[3]);
 
   written = numberWriter.writeUnsignedDecimalAt(0, 34, 2);
   assertEqual(2, written);
@@ -165,18 +177,18 @@ testF(NumberWriterTest, writeUnsignedDecimalAt_boxed) {
 testF(NumberWriterTest, writeSignedDecimalAt) {
   uint8_t written = numberWriter.writeSignedDecimalAt(0, -23);
   assertEqual(3, written);
-  assertEqual(0b01000000, mPatterns[0]);
-  assertEqual(0b01011011, mPatterns[1]);
-  assertEqual(0b01001111, mPatterns[2]);
+  assertEqual(kPatternMinus, mPatterns[0]);
+  assertEqual(kPattern2, mPatterns[1]);
+  assertEqual(kPattern3, mPatterns[2]);
 }
 
 testF(NumberWriterTest, writeSignedDecimalAt_boxed) {
   uint8_t written = numberWriter.writeSignedDecimalAt(0, -12, 4);
   assertEqual(4, written);
-  assertEqual(0b00000000, mPatterns[0]);
-  assertEqual(0b01000000, mPatterns[1]);
-  assertEqual(0b00000110, mPatterns[2]);
-  assertEqual(0b01011011, mPatterns[3]);
+  assertEqual(kPatternSpace, mPatterns[0]);
+  assertEqual(kPatternMinus, mPatterns[1]);
+  assertEqual(kPattern1, mPatterns[2]);
+  assertEqual(kPattern2, mPatterns[3]);
 }
 
 // ----------------------------------------------------------------------
@@ -195,30 +207,30 @@ class ClockWriterTest: public TestOnce {
 
 testF(ClockWriterTest, writeBcd2At) {
   clockWriter.writeBcd2At(0, 0x12);
-  assertEqual(0b00000110, mPatterns[0]);
-  assertEqual(0b01011011, mPatterns[1]);
+  assertEqual(kPattern1, mPatterns[0]);
+  assertEqual(kPattern2, mPatterns[1]);
 
   clockWriter.writeBcd2At(2, 0x34);
-  assertEqual(0b01001111, mPatterns[2]);
-  assertEqual(0b01100110, mPatterns[3]);
+  assertEqual(kPattern3, mPatterns[2]);
+  assertEqual(kPattern4, mPatterns[3]);
 }
 
 testF(ClockWriterTest, writeDec2At) {
   clockWriter.writeDec2At(0, 12);
-  assertEqual(0b00000110, mPatterns[0]);
-  assertEqual(0b01011011, mPatterns[1]);
+  assertEqual(kPattern1, mPatterns[0]);
+  assertEqual(kPattern2, mPatterns[1]);
 
   clockWriter.writeDec2At(2, 34);
-  assertEqual(0b01001111, mPatterns[2]);
-  assertEqual(0b01100110, mPatterns[3]);
+  assertEqual(kPattern3, mPatterns[2]);
+  assertEqual(kPattern4, mPatterns[3]);
 }
 
 testF(ClockWriterTest, writeDec4At) {
   clockWriter.writeDec4At(0, 1234);
-  assertEqual(0b00000110, mPatterns[0]);
-  assertEqual(0b01011011, mPatterns[1]);
-  assertEqual(0b01001111, mPatterns[2]);
-  assertEqual(0b01100110, mPatterns[3]);
+  assertEqual(kPattern1, mPatterns[0]);
+  assertEqual(kPattern2, mPatterns[1]);
+  assertEqual(kPattern3, mPatterns[2]);
+  assertEqual(kPattern4, mPatterns[3]);
 }
 
 testF(ClockWriterTest, writeColon) {
@@ -226,29 +238,37 @@ testF(ClockWriterTest, writeColon) {
   clockWriter.writeDec2At(2, 34);
 
   // no colon by default
-  assertEqual(0b01011011, mPatterns[1]);
+  assertEqual(kPattern2, mPatterns[1]);
 
   // turn on colon
   clockWriter.writeColon(true); // turns it on
-  assertEqual(0b01011011 | 0x80, mPatterns[1]);
+  assertEqual(kPattern2 | 0x80, mPatterns[1]);
 }
 
-testF(ClockWriterTest, writeHourMinute) {
-  clockWriter.writeHourMinute(12, 34);
-  assertEqual(0b00000110, mPatterns[0]);
-  assertEqual(0b01011011 | 0x80, mPatterns[1]); // colon on by default
-  assertEqual(0b01001111, mPatterns[2]);
-  assertEqual(0b01100110, mPatterns[3]);
+testF(ClockWriterTest, writeHourMinute12) {
+  clockWriter.writeHourMinute12(2, 34);
+  assertEqual(kPatternSpace, mPatterns[0]); // space
+  assertEqual(kPattern2 | 0x80, mPatterns[1]); // colon on by default
+  assertEqual(kPattern3, mPatterns[2]);
+  assertEqual(kPattern4, mPatterns[3]);
+}
+
+testF(ClockWriterTest, writeHourMinute24) {
+  clockWriter.writeHourMinute24(2, 34);
+  assertEqual(kPattern0, mPatterns[0]); // zero
+  assertEqual(kPattern2 | 0x80, mPatterns[1]); // colon on by default
+  assertEqual(kPattern3, mPatterns[2]);
+  assertEqual(kPattern4, mPatterns[3]);
 }
 
 testF(ClockWriterTest, writeChars2At) {
   clockWriter.writeChars2At(0, 1, 2);
-  assertEqual(0b00000110, mPatterns[0]);
-  assertEqual(0b01011011, mPatterns[1]);
+  assertEqual(kPattern1, mPatterns[0]);
+  assertEqual(kPattern2, mPatterns[1]);
 
   clockWriter.writeChars2At(0, kHexCharSpace, kHexCharSpace);
-  assertEqual(0b0, mPatterns[0]);
-  assertEqual(0b0, mPatterns[1]);
+  assertEqual(kPatternSpace, mPatterns[0]);
+  assertEqual(kPatternSpace, mPatterns[1]);
 }
 
 // ----------------------------------------------------------------------
@@ -268,36 +288,36 @@ class TemperatureWriterTest: public TestOnce {
 testF(TemperatureWriterTest, writeTempDegAt) {
   uint8_t written = temperatureWriter.writeTempDegAt(0, -9);
   assertEqual(3, written);
-  assertEqual(0b01000000, mPatterns[0]); // -
-  assertEqual(0b01101111, mPatterns[1]); // 9
-  assertEqual(0b01100011, mPatterns[2]); // deg
+  assertEqual(kPatternMinus, mPatterns[0]); // -
+  assertEqual(kPattern9, mPatterns[1]); // 9
+  assertEqual(kPatternDeg, mPatterns[2]); // deg
 
   written = temperatureWriter.writeTempDegAt(0, -9 /*temp*/, 4 /*boxSize*/);
   assertEqual(4, written);
-  assertEqual(0b00000000, mPatterns[0]); // space
-  assertEqual(0b01000000, mPatterns[1]); // -
-  assertEqual(0b01101111, mPatterns[2]); // 9
-  assertEqual(0b01100011, mPatterns[3]); // deg
+  assertEqual(kPatternSpace, mPatterns[0]); // space
+  assertEqual(kPatternMinus, mPatterns[1]); // -
+  assertEqual(kPattern9, mPatterns[2]); // 9
+  assertEqual(kPatternDeg, mPatterns[3]); // deg
 }
 
 testF(TemperatureWriterTest, writeTempDegCAt) {
   uint8_t written = temperatureWriter.writeTempDegCAt(
       0, -9 /*temp*/, 4 /*boxSize*/);
   assertEqual(4, written);
-  assertEqual(0b01000000, mPatterns[0]); // -
-  assertEqual(0b01101111, mPatterns[1]); // 9
-  assertEqual(0b01100011, mPatterns[2]); // deg
-  assertEqual(0b00111001, mPatterns[3]); // C
+  assertEqual(kPatternMinus, mPatterns[0]); // -
+  assertEqual(kPattern9, mPatterns[1]); // 9
+  assertEqual(kPatternDeg, mPatterns[2]); // deg
+  assertEqual(kPatternC, mPatterns[3]); // C
 }
 
 testF(TemperatureWriterTest, writeTempDegFAt) {
   uint8_t written = temperatureWriter.writeTempDegFAt(
       0, -9 /*temp*/, 4 /*boxSize*/);
   assertEqual(4, written);
-  assertEqual(0b01000000, mPatterns[0]); // -
-  assertEqual(0b01101111, mPatterns[1]); // 9
-  assertEqual(0b01100011, mPatterns[2]); // deg
-  assertEqual(0b01110001, mPatterns[3]); // F
+  assertEqual(kPatternMinus, mPatterns[0]); // -
+  assertEqual(kPattern9, mPatterns[1]); // 9
+  assertEqual(kPatternDeg, mPatterns[2]); // deg
+  assertEqual(kPatternF, mPatterns[3]); // F
 }
 
 //-----------------------------------------------------------------------------

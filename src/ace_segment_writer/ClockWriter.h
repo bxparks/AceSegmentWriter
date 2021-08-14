@@ -126,11 +126,28 @@ class ClockWriter {
     }
 
     /**
-     * Write the hour and minutes, and the colon in one-shot, assuming the LED
-     * module is a 4-digit clock module. This is a convenience function.
+     * Write the hour and minute in 24-hour format (i.e. leading 0), and the
+     * colon in one-shot, assuming the LED module is a 4-digit clock module.
+     * This is a convenience function.
      */
-    void writeHourMinute(uint8_t hh, uint8_t mm) {
+    void writeHourMinute24(uint8_t hh, uint8_t mm) {
       writeDec2At(0, hh);
+      writeDec2At(2, mm);
+      writeColon();
+    }
+
+    /**
+     * Write the hour and minute in 12-hour format (i.e. leading space), and the
+     * colon in one-shot, assuming the LED module is a 4-digit clock module.
+     * This is a convenience function.
+     */
+    void writeHourMinute12(uint8_t hh, uint8_t mm) {
+      if (hh < 10) {
+        writeCharAt(0, kHexCharSpace);
+        writeCharAt(1, hh);
+      } else {
+        writeDec2At(0, hh);
+      }
       writeDec2At(2, mm);
       writeColon();
     }

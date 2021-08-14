@@ -1031,7 +1031,7 @@ void writeClock() {
   static uint8_t hh = 0;
   static uint8_t mm = 0;
 
-  clockWriter.writeHourMinute(hh, mm);
+  clockWriter.writeHourMinute24(hh, mm);
 
   incrementMod(mm, (uint8_t)60);
   if (mm == 0) {

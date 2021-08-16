@@ -30,6 +30,68 @@ SOFTWARE.
 
 namespace ace_segment {
 
+// List of patterns for certain convenient symbols
+
+/** Digit 0 */
+const uint8_t kPattern0 = 0b00111111;
+
+/** Digit 1 */
+const uint8_t kPattern1 = 0b00000110;
+
+/** Digit 2 */
+const uint8_t kPattern2 = 0b01011011;
+
+/** Digit 3 */
+const uint8_t kPattern3 = 0b01001111;
+
+/** Digit 4 */
+const uint8_t kPattern4 = 0b01100110;
+
+/** Digit 5 */
+const uint8_t kPattern5 = 0b01101101;
+
+/** Digit 6 */
+const uint8_t kPattern6 = 0b01111101;
+
+/** Digit 7 */
+const uint8_t kPattern7 = 0b00000111;
+
+/** Digit 8 */
+const uint8_t kPattern8 = 0b01111111;
+
+/** Digit 9 */
+const uint8_t kPattern9 = 0b01101111;
+
+/** Digit A. Also used for the "A" in "AM". */
+const uint8_t kPatternA = 0b01110111;
+
+/** Digit B */
+const uint8_t kPatternB = 0b01111100;
+
+/** Digit C. Also used for "Celcius". */
+const uint8_t kPatternC = 0b00111001;
+
+/** Digit D */
+const uint8_t kPatternD = 0b01011110;
+
+/** Digit E */
+const uint8_t kPatternE = 0b01111001;
+
+/** Digit F. Also used for "Farenheit". */
+const uint8_t kPatternF = 0b01110001;
+
+/** Space. All blank. */
+const uint8_t kPatternSpace = 0b00000000;
+
+/** Minus sign. */
+const uint8_t kPatternMinus = 0b01000000;
+
+/** The superscript degree symbol for temperature. */
+const uint8_t kPatternDeg = 0b01100011;
+
+/** The "P" character for "PM". */
+const uint8_t kPatternP = 0b01110011;
+
 /**
  * Write LED segment patterns to the underlying LedModule. Other 'Writer'
  * classes provide additional functionality on top of this class (e.g.

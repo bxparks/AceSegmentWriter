@@ -27,15 +27,10 @@ SOFTWARE.
 
 #include <stdint.h>
 #include <AceCommon.h>
+#include "PatternWriter.h"
 #include "NumberWriter.h"
 
 namespace ace_segment {
-
-/** The "A" character for "AM". */
-const uint8_t kPatternA = 0b01110111;
-
-/** The "P" character for "PM". */
-const uint8_t kPatternP = 0b01110011;
 
 /**
  * The ClockWriter writes "hh:mm" and "yyyy" to the LedModule. A few other

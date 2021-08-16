@@ -26,18 +26,6 @@ TemperatureWriter<LedModule> temperatureWriter(ledModule);
 CharWriter<LedModule> charWriter(ledModule);
 StringWriter<LedModule> stringWriter(charWriter);
 
-const uint8_t kPatternSpace = 0b00000000;
-const uint8_t kPatternMinus = 0b01000000;
-const uint8_t kPatternDeg = 0b01100011;
-const uint8_t kPattern0 = 0b00111111;
-const uint8_t kPattern1 = 0b00000110;
-const uint8_t kPattern2 = 0b01011011;
-const uint8_t kPattern3 = 0b01001111;
-const uint8_t kPattern4 = 0b01100110;
-const uint8_t kPattern9 = 0b01101111;
-//const uint8_t kPatternC = 0b00111001;
-//const uint8_t kPatternF = 0b01110001;
-
 // ----------------------------------------------------------------------
 // Tests for CharWriter.
 // ----------------------------------------------------------------------

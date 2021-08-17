@@ -317,6 +317,27 @@ The public methods of the class look like this:
 ```C++
 namespace ace_segment {
 
+const uint8_t kPattern0 = 0b00111111;
+const uint8_t kPattern1 = 0b00000110;
+const uint8_t kPattern2 = 0b01011011;
+const uint8_t kPattern3 = 0b01001111;
+const uint8_t kPattern4 = 0b01100110;
+const uint8_t kPattern5 = 0b01101101;
+const uint8_t kPattern6 = 0b01111101;
+const uint8_t kPattern7 = 0b00000111;
+const uint8_t kPattern8 = 0b01111111;
+const uint8_t kPattern9 = 0b01101111;
+const uint8_t kPatternA = 0b01110111;
+const uint8_t kPatternB = 0b01111100;
+const uint8_t kPatternC = 0b00111001;
+const uint8_t kPatternD = 0b01011110;
+const uint8_t kPatternE = 0b01111001;
+const uint8_t kPatternF = 0b01110001;
+const uint8_t kPatternSpace = 0b00000000;
+const uint8_t kPatternMinus = 0b01000000;
+const uint8_t kPatternDeg = 0b01100011;
+const uint8_t kPatternP = 0b01110011;
+
 template <typename T_LED_MODULE>
 class PatternWriter {
   public:

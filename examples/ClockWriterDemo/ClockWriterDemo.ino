@@ -37,7 +37,7 @@ void setup() {
 
   // Write time "01:43" to the clock LED module. On a normal 4-digit LED module,
   // it will be displayed as "01.43".
-  clockWriter.writeHourMinute(1, 43);
+  clockWriter.writeHourMinute24(1, 43);
 
   ledModule.setBrightness(2);
 

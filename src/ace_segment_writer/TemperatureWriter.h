@@ -26,18 +26,10 @@ SOFTWARE.
 #define ACE_SEGMENT_WRITER_TEMPERATURE_WRITER_H
 
 #include <stdint.h>
+#include "PatternWriter.h"
 #include "NumberWriter.h"
 
 namespace ace_segment {
-
-/** The superscript degree symbol for temperature. */
-const uint8_t kPatternDegree = 0b01100011;
-
-/** The "C" character for "Celcius". */
-const uint8_t kPatternC = 0b00111001;
-
-/** The "F" character for "Farenheit". */
-const uint8_t kPatternF = 0b01110001;
 
 /**
  * The TemperatureWriter supports writing integer temperature values in Celcius
@@ -87,7 +79,7 @@ class TemperatureWriter {
       uint8_t written = mNumberWriter.writeSignedDecimalAt(pos, temp,
           boxSize >= 1 ? boxSize - 1 : 0);
       pos += written;
-      patternWriter().writePatternAt(pos++, kPatternDegree);
+      patternWriter().writePatternAt(pos++, kPatternDeg);
       return written + 1;
     }
 
@@ -98,7 +90,7 @@ class TemperatureWriter {
       uint8_t written = mNumberWriter.writeSignedDecimalAt(pos, temp,
           boxSize >= 2 ? boxSize - 2 : 0);
       pos += written;
-      patternWriter().writePatternAt(pos++, kPatternDegree);
+      patternWriter().writePatternAt(pos++, kPatternDeg);
       patternWriter().writePatternAt(pos++, kPatternC);
       return written + 2;
     }
@@ -110,7 +102,7 @@ class TemperatureWriter {
       uint8_t written = mNumberWriter.writeSignedDecimalAt(pos, temp,
           boxSize >= 2 ? boxSize - 2 : 0);
       pos += written;
-      patternWriter().writePatternAt(pos++, kPatternDegree);
+      patternWriter().writePatternAt(pos++, kPatternDeg);
       patternWriter().writePatternAt(pos++, kPatternF);
       return written + 2;
     }

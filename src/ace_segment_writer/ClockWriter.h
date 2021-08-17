@@ -26,16 +26,10 @@ SOFTWARE.
 #define ACE_SEGMENT_WRITER_CLOCK_WRITER_H
 
 #include <stdint.h>
-#include <AceCommon.h>
+#include "PatternWriter.h"
 #include "NumberWriter.h"
 
 namespace ace_segment {
-
-/** The "A" character for "AM". */
-const uint8_t kPatternA = 0b01110111;
-
-/** The "P" character for "PM". */
-const uint8_t kPatternP = 0b01110011;
 
 /**
  * The ClockWriter writes "hh:mm" and "yyyy" to the LedModule. A few other
@@ -72,66 +66,25 @@ class ClockWriter {
     /** Get the underlying NumberWriter. */
     NumberWriter<T_LED_MODULE>& numberWriter() { return mNumberWriter; }
 
-    /** Write the hexchar_t 'c' at 'pos'. */
-    void writeCharAt(uint8_t pos, hexchar_t c) {
-      mNumberWriter.writeHexCharAt(pos, c);
+    /**
+     * Write the hour and minute in 24-hour format (i.e. leading 0), and the
+     * colon in one-shot, assuming the LED module is a 4-digit clock module.
+     * This is a convenience function.
+     */
+    void writeHourMinute24(uint8_t hh, uint8_t mm) {
+      mNumberWriter.writeDec2At(0, hh);
+      mNumberWriter.writeDec2At(2, mm);
+      writeColon();
     }
 
     /**
-     * Write the 2 hexchar_t 'c0' and 'c1' at 'pos' and 'pos+1'.
-     * This is a convenience method because the need to write 2 digits (or 2
-     * spaces) occurs quite frequently when implementing clocks.
+     * Write the hour and minute in 12-hour format (i.e. leading space), and the
+     * colon in one-shot, assuming the LED module is a 4-digit clock module.
+     * This is a convenience function.
      */
-    void writeChars2At(uint8_t pos, hexchar_t c0, hexchar_t c1) {
-      writeCharAt(pos++, c0);
-      writeCharAt(pos++, c1);
-    }
-
-    /**
-     * Write a 2-digit BCD number at position, which involves just printing the
-     * number as a hexadecimal number. For example, 0x12 is printed as "12", but
-     * 0x1A is printed as "1 ".
-     */
-    void writeBcd2At(uint8_t pos, uint8_t bcd) {
-      uint8_t high = (bcd & 0xF0) >> 4;
-      uint8_t low = (bcd & 0x0F);
-      if (high > 9) high = kHexCharSpace;
-      if (low > 9) low = kHexCharSpace;
-      writeChars2At(pos, high, low);
-    }
-
-    /**
-     * Write a 2-digit decimal number at position digit, right justified. If the
-     * number is greater than 100, then print "  " (2 spaces). Useful for day,
-     * hour, minute, seconds.
-     */
-    void writeDec2At(uint8_t pos, uint8_t d) {
-      if (d >= 100) {
-        writeChars2At(pos++, kHexCharSpace, kHexCharSpace);
-      } else {
-        uint8_t bcd = ace_common::decToBcd(d);
-        writeBcd2At(pos, bcd);
-      }
-    }
-
-    /**
-     * Write the 4 digit decimal number at pos, right justified, padded with a
-     * '0' character. Useful for year.
-     */
-    void writeDec4At(uint8_t pos, uint16_t dd) {
-      uint8_t high = dd / 100;
-      uint8_t low = dd - high * 100;
-      writeDec2At(pos, high);
-      writeDec2At(pos + 2, low);
-    }
-
-    /**
-     * Write the hour and minutes, and the colon in one-shot, assuming the LED
-     * module is a 4-digit clock module. This is a convenience function.
-     */
-    void writeHourMinute(uint8_t hh, uint8_t mm) {
-      writeDec2At(0, hh);
-      writeDec2At(2, mm);
+    void writeHourMinute12(uint8_t hh, uint8_t mm) {
+      mNumberWriter.writeDec2At(0, hh, kPatternSpace);
+      mNumberWriter.writeDec2At(2, mm);
       writeColon();
     }
 

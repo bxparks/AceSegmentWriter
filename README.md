@@ -17,7 +17,7 @@ the public methods that appear in the `LedModule` class. But `T_LED_MODULE` is
 *not* required to inherit from `LedModule` which preserves the decoupling
 between the AceSegmentWriter and AceSegment libraries.
 
-**Version**: 0.1 (2021-08-10)
+**Version**: 0.2 (2021-08-17)
 
 **Changelog**: [CHANGELOG.md](CHANGELOG.md)
 
@@ -164,14 +164,15 @@ Here are the classes and types in the library:
 * `NumberWriter`
     * A class that writes integers in decimal or hexadecimal format to the
       `T_LED_MODULE`.
-    * A few additional characters are supported: `kCharSpace`, `kCharMinus`
+    * A few additional characters are supported: `kHexCharSpace`,
+      `kHexCharMinus`
 * `ClockWriter`
     * A class that writes a clock string "hh:mm" to `T_LED_MODULE`.
-    * A few additional symbols are supported: `kCharSpace`, `kCharMinus` and
-      `kPatternA` ("A" for AM) and `kPatternP` ("P" for PM).
+    * Builds on top of `NumberWriter`.
 * `TemperatureWriter`
     * A class that writes temperatures with a degrees symbol or optionally
       with "C" or "F" symbol.
+    * Builds on top of `NumberWriter`.
 * `CharWriter`
     * A class that convert an ASCII character represented by a `char` (code
       0-127) to a bit pattern used by `SegmentDriver` class.
@@ -180,6 +181,7 @@ Here are the classes and types in the library:
 * `StringWriter`
     * A class that prints strings of `char` to a `CharWriter`, which in
       turns, prints to the `T_LED_MODULE`.
+    * Builds on top of `CharWriter`.
 * `StringScoller`
     * Scroll a string left and right.
 * `LevelWriter`
@@ -310,14 +312,38 @@ provides the following features on top of `T_LED_MODULE`:
 * The `clear()` and `clearToEnd()` functions provide ways to clear the LED
   display.
 
-The public methods of the class looks like this (not all public methods shown):
+The public methods of the class look like this:
 
 ```C++
+namespace ace_segment {
+
+const uint8_t kPattern0 = 0b00111111;
+const uint8_t kPattern1 = 0b00000110;
+const uint8_t kPattern2 = 0b01011011;
+const uint8_t kPattern3 = 0b01001111;
+const uint8_t kPattern4 = 0b01100110;
+const uint8_t kPattern5 = 0b01101101;
+const uint8_t kPattern6 = 0b01111101;
+const uint8_t kPattern7 = 0b00000111;
+const uint8_t kPattern8 = 0b01111111;
+const uint8_t kPattern9 = 0b01101111;
+const uint8_t kPatternA = 0b01110111;
+const uint8_t kPatternB = 0b01111100;
+const uint8_t kPatternC = 0b00111001;
+const uint8_t kPatternD = 0b01011110;
+const uint8_t kPatternE = 0b01111001;
+const uint8_t kPatternF = 0b01110001;
+const uint8_t kPatternSpace = 0b00000000;
+const uint8_t kPatternMinus = 0b01000000;
+const uint8_t kPatternDeg = 0b01100011;
+const uint8_t kPatternP = 0b01110011;
+
 template <typename T_LED_MODULE>
 class PatternWriter {
   public:
     explicit PatternWriter(T_LED_MODULE& ledModule);
 
+    T_LED_MODULE& ledModule() const;
     uint8_t getNumDigits() const;
 
     void writePatternAt(uint8_t pos, uint8_t pattern);
@@ -328,6 +354,8 @@ class PatternWriter {
     void clear();
     void clearToEnd(uint8_t pos);
 };
+
+}
 ```
 
 The decimal point is stored as bit 7 (the most significant bit) of the `uint8_t`
@@ -367,14 +395,18 @@ class NumberWriter {
     PatternWriter<T_LED_MODULE>& patternWriter();
 
     void writeHexCharAt(uint8_t pos, hexchar_t c);
+    void writeHexChars2At(uint8_t pos, hexchar_t c, hexchar_t d);
     void writeHexCharsAt(uint8_t pos, hexchar_t [], uint8_t len);
+
+    void writeBcd2At(uint8_t pos, uint8_t bcd);
+    void writeDec2At(uint8_t pos, uint8_t d, uint8_t padPattern = kPattern0);
+    void writeDec4At(uint8_t pos, uint16_t dd, uint8_t padPattern = kPattern0);
 
     void writeHexByteAt(uint8_t pos, uint8_t b);
     void writeHexWordAt(uint8_t pos, uint16_t w);
 
     void writeUnsignedDecimalAt(uint8_t pos, uint16_t num, int8_t boxSize = 0);
     void writeSignedDecimalAt(uint8_t pos, int16_t num, int8_t boxSize = 0);
-    void writeUnsignedDecimal2At(uint8_t pos, uint8_t num);
 
     void writeDecimalPointAt(uint8_t pos, bool state = true);
 
@@ -410,9 +442,6 @@ The public methods of this class look like this:
 ```C++
 namespace ace_segment {
 
-const uint8_t kPatternA = 0b01110111;
-const uint8_t kPatternP = 0b01110011;
-
 template <typename T_LED_MODULE>
 class ClockWriter {
   public:
@@ -422,15 +451,12 @@ class ClockWriter {
     PatternWriter<T_LED_MODULE>& patternWriter();
     NumberWriter<T_LED_MODULE>& numberWriter();
 
-    void writeCharAt(uint8_t pos, hexchar_t c);
-    void writeChar2At(uint8_t pos, hexchar_t c0, hexchar_t c1);
-
-    void writeBcd2At(uint8_t pos, uint8_t bcd);
-    void writeDec2At(uint8_t pos, uint8_t d);
-    void writeDec4At(uint8_t pos, uint16_t dd);
-
-    void writeHourMinute(uint8_t hh, uint8_t mm);
+    void writeHourMinute24(uint8_t hh, uint8_t mm);
+    void writeHourMinute12(uint8_t hh, uint8_t mm);
     void writeColon(bool state = true);
+
+    void clear();
+    void clearToEnd(uint8_t pos);
 };
 
 }
@@ -471,6 +497,9 @@ class TemperatureWriter {
     uint8_t writeTempDegAt(uint8_t pos, int16_t temp, boxSize = 0);
     uint8_t writeTempDegCAt(uint8_t pos, int16_t temp, boxSize = 0);
     uint8_t writeTempDegFAt(uint8_t pos, int16_t temp, boxSize = 0);
+
+    void clear();
+    void clearToEnd(uint8_t pos);
 };
 
 }
@@ -491,7 +520,7 @@ to seven-segment bit patterns. On platforms that support it (AVR and
 ESP8266), the bit pattern array is stored in flash memory to conserve static
 memory.
 
-The public methods of this class looks like this:
+The public methods of this class look like this:
 
 ```C++
 namespace ace_segment {
@@ -513,10 +542,14 @@ class CharWriter {
     T_LED_MODULE& ledModule();
     PatternWriter<T_LED_MODULE>& patternWriter();
 
-    void writeCharAt(uint8_t pos, char c);
-
+    uint8_t getNumDigits() const;
     uint8_t getNumChars() const;
     uint8_t getPattern(char c) const;
+
+    void writeCharAt(uint8_t pos, char c);
+
+    void clear();
+    void clearToEnd(uint8_t pos);
 };
 
 }
@@ -621,6 +654,8 @@ A `StringScroller` is a class that builds on top of the `CharWriter`. It can
 scroll strings to the left and right. The public methods look like:
 
 ```C++
+namespace ace_segment {
+
 template <typename T_LED_MODULE>
 class StringScroller {
   public:
@@ -638,6 +673,8 @@ class StringScroller {
     void initScrollRight(const __FlashStringHelper* s);
     bool scrollRight();
 };
+
+}
 ```
 
 To scroll a string to the left, initialize the string using `initScrollLeft()`,

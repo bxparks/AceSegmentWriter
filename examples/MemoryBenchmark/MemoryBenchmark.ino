@@ -148,7 +148,7 @@ void loop() {
   numberWriter.writeUnsignedDecimalAt(0, disableCompilerOptimization);
 
 #elif FEATURE == FEATURE_CLOCK_WRITER
-  clockWriter.writeHourMinute(10, disableCompilerOptimization);
+  clockWriter.writeHourMinute24(10, disableCompilerOptimization);
 
 #elif FEATURE == FEATURE_TEMPERATURE_WRITER
   temperatureWriter.writeTempDegCAt(

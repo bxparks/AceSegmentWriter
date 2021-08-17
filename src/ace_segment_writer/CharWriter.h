@@ -62,8 +62,8 @@ class CharWriter {
      * @param ledModule reference to LedModule
      * @param charPatterns (optional) array of 7-segment character patterns in
      *    PROGMEM (default: an ASCII character set)
-     * @param numChars (optional) number of characters in charPatterns, 0 means
-     *    256 (default: 128)
+     * @param numChars (optional) number of characters in charPatterns,
+     *    (default: 128)
      */
     explicit CharWriter(
         T_LED_MODULE& ledModule,
@@ -95,7 +95,7 @@ class CharWriter {
 
     /** Get segment pattern for character 'c'. */
     uint8_t getPattern(char c) const {
-      uint8_t pattern = ((mNumChars == 0) || ((uint8_t) c < mNumChars))
+      uint8_t pattern = ((uint8_t) c < mNumChars)
           ? pgm_read_byte(&mCharPatterns[(uint8_t) c])
           : kPatternUnknown;
       return pattern;

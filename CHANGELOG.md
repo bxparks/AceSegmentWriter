@@ -1,6 +1,7 @@
 # Changelog
 
 * Unreleased
+* v0.2 (2021-08-17)
     * Consolidate commonly used `kPatternXxx` constants into `PatternWriter.h`
       instead of being distributed across different classes.
     * Replace `writeHourMinute()` into `writeHourMinute12()` (12-hour format

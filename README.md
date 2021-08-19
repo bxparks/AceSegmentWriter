@@ -58,17 +58,16 @@ between the AceSegmentWriter and AceSegment libraries.
 <a name="Installation"></a>
 ## Installation
 
-The latest stable release will eventually be available in the Arduino IDE
-Library Manager. Search for "AceSegmentWriter". Click install. (It is not there
-yet.)
+The latest stable release is available in the Arduino IDE Library Manager.
+Search for "AceSegmentWriter". Click install.
 
-The development version can be installed by cloning the
-[GitHub repository](https://github.com/bxparks/AceSegmentWriter), checking out
-the `develop` branch, then manually copying over the contents to the
-`./libraries` directory used by the Arduino IDE. (The result is a directory
-named `./libraries/AceSegmentWriter`.)
+The development version can be installed by cloning the [GitHub
+repository](https://github.com/bxparks/AceSegmentWriter), checking out the
+default `develop` branch, then manually copying over to or symlinking from the
+`./libraries` directory used by the Arduino IDE. (The result is a directory or
+link named `./libraries/AceSegmentWriter`.)
 
-The `master` branch contains the stable release.
+The `master` branch contains the stable releases.
 
 <a name="SourceCode"></a>
 ### Source Code
@@ -370,8 +369,8 @@ PatternWriter<LedModule> patternWriter(ledModule);
 <a name="NumberWriter"></a>
 ### NumberWriter
 
-The `NumberWriter` can print integers to the `T_LED_MODULE` using decimal (0-9) or
-hexadecimal (0-9A-F) formats. On platforms that support it (AVR and ESP8266),
+The `NumberWriter` can print integers to the `T_LED_MODULE` using decimal (0-9)
+or hexadecimal (0-9A-F) formats. On platforms that support it (AVR and ESP8266),
 the bit mapping table is stored in flash memory to conserve static memory.
 
 The public methods of this class looks something like this:

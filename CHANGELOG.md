@@ -13,6 +13,7 @@
       the default of `kPattern0` to get leading 0 characters.
     * Remove `writeUnsignedDecimal2At()` since it has the same functionality as
       `writeDec2At()`.
+    * First public release.
 * v0.1 (2021-08-10)
     * Initial release.
 * (2021-08-09)

@@ -1,6 +1,7 @@
 # Changelog
 
 * Unreleased
+* 0.3 (2022-02-02)
     * Upgrade to AceTMI v0.5.
         * Rename `SimpleTmiInterface` to `SimpleTmi1637Interface`.
         * Rename `SimpleTmiFastInterface` to `SimpleTmi1637FastInterface`.
@@ -13,7 +14,7 @@
         * ESP32 Core from 1.0.6 to 2.0.2
         * Teensyduino from 1.53 to 1.56
     * Downgrade SAMD21 boards to new "Tier 3: May work but unsupported" tier.
-* v0.2 (2021-08-17)
+* 0.2 (2021-08-17)
     * Consolidate commonly used `kPatternXxx` constants into `PatternWriter.h`
       instead of being distributed across different classes.
     * Replace `writeHourMinute()` into `writeHourMinute12()` (12-hour format
@@ -26,7 +27,7 @@
     * Remove `writeUnsignedDecimal2At()` since it has the same functionality as
       `writeDec2At()`.
     * First public release.
-* v0.1 (2021-08-10)
+* 0.1 (2021-08-10)
     * Initial release.
 * (2021-08-09)
     * Initial extraction of [AceSegment](https://github.com/bxparks/AceSegment).

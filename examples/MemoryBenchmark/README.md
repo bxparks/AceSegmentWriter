@@ -14,7 +14,7 @@ by the runtime environment of the processor. For example, it often seems like
 the ESP8266 allocates flash memory in blocks of a certain quantity, so the
 calculated flash size can jump around in unexpected ways.
 
-**Version**: AceSegmentWriter 0.2
+**Version**: AceSegmentWriter 0.3
 
 **DO NOT EDIT**: This file was auto-generated using `make README.md`.
 

@@ -34,7 +34,6 @@ produces the following files:
 attiny.txt
 nano.txt
 micro.txt
-samd.txt
 stm32.txt
 esp8266.txt
 esp32.txt
@@ -143,30 +142,6 @@ program for various Writer classes.
 | StringWriter                    |   3816/  163 |   330/   12 |
 | StringScroller                  |   3894/  169 |   408/   18 |
 | LevelWriter                     |   3612/  158 |   126/    7 |
-+--------------------------------------------------------------+
-
-```
-
-### SAMD21 M0 Mini
-
-* 48 MHz ARM Cortex-M0+
-* Arduino IDE 1.8.13
-* Sparkfun SAMD Core 1.8.3
-
-```
-+--------------------------------------------------------------+
-| functionality                   |  flash/  ram |       delta |
-|---------------------------------+--------------+-------------|
-| baseline                        |  10072/    0 |     0/    0 |
-|---------------------------------+--------------+-------------|
-| PatternWriter                   |  10104/    0 |    32/    0 |
-| NumberWriter                    |  10224/    0 |   152/    0 |
-| ClockWriter                     |  10232/    0 |   160/    0 |
-| TemperatureWriter               |  10344/    0 |   272/    0 |
-| CharWriter                      |  10264/    0 |   192/    0 |
-| StringWriter                    |  10376/    0 |   304/    0 |
-| StringScroller                  |  10352/    0 |   280/    0 |
-| LevelWriter                     |  10176/    0 |   104/    0 |
 +--------------------------------------------------------------+
 
 ```

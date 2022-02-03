@@ -1,6 +1,18 @@
 # Changelog
 
 * Unreleased
+    * Upgrade to AceTMI v0.5.
+        * Rename `SimpleTmiInterface` to `SimpleTmi1637Interface`.
+        * Rename `SimpleTmiFastInterface` to `SimpleTmi1637FastInterface`.
+    * Upgrade tool chain and regenerate `MemoryBenchmark` and `AutoBenchmark`.
+        * Arduino IDE from 1.8.13 to 1.8.19
+        * Arduino CLI from 0.14.0 to 0.19.2
+        * Arduino AVR Core from 1.8.3 to 1.8.4
+        * STM32duino from 2.0.0 to 2.2.0
+        * ESP8266 Core from 2.7.4 to 3.0.2
+        * ESP32 Core from 1.0.6 to 2.0.2
+        * Teensyduino from 1.53 to 1.56
+    * Downgrade SAMD21 boards to new "Tier 3: May work but unsupported" tier.
 * v0.2 (2021-08-17)
     * Consolidate commonly used `kPatternXxx` constants into `PatternWriter.h`
       instead of being distributed across different classes.

@@ -3,11 +3,11 @@
  */
 
 #include <Arduino.h>
-#include <AceTMI.h> // SimpleTmiInterface
+#include <AceTMI.h> // SimpleTmi1637Interface
 #include <AceSegment.h> // Tm1637Module
 #include <AceSegmentWriter.h> // StringWriter
 
-using ace_tmi::SimpleTmiInterface;
+using ace_tmi::SimpleTmi1637Interface;
 using ace_segment::LedModule;
 using ace_segment::Tm1637Module;
 using ace_segment::CharWriter;
@@ -24,7 +24,7 @@ const uint8_t NUM_DIGITS = 4;
 // 1-5 micros.
 const uint8_t DELAY_MICROS = 100;
 
-using TmiInterface = SimpleTmiInterface;
+using TmiInterface = SimpleTmi1637Interface;
 TmiInterface tmiInterface(DIO_PIN, CLK_PIN, DELAY_MICROS);
 Tm1637Module<TmiInterface, NUM_DIGITS> ledModule(tmiInterface);
 

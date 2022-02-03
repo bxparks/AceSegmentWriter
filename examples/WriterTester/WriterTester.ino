@@ -52,10 +52,10 @@
   #include <digitalWriteFast.h>
   #include <ace_spi/SimpleSpiFastInterface.h>
   #include <ace_spi/HardSpiFastInterface.h>
-  #include <ace_tmi/SimpleTmiFastInterface.h>
+  #include <ace_tmi/SimpleTmi1637FastInterface.h>
   #include <ace_wire/SimpleWireFastInterface.h>
   #include <ace_segment/direct/DirectFast4Module.h>
-  using ace_tmi::SimpleTmiFastInterface;
+  using ace_tmi::SimpleTmi1637FastInterface;
   using ace_spi::HardSpiFastInterface;
   using ace_spi::SimpleSpiFastInterface;
   using ace_wire::SimpleWireFastInterface;
@@ -68,7 +68,7 @@ using ace_button::ButtonConfig;
 using ace_button::LadderButtonConfig;
 using ace_spi::HardSpiInterface;
 using ace_spi::SimpleSpiInterface;
-using ace_tmi::SimpleTmiInterface;
+using ace_tmi::SimpleTmi1637Interface;
 using ace_wire::TwoWireInterface;
 using ace_wire::SimpleWireInterface;
 using ace_segment::LedModule;
@@ -723,10 +723,10 @@ const uint8_t NUM_SUBFIELDS = 1;
 
 #if LED_DISPLAY_TYPE == LED_DISPLAY_TYPE_TM1637
   #if INTERFACE_TYPE == INTERFACE_TYPE_SIMPLE_TMI
-    using TmiInterface = SimpleTmiInterface;
+    using TmiInterface = SimpleTmi1637Interface;
     TmiInterface tmiInterface(DIO_PIN, CLK_PIN, DELAY_MICROS);
   #elif INTERFACE_TYPE == INTERFACE_TYPE_SIMPLE_TMI_FAST
-    using TmiInterface = SimpleTmiFastInterface<DIO_PIN, CLK_PIN, DELAY_MICROS>;
+    using TmiInterface = SimpleTmi1637FastInterface<DIO_PIN, CLK_PIN, DELAY_MICROS>;
     TmiInterface tmiInterface;
   #endif
   Tm1637Module<TmiInterface, NUM_DIGITS> ledModule(tmiInterface);

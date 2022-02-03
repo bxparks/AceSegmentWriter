@@ -17,7 +17,7 @@ the public methods that appear in the `LedModule` class. But `T_LED_MODULE` is
 *not* required to inherit from `LedModule` which preserves the decoupling
 between the AceSegmentWriter and AceSegment libraries.
 
-**Version**: 0.2 (2021-08-17)
+**Version**: 0.3 (2022-02-02)
 
 **Changelog**: [CHANGELOG.md](CHANGELOG.md)
 
@@ -58,17 +58,16 @@ between the AceSegmentWriter and AceSegment libraries.
 <a name="Installation"></a>
 ## Installation
 
-The latest stable release will eventually be available in the Arduino IDE
-Library Manager. Search for "AceSegmentWriter". Click install. (It is not there
-yet.)
+The latest stable release is available in the Arduino IDE Library Manager.
+Search for "AceSegmentWriter". Click install.
 
-The development version can be installed by cloning the
-[GitHub repository](https://github.com/bxparks/AceSegmentWriter), checking out
-the `develop` branch, then manually copying over the contents to the
-`./libraries` directory used by the Arduino IDE. (The result is a directory
-named `./libraries/AceSegmentWriter`.)
+The development version can be installed by cloning the [GitHub
+repository](https://github.com/bxparks/AceSegmentWriter), checking out the
+default `develop` branch, then manually copying over to or symlinking from the
+`./libraries` directory used by the Arduino IDE. (The result is a directory or
+link named `./libraries/AceSegmentWriter`.)
 
-The `master` branch contains the stable release.
+The `master` branch contains the stable releases.
 
 <a name="SourceCode"></a>
 ### Source Code
@@ -370,8 +369,8 @@ PatternWriter<LedModule> patternWriter(ledModule);
 <a name="NumberWriter"></a>
 ### NumberWriter
 
-The `NumberWriter` can print integers to the `T_LED_MODULE` using decimal (0-9) or
-hexadecimal (0-9A-F) formats. On platforms that support it (AVR and ESP8266),
+The `NumberWriter` can print integers to the `T_LED_MODULE` using decimal (0-9)
+or hexadecimal (0-9A-F) formats. On platforms that support it (AVR and ESP8266),
 the bit mapping table is stored in flash memory to conserve static memory.
 
 The public methods of this class looks something like this:
@@ -709,16 +708,16 @@ the flash and static memory consumptions.
 +--------------------------------------------------------------+
 | functionality                   |  flash/  ram |       delta |
 |---------------------------------+--------------+-------------|
-| baseline                        |    458/   11 |     0/    0 |
+| baseline                        |    470/   11 |     0/    0 |
 |---------------------------------+--------------+-------------|
-| PatternWriter                   |    528/   18 |    70/    7 |
-| NumberWriter                    |    578/   18 |   120/    7 |
-| ClockWriter                     |    644/   19 |   186/    8 |
-| TemperatureWriter               |    642/   18 |   184/    7 |
-| CharWriter                      |    690/   21 |   232/   10 |
-| StringWriter                    |    840/   29 |   382/   18 |
-| StringScroller                  |    924/   35 |   466/   24 |
-| LevelWriter                     |    556/   18 |    98/    7 |
+| PatternWriter                   |    548/   18 |    78/    7 |
+| NumberWriter                    |    720/   18 |   250/    7 |
+| ClockWriter                     |    748/   19 |   278/    8 |
+| TemperatureWriter               |    906/   18 |   436/    7 |
+| CharWriter                      |    716/   21 |   246/   10 |
+| StringWriter                    |    838/   23 |   368/   12 |
+| StringScroller                  |    916/   29 |   446/   18 |
+| LevelWriter                     |    634/   18 |   164/    7 |
 +--------------------------------------------------------------+
 ```
 
@@ -728,21 +727,18 @@ the flash and static memory consumptions.
 +--------------------------------------------------------------+
 | functionality                   |  flash/  ram |       delta |
 |---------------------------------+--------------+-------------|
-| baseline                        | 256716/26792 |     0/    0 |
+| baseline                        | 260121/27900 |     0/    0 |
 |---------------------------------+--------------+-------------|
-| PatternWriter                   | 256752/26788 |    36/   -4 |
-| NumberWriter                    | 256992/26788 |   276/   -4 |
-| ClockWriter                     | 257008/26796 |   292/    4 |
-| TemperatureWriter               | 257136/26788 |   420/   -4 |
-| CharWriter                      | 256928/26796 |   212/    4 |
-| StringWriter                    | 257176/26804 |   460/   12 |
-| StringScroller                  | 257096/26812 |   380/   20 |
-| LevelWriter                     | 256832/26788 |   116/   -4 |
+| PatternWriter                   | 260157/27912 |    36/   12 |
+| NumberWriter                    | 260381/27912 |   260/   12 |
+| ClockWriter                     | 260445/27912 |   324/   12 |
+| TemperatureWriter               | 260525/27912 |   404/   12 |
+| CharWriter                      | 260333/27920 |   212/   20 |
+| StringWriter                    | 260517/27920 |   396/   20 |
+| StringScroller                  | 260501/27928 |   380/   28 |
+| LevelWriter                     | 260221/27912 |   100/   12 |
 +--------------------------------------------------------------+
 ```
-
-(The `-4` bytes of static ram is probably an artifact of compiler optimizations
-that were triggered when additional code was added for those benchmarks.)
 
 <a name="SystemRequirements"></a>
 ## System Requirements
@@ -750,26 +746,41 @@ that were triggered when additional code was added for those benchmarks.)
 <a name="Hardware"></a>
 ### Hardware
 
-This library has Tier 1 support on the following boards:
+**Tier 1: Fully Supported**
 
 * Arduino Nano (16 MHz ATmega328P)
 * SparkFun Pro Micro (16 MHz ATmega32U4)
-* SAMD21 M0 Mini (48 MHz ARM Cortex-M0+)
 * STM32 Blue Pill (STM32F103C8, 72 MHz ARM Cortex-M3)
 * NodeMCU 1.0 (ESP-12E module, 80MHz ESP8266)
 * WeMos D1 Mini (ESP-12E module, 80 MHz ESP8266)
 * ESP32 dev board (ESP-WROOM-32 module, 240 MHz dual core Tensilica LX6)
 * Teensy 3.2 (72 MHz ARM Cortex-M4)
 
-Tier 2 support can be expected on the following boards, mostly because I don't
-test these as often:
+**Tier 2: Should work**
+
+These boards should work but I don't test them as often:
 
 * ATtiny85 (8 MHz ATtiny85)
 * Arduino Pro Mini (16 MHz ATmega328P)
 * Teensy LC (48 MHz ARM Cortex-M0+)
 * Mini Mega 2560 (Arduino Mega 2560 compatible, 16 MHz ATmega2560)
 
-The following boards are **not** supported:
+**Tier 3: May work, but not supported**
+
+* SAMD21 M0 Mini (48 MHz ARM Cortex-M0+)
+    * Arduino-branded SAMD21 boards use the ArduinoCore-API, so are explicitly
+      blacklisted. See below.
+    * Other 3rd party SAMD21 boards *may* work using the SparkFun SAMD core.
+    * However, as of SparkFun SAMD Core v1.8.6 and Arduino IDE 1.8.19, I can no
+      longer upload binaries to these 3rd party boards due to errors.
+    * Therefore, third party SAMD21 boards are now in this new Tier 3 category.
+    * This library may work on these boards, but I can no longer support them.
+
+**Tier Blacklisted**
+
+The following boards are *not* supported and are explicitly blacklisted to allow
+the compiler to print useful error messages instead of hundreds of lines of
+compiler errors:
 
 * Any platform using the ArduinoCore-API
   (https://github.com/arduino/ArduinoCore-api).
@@ -778,17 +789,32 @@ The following boards are **not** supported:
 <a name="ToolChain"></a>
 ### Tool Chain
 
-* [Arduino IDE 1.8.13](https://www.arduino.cc/en/Main/Software)
-* [Arduino CLI 0.14.0](https://arduino.github.io/arduino-cli)
+* [Arduino IDE 1.8.19](https://www.arduino.cc/en/Main/Software)
+* [Arduino CLI 0.19.2](https://arduino.github.io/arduino-cli)
 * [SpenceKonde ATTinyCore 1.5.2](https://github.com/SpenceKonde/ATTinyCore)
-* [Arduino AVR Boards 1.8.3](https://github.com/arduino/ArduinoCore-avr)
+* [Arduino AVR Boards 1.8.4](https://github.com/arduino/ArduinoCore-avr)
 * [Arduino SAMD Boards 1.8.9](https://github.com/arduino/ArduinoCore-samd)
 * [SparkFun AVR Boards 1.1.13](https://github.com/sparkfun/Arduino_Boards)
-* [SparkFun SAMD Boards 1.8.3](https://github.com/sparkfun/Arduino_Boards)
-* [STM32duino 2.0.0](https://github.com/stm32duino/Arduino_Core_STM32)
-* [ESP8266 Arduino 2.7.4](https://github.com/esp8266/Arduino)
-* [ESP32 Arduino 1.0.6](https://github.com/espressif/arduino-esp32)
-* [Teensyduino 1.53](https://www.pjrc.com/teensy/td_download.html)
+* [SparkFun SAMD Boards 1.8.6](https://github.com/sparkfun/Arduino_Boards)
+* [STM32duino 2.2.0](https://github.com/stm32duino/Arduino_Core_STM32)
+* [ESP8266 Arduino 3.0.2](https://github.com/esp8266/Arduino)
+* [ESP32 Arduino 2.0.2](https://github.com/espressif/arduino-esp32)
+* [Teensyduino 1.56](https://www.pjrc.com/teensy/td_download.html)
+
+This library is *not* compatible with:
+
+* Any platform using the
+  [ArduinoCore-API](https://github.com/arduino/ArduinoCore-api), for example:
+    * [Arduino megaAVR](https://github.com/arduino/ArduinoCore-megaavr/)
+    * [MegaCoreX](https://github.com/MCUdude/MegaCoreX)
+    * [Arduino SAMD Boards >=1.8.10](https://github.com/arduino/ArduinoCore-samd)
+
+It should work with [PlatformIO](https://platformio.org/) but I have
+not tested it.
+
+The library can be compiled under Linux or MacOS (using both g++ and clang++
+compilers) using the EpoxyDuino (https://github.com/bxparks/EpoxyDuino)
+emulation layer.
 
 <a name="OperatingSystem"></a>
 ### Operating System
@@ -838,14 +864,14 @@ Tracked using [AceSegment Wiki](https://github.com/bxparks/AceSegment/wiki).
 <a name="FeedbackAndSupport"></a>
 ## Feedback and Support
 
-If you have any questions, comments and other support questions about how to
-use this library, use the
-[GitHub Discussions](https://github.com/bxparks/AceSegmentWriter/discussions)
-for this project. If you have bug reports or feature requests, file a ticket in
-[GitHub Issues](https://github.com/bxparks/AceSegmentWriter/issues). I'd love to
-hear about how this software and its documentation can be improved. I can't
-promise that I will incorporate everything, but I will give your ideas serious
-consideration.
+If you have any questions, comments, or feature requests for this library,
+please use the [GitHub
+Discussions](https://github.com/bxparks/AceSegmentWriter/discussions) for this
+project. If you have bug reports, please file a ticket in [GitHub
+Issues](https://github.com/bxparks/AceSegmentWriter/issues). Feature requests
+should go into Discussions first because they often have alternative solutions
+which are useful to remain visible, instead of disappearing from the default
+view of the Issue tracker after the ticket is closed.
 
 Please refrain from emailing me directly unless the content is sensitive. The
 problem with email is that I cannot reference the email conversation when other

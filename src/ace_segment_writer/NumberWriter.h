@@ -107,7 +107,6 @@ class NumberWriter {
      * than 100, then print "  " (2 spaces). Useful for month, day, hour,
      * minute, second.
      *
-     * @param pos LED digit position
      * @param d decimal value to write
      * @param padPattern leading pattern, usually kPatternSpace or kPattern0
      */
@@ -186,7 +185,6 @@ class NumberWriter {
      * Write the 16-bit unsigned number `num` as a decimal number at pos. The
      * lead padding character is always kPatternSpace.
      *
-     * @param pos start position of the number
      * @param num unsigned decimal number, 0-65535
      * @param boxSize size of box. This is meant to be similar to the "%-5d" or
      *    "%5d" specifier to the printf() function. The actual digits may spill

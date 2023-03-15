@@ -1,6 +1,7 @@
 # Changelog
 
 * Unreleased
+* 0.4 (2023-03-15)
     * **Breaking Change**
         * `PatternWriter` is now stateful and holds the current `pos`.
         * `PatternWriter::writePattern()` writes a position, and automatically

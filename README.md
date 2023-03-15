@@ -800,14 +800,14 @@ the flash and static memory consumptions.
 |---------------------------------+--------------+-------------|
 | baseline                        |    470/   11 |     0/    0 |
 |---------------------------------+--------------+-------------|
-| PatternWriter                   |    548/   18 |    78/    7 |
-| NumberWriter                    |    720/   18 |   250/    7 |
-| ClockWriter                     |    748/   19 |   278/    8 |
-| TemperatureWriter               |    906/   18 |   436/    7 |
-| CharWriter                      |    716/   21 |   246/   10 |
-| StringWriter                    |    838/   23 |   368/   12 |
-| StringScroller                  |    916/   29 |   446/   18 |
-| LevelWriter                     |    634/   18 |   164/    7 |
+| PatternWriter                   |    574/   19 |   104/    8 |
+| NumberWriter                    |    758/   21 |   288/   10 |
+| ClockWriter                     |    834/   24 |   364/   13 |
+| TemperatureWriter               |    954/   23 |   484/   12 |
+| CharWriter                      |    768/   24 |   298/   13 |
+| StringWriter                    |    876/   26 |   406/   15 |
+| StringScroller                  |    980/   32 |   510/   21 |
+| LevelWriter                     |    678/   21 |   208/   10 |
 +--------------------------------------------------------------+
 ```
 
@@ -819,14 +819,14 @@ the flash and static memory consumptions.
 |---------------------------------+--------------+-------------|
 | baseline                        | 260121/27900 |     0/    0 |
 |---------------------------------+--------------+-------------|
-| PatternWriter                   | 260157/27912 |    36/   12 |
-| NumberWriter                    | 260381/27912 |   260/   12 |
-| ClockWriter                     | 260445/27912 |   324/   12 |
-| TemperatureWriter               | 260525/27912 |   404/   12 |
-| CharWriter                      | 260333/27920 |   212/   20 |
-| StringWriter                    | 260517/27920 |   396/   20 |
-| StringScroller                  | 260501/27928 |   380/   28 |
-| LevelWriter                     | 260221/27912 |   100/   12 |
+| PatternWriter                   | 260173/27912 |    52/   12 |
+| NumberWriter                    | 260397/27920 |   276/   20 |
+| ClockWriter                     | 260477/27928 |   356/   28 |
+| TemperatureWriter               | 260541/27920 |   420/   20 |
+| CharWriter                      | 260365/27928 |   244/   28 |
+| StringWriter                    | 260501/27928 |   380/   28 |
+| StringScroller                  | 260533/27936 |   412/   36 |
+| LevelWriter                     | 260253/27920 |   132/   20 |
 +--------------------------------------------------------------+
 ```
 

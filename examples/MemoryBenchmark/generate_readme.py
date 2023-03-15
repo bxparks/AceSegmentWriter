@@ -38,7 +38,7 @@ by the runtime environment of the processor. For example, it often seems like
 the ESP8266 allocates flash memory in blocks of a certain quantity, so the
 calculated flash size can jump around in unexpected ways.
 
-**Version**: AceSegmentWriter 0.3
+**Version**: AceSegmentWriter 0.4
 
 **DO NOT EDIT**: This file was auto-generated using `make README.md`.
 
@@ -101,7 +101,7 @@ program for various Writer classes.
 ### ATtiny85
 
 * 8MHz ATtiny85
-* Arduino IDE 1.8.19, Arduino CLI 0.19.2
+* Arduino IDE 1.8.19, Arduino CLI 0.31.0
 * SpenceKonde/ATTinyCore 1.5.2
 
 ```
@@ -111,8 +111,8 @@ program for various Writer classes.
 ### Arduino Nano
 
 * 16MHz ATmega328P
-* Arduino IDE 1.8.19, Arduino CLI 0.19.2
-* Arduino AVR Boards 1.8.4
+* Arduino IDE 1.8.19, Arduino CLI 0.31.0
+* Arduino AVR Boards 1.8.5
 
 ```
 {nano_results}
@@ -121,7 +121,7 @@ program for various Writer classes.
 ### Sparkfun Pro Micro
 
 * 16 MHz ATmega32U4
-* Arduino IDE 1.8.19, Arduino CLI 0.19.2
+* Arduino IDE 1.8.19, Arduino CLI 0.31.0
 * SparkFun AVR Boards 1.1.13
 
 ```
@@ -131,8 +131,8 @@ program for various Writer classes.
 ### STM32 Blue Pill
 
 * STM32F103C8, 72 MHz ARM Cortex-M3
-* Arduino IDE 1.8.19, Arduino CLI 0.19.2
-* STM32duino 2.2.0
+* Arduino IDE 1.8.19, Arduino CLI 0.31.0
+* STM32duino 2.4.0
 
 ```
 {stm32_results}
@@ -141,7 +141,7 @@ program for various Writer classes.
 ### ESP8266
 
 * NodeMCU 1.0, 80MHz ESP8266
-* Arduino IDE 1.8.19, Arduino CLI 0.19.2
+* Arduino IDE 1.8.19, Arduino CLI 0.31.0
 * ESP8266 Boards 3.0.2
 
 ```
@@ -151,8 +151,8 @@ program for various Writer classes.
 ### ESP32
 
 * ESP32-01 Dev Board, 240 MHz Tensilica LX6
-* Arduino IDE 1.8.19, Arduino CLI 0.19.2
-* ESP32 Boards 2.0.2
+* Arduino IDE 1.8.19, Arduino CLI 0.31.0
+* ESP32 Boards 2.0.7
 
 ```
 {esp32_results}
@@ -161,8 +161,8 @@ program for various Writer classes.
 ### Teensy 3.2
 
 * 96 MHz ARM Cortex-M4
-* Arduino IDE 1.8.19, Arduino CLI 0.19.2
-* Teensyduino 1.56
+* Arduino IDE 1.8.19, Arduino CLI 0.31.0
+* Teensyduino 1.57
 * Compiler options: "Faster"
 
 ```

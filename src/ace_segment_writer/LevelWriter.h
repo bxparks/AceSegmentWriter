@@ -63,14 +63,14 @@ class LevelWriter {
      * maxLevel] inclusive.
      */
     uint8_t getMaxLevel() const {
-      return mPatternWriter.getNumDigits() * 2;
+      return mPatternWriter.size() * 2;
     }
 
     /** Write out the level bar, 2 levels per digit. */
     void writeLevel(uint8_t level) {
       uint8_t fullDigits = level / 2;
       uint8_t partialDigit = level & 0x1;
-      uint8_t numDigits = mPatternWriter.getNumDigits();
+      uint8_t numDigits = mPatternWriter.size();
 
       mPatternWriter.home();
       for (;;) {

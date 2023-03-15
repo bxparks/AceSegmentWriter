@@ -120,7 +120,7 @@ class PatternWriter {
     T_LED_MODULE& ledModule() const { return mLedModule; }
 
     /** Return the number of digits supported by this display instance. */
-    uint8_t getNumDigits() const { return mLedModule.getNumDigits(); }
+    uint8_t size() const { return mLedModule.size(); }
 
     /** Set the cursor to the beginning. */
     void home() { mPos = 0; }
@@ -129,14 +129,14 @@ class PatternWriter {
 
     /** Write pattern at the current cursor. */
     void writePattern(uint8_t pattern) {
-      if (mPos >= mLedModule.getNumDigits()) return;
+      if (mPos >= mLedModule.size()) return;
       mLedModule.setPatternAt(mPos, pattern);
       mPos++;
     }
 
     void writePatterns(const uint8_t patterns[], uint8_t len) {
       for (uint8_t i = 0; i < len; i++) {
-        if (mPos >= mLedModule.getNumDigits()) break;
+        if (mPos >= mLedModule.size()) break;
         mLedModule.setPatternAt(mPos, patterns[i]);
         mPos++;
       }
@@ -144,7 +144,7 @@ class PatternWriter {
 
     void writePatterns_P(const uint8_t patterns[], uint8_t len) {
       for (uint8_t i = 0; i < len; i++) {
-        if (mPos >= mLedModule.getNumDigits()) break;
+        if (mPos >= mLedModule.size()) break;
         uint8_t pattern = pgm_read_byte(patterns + i);
         mLedModule.setPatternAt(mPos, pattern);
         mPos++;
@@ -164,7 +164,7 @@ class PatternWriter {
 
     /** Clear the display from `pos` to the end. */
     void clearToEnd() {
-      for (uint8_t i = mPos; i < mLedModule.getNumDigits(); ++i) {
+      for (uint8_t i = mPos; i < mLedModule.size(); ++i) {
         mLedModule.setPatternAt(i, 0);
       }
       home();

@@ -108,7 +108,7 @@ class StringWriter {
      */
     template <typename T>
     uint8_t writeStringInternal(T s, uint8_t numChar) {
-      const uint8_t numDigits = mCharWriter.getNumDigits();
+      const uint8_t numDigits = mCharWriter.size();
       bool charWasWritten = false;
       uint8_t numWritten = 0;
 

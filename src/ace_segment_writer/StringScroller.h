@@ -59,14 +59,14 @@ class StringScroller {
     CharWriter<T_LED_MODULE>& charWriter() { return mCharWriter; }
 
     /** Return the number of digits supported by this display instance. */
-    uint8_t getNumDigits() const { return mCharWriter.getNumDigits(); }
+    uint8_t size() const { return mCharWriter.size(); }
 
     /** Set scroll string, clear the display, and prepare to scroll left. */
     void initScrollLeft(const char* s) {
       mString = s;
       mIsFlashString = false;
       mStringLength = strlen(s);
-      mStringPos = -getNumDigits(); // start with clear display
+      mStringPos = -size(); // start with clear display
       mCharWriter.clear();
     }
 
@@ -75,7 +75,7 @@ class StringScroller {
       mString = fs;
       mIsFlashString = true;
       mStringLength = strlen_P((const char*) fs);
-      mStringPos = -getNumDigits(); // start with clear display
+      mStringPos = -size(); // start with clear display
       mCharWriter.clear();
     }
 
@@ -115,7 +115,7 @@ class StringScroller {
      * display is cleared
      */
     bool scrollRight() {
-      uint8_t numDigits = getNumDigits();
+      uint8_t numDigits = size();
       bool isDone = (mStringPos <= -numDigits);
       if (! isDone) {
         mStringPos--;
@@ -130,7 +130,7 @@ class StringScroller {
     StringScroller& operator=(const StringScroller&) = delete;
 
     void writeString() {
-      uint8_t numDigits = getNumDigits();
+      uint8_t numDigits = size();
       int16_t stringPos = mStringPos;
       mCharWriter.home();
       for (uint8_t i = 0; i < numDigits; i++) {

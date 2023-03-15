@@ -82,7 +82,7 @@ class CharWriter {
     PatternWriter<T_LED_MODULE>& patternWriter() { return mPatternWriter; }
 
     /** Return the number of digits supported by this display instance. */
-    uint8_t getNumDigits() const { return mPatternWriter.getNumDigits(); }
+    uint8_t size() const { return mPatternWriter.size(); }
 
     /** Get number of characters in current character set. */
     uint8_t getNumChars() const { return mNumChars; }

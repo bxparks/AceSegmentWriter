@@ -72,8 +72,8 @@ template <typename T_LED_MODULE>
 class NumberWriter {
   public:
     /** Constructor. */
-    explicit NumberWriter(T_LED_MODULE& ledModule) :
-        mPatternWriter(ledModule)
+    explicit NumberWriter(PatternWriter<T_LED_MODULE>& patternWriter) :
+        mPatternWriter(patternWriter)
     {}
 
     /** Get the underlying LedModule. */
@@ -99,20 +99,6 @@ class NumberWriter {
       for (uint8_t i = 0; i < len; ++i) {
         writeDigit(s[i]);
       }
-    }
-
-    /**
-     * Write a 2-digit BCD number at position, which involves just printing the
-     * number as a hexadecimal number. For example, 0x12 is printed as "12", but
-     * 0x1A is printed as "1 ".
-     */
-    void writeBcd(uint8_t bcd) {
-      uint8_t high = (bcd & 0xF0) >> 4;
-      uint8_t low = (bcd & 0x0F);
-      if (high > 9) high = kDigitSpace;
-      if (low > 9) low = kDigitSpace;
-      writeDigit(high);
-      writeDigit(low);
     }
 
     /**
@@ -164,6 +150,20 @@ class NumberWriter {
           writeDec2(low, kPattern0);
         }
       }
+    }
+
+    /**
+     * Write a 2-digit BCD number at position, which involves just printing the
+     * number as a hexadecimal number. For example, 0x12 is printed as "12", but
+     * 0x1A is printed as "1 ".
+     */
+    void writeBcd(uint8_t bcd) {
+      uint8_t high = (bcd & 0xF0) >> 4;
+      uint8_t low = (bcd & 0x0F);
+      if (high > 9) high = kDigitSpace;
+      if (low > 9) low = kDigitSpace;
+      writeDigit(high);
+      writeDigit(low);
     }
 
     /** Write the 2-digit (8-bit) hexadecimal byte 'b' at pos. */
@@ -319,7 +319,7 @@ class NumberWriter {
     }
 
   private:
-    PatternWriter<T_LED_MODULE> mPatternWriter;
+    PatternWriter<T_LED_MODULE> &mPatternWriter;
 };
 
 }

@@ -48,8 +48,8 @@ template <typename T_LED_MODULE>
 class LevelWriter {
   public:
     /** Constructor. */
-    explicit LevelWriter(T_LED_MODULE& ledModule) :
-        mPatternWriter(ledModule)
+    explicit LevelWriter(PatternWriter<T_LED_MODULE>& patternWriter) :
+        mPatternWriter(patternWriter)
     {}
 
     /** Get the underlying LedModule. */
@@ -90,7 +90,7 @@ class LevelWriter {
     LevelWriter& operator=(const LevelWriter&) = delete;
 
   private:
-    PatternWriter<T_LED_MODULE> mPatternWriter;
+    PatternWriter<T_LED_MODULE>& mPatternWriter;
 };
 
 }

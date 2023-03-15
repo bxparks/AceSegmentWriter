@@ -44,10 +44,10 @@ class TemperatureWriter {
     /**
      * Constructor.
      *
-     * @param ledModule instance of LedModule
+     * @param numberWriter instance of NumberWriter<T_LED_MODULE>
      */
-    explicit TemperatureWriter(T_LED_MODULE& ledModule) :
-        mNumberWriter(ledModule)
+    explicit TemperatureWriter(NumberWriter<T_LED_MODULE>& numberWriter) :
+        mNumberWriter(numberWriter)
     {}
 
     /** Get the underlying LedModule. */
@@ -57,6 +57,9 @@ class TemperatureWriter {
     PatternWriter<T_LED_MODULE>& patternWriter() {
       return mNumberWriter.patternWriter();
     }
+
+    /** Get the underlying NumberWriter. */
+    NumberWriter<T_LED_MODULE>& numberWriter() { return mNumberWriter; }
 
     /** Reset cursor to home. */
     void home() { mNumberWriter.home(); }
@@ -118,7 +121,7 @@ class TemperatureWriter {
     TemperatureWriter(const TemperatureWriter&) = delete;
     TemperatureWriter& operator=(const TemperatureWriter&) = delete;
 
-    NumberWriter<T_LED_MODULE> mNumberWriter;
+    NumberWriter<T_LED_MODULE>& mNumberWriter;
 };
 
 } // ace_segment

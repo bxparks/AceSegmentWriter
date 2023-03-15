@@ -41,17 +41,17 @@ class ClockWriter {
     /**
      * Constructor.
      *
-     * @param ledModule instance of T_LED_MODULE
+     * @param numberWriter instance of NumberWriter<T_LED_MODULE>
      * @param colonDigit The digit which has the colon (":") character,
      *    mapped to bit 7 (i.e. 'H' segment). In many 4-digit LED clock
      *    display modules, this is digit 1 (counting from the left, 0-based,
      *    so the second digit from the left).
      */
     explicit ClockWriter(
-        T_LED_MODULE& ledModule,
+        NumberWriter<T_LED_MODULE>& numberWriter,
         uint8_t colonDigit = 1
     ) :
-        mNumberWriter(ledModule),
+        mNumberWriter(numberWriter),
         mColonDigit(colonDigit)
     {}
 
@@ -111,7 +111,7 @@ class ClockWriter {
     ClockWriter(const ClockWriter&) = delete;
     ClockWriter& operator=(const ClockWriter&) = delete;
 
-    NumberWriter<T_LED_MODULE> mNumberWriter;
+    NumberWriter<T_LED_MODULE>& mNumberWriter;
     uint8_t const mColonDigit;
 };
 

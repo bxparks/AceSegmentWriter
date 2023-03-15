@@ -10,6 +10,8 @@
 using ace_tmi::SimpleTmi1637Interface;
 using ace_segment::LedModule;
 using ace_segment::Tm1637Module;
+using ace_segment::PatternWriter;
+using ace_segment::NumberWriter;
 using ace_segment::ClockWriter;
 
 // Replace these with the PIN numbers of your dev board.
@@ -26,8 +28,9 @@ const uint8_t DELAY_MICROS = 100;
 using TmiInterface = SimpleTmi1637Interface;
 TmiInterface tmiInterface(DIO_PIN, CLK_PIN, DELAY_MICROS);
 Tm1637Module<TmiInterface, NUM_DIGITS> ledModule(tmiInterface);
-
-ClockWriter<LedModule> clockWriter(ledModule);
+PatternWriter<LedModule> patternWriter(ledModule);
+NumberWriter<LedModule> numberWriter(patternWriter);
+ClockWriter<LedModule> clockWriter(numberWriter);
 
 void setup() {
   delay(1000);

@@ -10,6 +10,7 @@
 using ace_tmi::SimpleTmi1637Interface;
 using ace_segment::LedModule;
 using ace_segment::Tm1637Module;
+using ace_segment::PatternWriter;
 using ace_segment::LevelWriter;
 
 // Replace these with the PIN numbers of your dev board.
@@ -26,8 +27,8 @@ const uint8_t DELAY_MICROS = 100;
 using TmiInterface = SimpleTmi1637Interface;
 TmiInterface tmiInterface(DIO_PIN, CLK_PIN, DELAY_MICROS);
 Tm1637Module<TmiInterface, NUM_DIGITS> ledModule(tmiInterface);
-
-LevelWriter<LedModule> levelWriter(ledModule);
+PatternWriter<LedModule> patternWriter(ledModule);
+LevelWriter<LedModule> levelWriter(patternWriter);
 
 void setup() {
   delay(1000);

@@ -88,7 +88,7 @@ class StringWriter {
     void clear() { mCharWriter.clear(); }
 
     /** Clear the display from `pos` to the end. */
-    void clearToEnd(uint8_t pos) { mCharWriter.clearToEnd(pos); }
+    void clearToEnd() { mCharWriter.clearToEnd(); }
 
   private:
     // disable copy-constructor and assignment operator

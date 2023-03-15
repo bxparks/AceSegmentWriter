@@ -125,7 +125,11 @@ class PatternWriter {
     /** Set the cursor to the beginning. */
     void home() { mPos = 0; }
 
+    /** Return the current cursor position. */
     uint8_t pos() const { return mPos; }
+
+    /** Set the current cursor position. */
+    void pos(uint8_t pos) { mPos = pos; }
 
     /** Write pattern at the current cursor. */
     void writePattern(uint8_t pattern) {
@@ -134,6 +138,7 @@ class PatternWriter {
       mPos++;
     }
 
+    /** Write the array `patterns[]` of length `len` to the led module. */
     void writePatterns(const uint8_t patterns[], uint8_t len) {
       for (uint8_t i = 0; i < len; i++) {
         if (mPos >= mLedModule.size()) break;
@@ -142,6 +147,10 @@ class PatternWriter {
       }
     }
 
+    /**
+     * Write the array `patterns[]` of length `len` to the led module.
+     * The `patterns[]` is stored in PROGMEM flash memory.
+     */
     void writePatterns_P(const uint8_t patterns[], uint8_t len) {
       for (uint8_t i = 0; i < len; i++) {
         if (mPos >= mLedModule.size()) break;

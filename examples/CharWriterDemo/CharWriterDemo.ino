@@ -10,6 +10,7 @@
 using ace_tmi::SimpleTmi1637Interface;
 using ace_segment::LedModule;
 using ace_segment::Tm1637Module;
+using ace_segment::PatternWriter;
 using ace_segment::CharWriter;
 
 // Replace these with the PIN numbers of your dev board.
@@ -26,8 +27,8 @@ const uint8_t DELAY_MICROS = 100;
 using TmiInterface = SimpleTmi1637Interface;
 TmiInterface tmiInterface(DIO_PIN, CLK_PIN, DELAY_MICROS);
 Tm1637Module<TmiInterface, NUM_DIGITS> ledModule(tmiInterface);
-
-CharWriter<LedModule> charWriter(ledModule);
+PatternWriter<LedModule> patternWriter(ledModule);
+CharWriter<LedModule> charWriter(patternWriter);
 
 void setup() {
   delay(1000);
@@ -36,10 +37,10 @@ void setup() {
   ledModule.begin();
 
   // Character 'k' is ASCII 0x4B. Write "4B-k" to the LED module.
-  charWriter.writeCharAt(0, '4');
-  charWriter.writeCharAt(1, 'B');
-  charWriter.writeCharAt(2, '-');
-  charWriter.writeCharAt(3, 'k');
+  charWriter.writeChar('4');
+  charWriter.writeChar('B');
+  charWriter.writeChar('-');
+  charWriter.writeChar('k');
 
   ledModule.setBrightness(2);
 

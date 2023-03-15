@@ -22,11 +22,39 @@ const uint8_t NUM_DIGITS = 4;
 // TestableModule allocates 1 more byte than NUM_DIGITS to test buffer overflow.
 TestableLedModule<NUM_DIGITS> ledModule;
 
-NumberWriter<LedModule> numberWriter(ledModule);
-ClockWriter<LedModule> clockWriter(ledModule);
-TemperatureWriter<LedModule> temperatureWriter(ledModule);
-CharWriter<LedModule> charWriter(ledModule);
+PatternWriter<LedModule> patternWriter(ledModule);
+NumberWriter<LedModule> numberWriter(patternWriter);
+ClockWriter<LedModule> clockWriter(numberWriter);
+TemperatureWriter<LedModule> temperatureWriter(numberWriter);
+CharWriter<LedModule> charWriter(patternWriter);
 StringWriter<LedModule> stringWriter(charWriter);
+
+// ----------------------------------------------------------------------
+// Tests for PatternWriter.
+// ----------------------------------------------------------------------
+
+class PatternWriterTest : public TestOnce {
+  protected:
+    void setup() override {
+      patternWriter.clear();
+      mPatterns = ledModule.getPatterns();
+    }
+
+    uint8_t* mPatterns;
+};
+
+testF(PatternWriterTest, writePattern) {
+  patternWriter.writePattern(kPattern0);
+  assertEqual(kPattern0, mPatterns[0]);
+}
+
+testF(PatternWriterTest, pos) {
+  assertEqual(0, patternWriter.pos());
+  patternWriter.pos(2);
+  assertEqual(2, patternWriter.pos());
+  patternWriter.writePattern(kPattern0);
+  assertEqual(kPattern0, mPatterns[2]);
+}
 
 // ----------------------------------------------------------------------
 // Tests for CharWriter.
@@ -42,7 +70,7 @@ class CharWriterTest : public TestOnce {
     uint8_t* mPatterns;
 };
 
-testF(CharWriterTest, writeAt) {
+testF(CharWriterTest, writeChar) {
   charWriter.writeChar('0');
   assertEqual(kPattern0, mPatterns[0]);
   charWriter.writeChar('1');
@@ -415,6 +443,10 @@ void setup() {
 
   Serial.begin(115200); // ESP8266 default of 74880 not supported on Linux
   while (!Serial); // Wait until Serial is ready - Leonardo/Micro
+
+#if defined(EPOXY_DUINO)
+  Serial.setLineModeUnix();
+#endif
 }
 
 void loop() {

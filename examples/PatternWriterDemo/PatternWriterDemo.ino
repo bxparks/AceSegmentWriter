@@ -28,7 +28,6 @@ const uint8_t DELAY_MICROS = 100;
 using TmiInterface = SimpleTmi1637Interface;
 TmiInterface tmiInterface(DIO_PIN, CLK_PIN, DELAY_MICROS);
 Tm1637Module<TmiInterface, NUM_DIGITS> ledModule(tmiInterface);
-
 PatternWriter<LedModule> patternWriter(ledModule);
 
 // LED segment patterns.
@@ -54,11 +53,11 @@ void setup() {
 
   // Write "01.2" on the LED module. On clock LED modules, the decimal point
   // will be rendered as a colon so the output will look like "01:2"
-  patternWriter.writePatternAt(0, PATTERNS[0]);
-  patternWriter.writePatternAt(1, PATTERNS[1]);
-  patternWriter.writePatternAt(2, PATTERNS[2]);
-  patternWriter.writeDecimalPointAt(1);
-  patternWriter.clearToEnd(3);
+  patternWriter.writePattern(PATTERNS[0]);
+  patternWriter.writePattern(PATTERNS[1]);
+  patternWriter.writePattern(PATTERNS[2]);
+  patternWriter.setDecimalPointAt(1);
+  patternWriter.clearToEnd();
 
   ledModule.setBrightness(2);
 

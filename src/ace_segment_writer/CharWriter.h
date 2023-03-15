@@ -59,18 +59,19 @@ class CharWriter {
   public:
     /**
      * Constructor.
-     * @param ledModule reference to LedModule
-     * @param charPatterns (optional) array of 7-segment character patterns in
-     *    PROGMEM (default: an ASCII character set)
+     * @param patternWriter reference to PatternWriter<T_LED_MODULE>
+     * @param charPatterns (optional) the font, consisting of an array of
+     *    7-segment character patterns in PROGMEM flash memory (default: a
+     *    pre-defined font of 128 characters in the ASCII character set)
      * @param numChars (optional) number of characters in charPatterns,
      *    (default: 128)
      */
     explicit CharWriter(
-        T_LED_MODULE& ledModule,
+        PatternWriter<T_LED_MODULE>& patternWriter,
         const uint8_t charPatterns[] = kCharPatterns,
         uint8_t numChars = kNumCharPatterns
     ) :
-        mPatternWriter(ledModule),
+        mPatternWriter(patternWriter),
         mCharPatterns(charPatterns),
         mNumChars(numChars)
     {}
@@ -120,7 +121,7 @@ class CharWriter {
     CharWriter& operator=(const CharWriter&) = delete;
 
   private:
-    PatternWriter<T_LED_MODULE> mPatternWriter;
+    PatternWriter<T_LED_MODULE>& mPatternWriter;
     const uint8_t* const mCharPatterns;
     uint8_t const mNumChars;
 };

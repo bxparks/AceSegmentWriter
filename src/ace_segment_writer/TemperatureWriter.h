@@ -44,10 +44,10 @@ class TemperatureWriter {
     /**
      * Constructor.
      *
-     * @param ledModule instance of LedModule
+     * @param numberWriter instance of NumberWriter<T_LED_MODULE>
      */
-    explicit TemperatureWriter(T_LED_MODULE& ledModule) :
-        mNumberWriter(ledModule)
+    explicit TemperatureWriter(NumberWriter<T_LED_MODULE>& numberWriter) :
+        mNumberWriter(numberWriter)
     {}
 
     /** Get the underlying LedModule. */
@@ -58,11 +58,17 @@ class TemperatureWriter {
       return mNumberWriter.patternWriter();
     }
 
+    /** Get the underlying NumberWriter. */
+    NumberWriter<T_LED_MODULE>& numberWriter() { return mNumberWriter; }
+
+    /** Reset cursor to home. */
+    void home() { mNumberWriter.home(); }
+
     /**
      * Write signed integer temperature without deg or unit within the boxSize.
      */
-    uint8_t writeTempAt(uint8_t pos, int16_t temp, int8_t boxSize = 0) {
-      return mNumberWriter.writeSignedDecimalAt(pos, temp, boxSize);
+    uint8_t writeTemp(int16_t temp, int8_t boxSize = 0) {
+      return mNumberWriter.writeSignedDecimal(temp, boxSize);
     }
 
     /**
@@ -75,50 +81,47 @@ class TemperatureWriter {
      *
      * @return number of digits written, including any '-' or space characters
      */
-    uint8_t writeTempDegAt(uint8_t pos, int16_t temp, int8_t boxSize = 0) {
-      uint8_t written = mNumberWriter.writeSignedDecimalAt(pos, temp,
-          boxSize >= 1 ? boxSize - 1 : 0);
-      pos += written;
-      patternWriter().writePatternAt(pos++, kPatternDeg);
+    uint8_t writeTempDeg(int16_t temp, int8_t boxSize = 0) {
+      uint8_t written = mNumberWriter.writeSignedDecimal(
+          temp, boxSize >= 1 ? boxSize - 1 : 0);
+      patternWriter().writePattern(kPatternDeg);
       return written + 1;
     }
 
     /**
      * Write integer temperature with degree symbol and 'C' symbol.
      */
-    uint8_t writeTempDegCAt(uint8_t pos, int16_t temp, int8_t boxSize = 0) {
-      uint8_t written = mNumberWriter.writeSignedDecimalAt(pos, temp,
-          boxSize >= 2 ? boxSize - 2 : 0);
-      pos += written;
-      patternWriter().writePatternAt(pos++, kPatternDeg);
-      patternWriter().writePatternAt(pos++, kPatternC);
+    uint8_t writeTempDegC(int16_t temp, int8_t boxSize = 0) {
+      uint8_t written = mNumberWriter.writeSignedDecimal(
+          temp, boxSize >= 2 ? boxSize - 2 : 0);
+      patternWriter().writePattern(kPatternDeg);
+      patternWriter().writePattern(kPatternC);
       return written + 2;
     }
 
     /**
      * Write integer temperature with degree symbol and 'F' symbol.
      */
-    uint8_t writeTempDegFAt(uint8_t pos, int16_t temp, int8_t boxSize = 0) {
-      uint8_t written = mNumberWriter.writeSignedDecimalAt(pos, temp,
-          boxSize >= 2 ? boxSize - 2 : 0);
-      pos += written;
-      patternWriter().writePatternAt(pos++, kPatternDeg);
-      patternWriter().writePatternAt(pos++, kPatternF);
+    uint8_t writeTempDegF(int16_t temp, int8_t boxSize = 0) {
+      uint8_t written = mNumberWriter.writeSignedDecimal(
+          temp, boxSize >= 2 ? boxSize - 2 : 0);
+      patternWriter().writePattern(kPatternDeg);
+      patternWriter().writePattern(kPatternF);
       return written + 2;
     }
 
     /** Clear the entire display. */
-    void clear() { mNumberWriter.clearToEnd(0); }
+    void clear() { mNumberWriter.clear(); }
 
     /** Clear the display from `pos` to the end. */
-    void clearToEnd(uint8_t pos) { mNumberWriter.clearToEnd(pos); }
+    void clearToEnd() { mNumberWriter.clearToEnd(); }
 
   private:
     // disable copy-constructor and assignment operator
     TemperatureWriter(const TemperatureWriter&) = delete;
     TemperatureWriter& operator=(const TemperatureWriter&) = delete;
 
-    NumberWriter<T_LED_MODULE> mNumberWriter;
+    NumberWriter<T_LED_MODULE>& mNumberWriter;
 };
 
 } // ace_segment

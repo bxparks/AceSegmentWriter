@@ -10,6 +10,7 @@
 using ace_tmi::SimpleTmi1637Interface;
 using ace_segment::LedModule;
 using ace_segment::Tm1637Module;
+using ace_segment::PatternWriter;
 using ace_segment::CharWriter;
 using ace_segment::StringScroller;
 
@@ -27,8 +28,8 @@ const uint8_t DELAY_MICROS = 100;
 using TmiInterface = SimpleTmi1637Interface;
 TmiInterface tmiInterface(DIO_PIN, CLK_PIN, DELAY_MICROS);
 Tm1637Module<TmiInterface, NUM_DIGITS> ledModule(tmiInterface);
-
-CharWriter<LedModule> charWriter(ledModule);
+PatternWriter<LedModule> patternWriter(ledModule);
+CharWriter<LedModule> charWriter(patternWriter);
 StringScroller<LedModule> stringScroller(charWriter);
 
 static const char SCROLL_STRING[] PROGMEM =

@@ -59,18 +59,19 @@ class CharWriter {
   public:
     /**
      * Constructor.
-     * @param ledModule reference to LedModule
-     * @param charPatterns (optional) array of 7-segment character patterns in
-     *    PROGMEM (default: an ASCII character set)
+     * @param patternWriter reference to PatternWriter<T_LED_MODULE>
+     * @param charPatterns (optional) the font, consisting of an array of
+     *    7-segment character patterns in PROGMEM flash memory (default: a
+     *    pre-defined font of 128 characters in the ASCII character set)
      * @param numChars (optional) number of characters in charPatterns,
      *    (default: 128)
      */
     explicit CharWriter(
-        T_LED_MODULE& ledModule,
+        PatternWriter<T_LED_MODULE>& patternWriter,
         const uint8_t charPatterns[] = kCharPatterns,
         uint8_t numChars = kNumCharPatterns
     ) :
-        mPatternWriter(ledModule),
+        mPatternWriter(patternWriter),
         mCharPatterns(charPatterns),
         mNumChars(numChars)
     {}
@@ -82,15 +83,17 @@ class CharWriter {
     PatternWriter<T_LED_MODULE>& patternWriter() { return mPatternWriter; }
 
     /** Return the number of digits supported by this display instance. */
-    uint8_t getNumDigits() const { return mPatternWriter.getNumDigits(); }
+    uint8_t size() const { return mPatternWriter.size(); }
 
     /** Get number of characters in current character set. */
     uint8_t getNumChars() const { return mNumChars; }
 
+    /** Set the cursor to the beginning. */
+    void home() { mPatternWriter.home(); }
+
     /** Write the character at the specified position. */
-    void writeCharAt(uint8_t pos, char c) {
-      if (pos >= mPatternWriter.getNumDigits()) return;
-      mPatternWriter.writePatternAt(pos, getPattern(c));
+    void writeChar(char c) {
+      mPatternWriter.writePattern(getPattern(c));
     }
 
     /** Get segment pattern for character 'c'. */
@@ -102,15 +105,15 @@ class CharWriter {
     }
 
     /** Write the decimal point for the pos. */
-    void writeDecimalPointAt(uint8_t pos, bool state = true) {
-      mPatternWriter.writeDecimalPointAt(pos, state);
+    void setDecimalPointAt(uint8_t pos, bool state = true) {
+      mPatternWriter.setDecimalPointAt(pos, state);
     }
 
     /** Clear the entire display. */
-    void clear() { clearToEnd(0); }
+    void clear() { mPatternWriter.clear(); }
 
     /** Clear the display from `pos` to the end. */
-    void clearToEnd(uint8_t pos) { mPatternWriter.clearToEnd(pos); }
+    void clearToEnd() { mPatternWriter.clearToEnd(); }
 
   private:
     // disable copy-constructor and assignment operator
@@ -118,7 +121,7 @@ class CharWriter {
     CharWriter& operator=(const CharWriter&) = delete;
 
   private:
-    PatternWriter<T_LED_MODULE> mPatternWriter;
+    PatternWriter<T_LED_MODULE>& mPatternWriter;
     const uint8_t* const mCharPatterns;
     uint8_t const mNumChars;
 };

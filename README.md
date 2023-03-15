@@ -163,8 +163,7 @@ Here are the classes and types in the library:
 * `NumberWriter`
     * A class that writes integers in decimal or hexadecimal format to the
       `T_LED_MODULE`.
-    * A few additional characters are supported: `kHexCharSpace`,
-      `kHexCharMinus`
+    * A few additional characters are supported: `kDigitSpace`, `kDigitMinus`
 * `ClockWriter`
     * A class that writes a clock string "hh:mm" to `T_LED_MODULE`.
     * Builds on top of `NumberWriter`.
@@ -192,16 +191,15 @@ Here are the classes and types in the library:
 The conceptual dependency diagram among these classes looks something like this:
 
 ```
-             StringScroller
-             StringWriter
-                   |
-                   V
-PatternWriter  CharWriter NumberWriter ClockWriter TemperatureWriter LevelWriter
-         \          \           |     /                /                /
-          -------    -------    |    / ----------------       ----------
-                 \          \   |   / /                      /
-                  ---------\ \  |  / / /---------------------
-                            v v v v v v
+StringScroller StringWriter  ClockWriter TemperatureWriter
+            \       /             \      /
+             v     v               v    v
+             CharWriter        NumberWriter      LevelWriter
+                      \             |             /
+                       v            v            v
+                       PatternWriter<T_LED_MODULE>
+                                |
+                                v
                            T_LED_MODULE
                                 |
                                 | (depends on AceSegment if
@@ -214,9 +212,6 @@ PatternWriter  CharWriter NumberWriter ClockWriter TemperatureWriter LevelWriter
                     AceWire  AceTMI   AceSPI
                     Library  Library  Library
 ```
-
-(The actual dependency among various classes is a bit more complicated than this
-diagram.)
 
 <a name="DigitAndSegmentAddressing"></a>
 ### Digit and Segment Addressing
@@ -306,7 +301,7 @@ provides the following features on top of `T_LED_MODULE`:
   valid, then the method returns immediately without performing any action.
 * Entire strings (both normal strings and `PROGMEM` strings) can be written
   to the led module.
-* The `writeDecimalPointAt()` convenience function adds a decimal point at the
+* The `setDecimalPointAt()` convenience function adds a decimal point at the
   specified `pos` location.
 * The `clear()` and `clearToEnd()` functions provide ways to clear the LED
   display.
@@ -343,24 +338,28 @@ class PatternWriter {
     explicit PatternWriter(T_LED_MODULE& ledModule);
 
     T_LED_MODULE& ledModule() const;
-    uint8_t getNumDigits() const;
 
-    void writePatternAt(uint8_t pos, uint8_t pattern);
-    void writePatternsAt(uint8_t pos, const uint8_t patterns[], uint8_t len);
-    void writePatternsAt_P(uint8_t pos, const uint8_t patterns[], uint8_t len);
-    void writeDecimalPointAt(uint8_t pos, bool state = true);
+    uint8_t size() const;
+    void home();
+    uint8_t pos() const;
+    void pos(uint8_t pos);
+
+    void writePattern(uint8_t pattern);
+    void writePatterns(const uint8_t patterns[], uint8_t len);
+    void writePatterns_P(const uint8_t patterns[], uint8_t len);
+    void setDecimalPointAt(uint8_t pos, bool state = true);
 
     void clear();
-    void clearToEnd(uint8_t pos);
+    void clearToEnd();
 };
 
 }
 ```
 
 The decimal point is stored as bit 7 (the most significant bit) of the `uint8_t`
-byte for a given digit. This bit is cleared by the other `writePatternAt()` or
-`writePatternsAt()` functions. So the `writeDecimalPointAt()` should be called
-**after** the other write methods are called.
+byte for a given digit. This bit is cleared by the other `writePattern()` or
+`writePatterns()` functions. So the `setDecimalPointAt()` method should be
+called **after** the other write methods are called.
 
 ```C++
 PatternWriter<LedModule> patternWriter(ledModule);
@@ -378,36 +377,38 @@ The public methods of this class looks something like this:
 ```C++
 namespace ace_segment {
 
-const uint8_t kNumHexCharPatterns = 18;
-extern const uint8_t kHexCharPatterns[kNumHexCharPatterns];
+const uint8_t kNumDigitPatterns = 18;
+extern const uint8_t kDigitPatterns[kNumDigitPatterns];
 
-typedef uint8_t hexchar_t;
-const hexchar_t kHexCharSpace = 0x10;
-const hexchar_t kHexCharMinus = 0x11;
+typedef uint8_t digit_t;
+const digit_t kDigitSpace = 0x10;
+const digit_t kDigitMinus = 0x11;
 
 template <typename T_LED_MODULE>
 class NumberWriter {
   public:
-    explicit NumberWriter(T_LED_MODULE& ledModule);
+    explicit NumberWriter(PatternWriter<T_LED_MODULE>& ledModule);
 
     T_LED_MODULE& ledModule();
     PatternWriter<T_LED_MODULE>& patternWriter();
 
-    void writeHexCharAt(uint8_t pos, hexchar_t c);
-    void writeHexChars2At(uint8_t pos, hexchar_t c, hexchar_t d);
-    void writeHexCharsAt(uint8_t pos, hexchar_t [], uint8_t len);
+    uint8_t size() const;
+    void home();
 
-    void writeBcd2At(uint8_t pos, uint8_t bcd);
-    void writeDec2At(uint8_t pos, uint8_t d, uint8_t padPattern = kPattern0);
-    void writeDec4At(uint8_t pos, uint16_t dd, uint8_t padPattern = kPattern0);
+    void writeDigit(digit_t c);
+    void writeDigits(digit_t s[], uint8_t len);
 
-    void writeHexByteAt(uint8_t pos, uint8_t b);
-    void writeHexWordAt(uint8_t pos, uint16_t w);
+    void writeDec2(uint8_t d, uint8_t padPattern = kPattern0);
+    void writeDec4(uint16_t dd, uint8_t padPattern = kPattern0);
 
-    void writeUnsignedDecimalAt(uint8_t pos, uint16_t num, int8_t boxSize = 0);
-    void writeSignedDecimalAt(uint8_t pos, int16_t num, int8_t boxSize = 0);
+    void writeBcd(uint8_t bcd);
+    void writeHexByte(uint8_t b);
+    void writeHexWord(uint16_t w);
 
-    void writeDecimalPointAt(uint8_t pos, bool state = true);
+    void writeUnsignedDecimal(uint16_t num, int8_t boxSize = 0);
+    void writeSignedDecimal(int16_t num, int8_t boxSize = 0);
+
+    void setDecimalPointAt(uint8_t pos, bool state = true);
 
     void clear();
     void clearToEnd(uint8_t pos);
@@ -416,14 +417,14 @@ class NumberWriter {
 }
 ```
 
-The `hexchar_t` type semantically represents the character set supported by this
+The `digit_t` type semantically represents the character set supported by this
 class. It is implemented as an alias for `uint8_t`, which unfortunately means
 that the C++ compiler will not warn about mixing this type with another
 `uint8_t`. The range of this character set is from `[0,15]` plus 2 additional
 symbols, so `[0,17]`:
 
-* `ace_segment::kHexCharSpace`
-* `ace_segment::kHexCharMinus`
+* `ace_segment::kDigitSpace`
+* `ace_segment::kDigitMinus`
 
 ![NumberWriter](docs/writers/number_writer_hex.jpg)
 
@@ -444,18 +445,23 @@ namespace ace_segment {
 template <typename T_LED_MODULE>
 class ClockWriter {
   public:
-    explicit ClockWriter(T_LED_MODULE& ledModule, uint8_t colonDigit = 1);
+    explicit ClockWriter(
+        NumberWriter<T_LED_MODULE>& numberWriter,
+        uint8_t colonDigit = 1);
 
     T_LED_MODULE& ledModule();
     PatternWriter<T_LED_MODULE>& patternWriter();
     NumberWriter<T_LED_MODULE>& numberWriter();
+
+    uint8_t size() const;
+    void home();
 
     void writeHourMinute24(uint8_t hh, uint8_t mm);
     void writeHourMinute12(uint8_t hh, uint8_t mm);
     void writeColon(bool state = true);
 
     void clear();
-    void clearToEnd(uint8_t pos);
+    void clearToEnd(
 };
 
 }
@@ -466,7 +472,7 @@ You can write the letters `A` and `P` using the underlying `patternWriter()`:
 ```C++
 uint8_t pos = ...;
 ClockWriter<LedModule> clockWriter(...);
-clockWriter.patternWriter().writePatternAt(pos, ace_segment::kPatternA);
+clockWriter.patternWriter().writePattern(ace_segment::kPatternA);
 ```
 
 ![ClockWriter](docs/writers/clock_writer.jpg)
@@ -487,18 +493,22 @@ const uint8_t kPatternF = 0b01110001;
 template <typename T_LED_MODULE>
 class TemperatureWriter {
   public:
-    explicit TemperatureWriter(T_LED_MODULE& ledModule);
+    explicit TemperatureWriter(NumberWriter<T_LED_MODULE>& numberWriter);
 
     T_LED_MODULE& ledModule();
     PatternWriter<T_LED_MODULE>& patternWriter();
+    NumberWriter<T_LED_MODULE>& numberWriter();
 
-    uint8_t writeTempAt(uint8_t pos, int16_t temp, boxSize = 0);
-    uint8_t writeTempDegAt(uint8_t pos, int16_t temp, boxSize = 0);
-    uint8_t writeTempDegCAt(uint8_t pos, int16_t temp, boxSize = 0);
-    uint8_t writeTempDegFAt(uint8_t pos, int16_t temp, boxSize = 0);
+    uint8_t size() const;
+    void home();
+
+    uint8_t writeTemp(int16_t temp, boxSize = 0);
+    uint8_t writeTempDeg(int16_t temp, boxSize = 0);
+    uint8_t writeTempDegC(int16_t temp, boxSize = 0);
+    uint8_t writeTempDegF(int16_t temp, boxSize = 0);
 
     void clear();
-    void clearToEnd(uint8_t pos);
+    void clearToEnd();
 };
 
 }
@@ -533,7 +543,7 @@ template <typename T_LED_MODULE>
 class CharWriter {
   public:
     explicit CharWriter(
-        T_LED_MODULE& ledModule,
+        PatternWriter<T_LED_MODULE>& patternWriter,
         const uint8_t charPatterns[] = kCharPatterns,
         uint8_t numChars = kNumChars
     );
@@ -541,14 +551,17 @@ class CharWriter {
     T_LED_MODULE& ledModule();
     PatternWriter<T_LED_MODULE>& patternWriter();
 
-    uint8_t getNumDigits() const;
     uint8_t getNumChars() const;
     uint8_t getPattern(char c) const;
 
-    void writeCharAt(uint8_t pos, char c);
+    uint8_t size() const;
+    void home();
+
+    void writeChar(uint8_t pos, char c);
+    void setDecimalPointAt(uint8_t pos, bool state = true);
 
     void clear();
-    void clearToEnd(uint8_t pos);
+    void clearToEnd();
 };
 
 }
@@ -572,17 +585,18 @@ class StringWriter {
     PatternWriter<T_LED_MODULE>& patternWriter();
     CharWriter<T_LED_MODULE>& charWriter();
 
-    uint8_t writeStringAt(uint8_t pos, const char* cs, uint8_t numChar = 255);
+    uint8_t size() const;
+    void home();
 
-    uint8_t writeStringAt(uint8_t pos, const __FlashStringHelper* fs,
-        uint8_t numChar = 255);
+    uint8_t writeString(const char* cs, uint8_t numChar = 255);
+    uint8_t writeString(const __FlashStringHelper* fs, uint8_t numChar = 255);
 
     void clear();
-    void clearToEnd(uint8_t pos);
+    void clearToEnd();
 };
 ```
 
-The implementation of `writeStringAt()` is straightforward except for the
+The implementation of `writeString()` is straightforward except for the
 handling of a decimal point. A seven segment LED digit contains a small LED for
 the decimal point. Instead of taking up an entire digit for a single '.'
 character, we can collapse the '.' character into the decimal point indicator of
@@ -593,7 +607,7 @@ to write. The default value is 255 which is expected to be larger than the
 largest LED module that will be used with the AceSegment and AceSegmentWriter
 libraries, so the default value will print the entire string.
 
-The actual number of LED digits written is returned by `writeStringAt()`. For
+The actual number of LED digits written is returned by `writeString()`. For
 example, writing `"1.2"` returns 2 because the decimal point was merged into the
 previous digit and only 2 digits are written.
 
@@ -607,8 +621,8 @@ after the end of the string:
 CharWriter<LedModule> charWriter(ledModule);
 StringWriter<LedModule> stringWriter(charWriter);
 
-uint8_t written = stringWriter.writeStringAt(0, s);
-stringWriter.clearToEnd(written);
+stringWriter.writeString(s);
+stringWriter.clearToEnd();
 ```
 
 ![StringWriter](docs/writers/string_writer.jpg)
@@ -628,7 +642,7 @@ const uint8_t kPatternLevelRight = 0b00000110;
 template <typename T_LED_MODULE>
 class LevelWriter {
   public:
-    explicit LevelWriter(T_LED_MODULE& ledModule);
+    explicit LevelWriter(PatternWriter<T_LED_MODULE>& patternWriter);
 
     T_LED_MODULE& ledModule();
     PatternWriter<T_LED_MODULE>& patternWriter();
@@ -663,6 +677,8 @@ class StringScroller {
     T_LED_MODULE& ledModule();
     PatternWriter<T_LED_MODULE>& patternWriter();
     CharWriter<T_LED_MODULE>& charWriter();
+
+    uint8_t size() const;
 
     void initScrollLeft(const char* s);
     void initScrollLeft(const __FlashStringHelper* s);

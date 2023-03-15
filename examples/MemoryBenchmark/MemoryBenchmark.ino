@@ -42,9 +42,7 @@ class StubModule {
   public:
     StubModule() {}
 
-    uint8_t getNumDigits() const { return NUM_DIGITS; }
-
-    uint8_t size() const { return getNumDigits(); }
+    uint8_t size() const { return NUM_DIGITS; }
 
     void setPatternAt(uint8_t pos, uint8_t pattern) {
       mPatterns[pos] = pattern;

@@ -282,11 +282,12 @@ should look like this:
 ```C++
 class LedModule {
   public:
-    uint8_t getNumDigits() const;
+    uint8_t size() const;
     void setPatternAt(uint8_t pos, uint8_t pattern);
     uint8_t getPatternAt(uint8_t pos) const;
     void setBrightness(uint8_t brightness);
     void getBrightness() const;
+    void setDecimalPointAt(uint8_t pos, bool state = true);
 };
 ```
 
@@ -305,8 +306,15 @@ provides the following features on top of `T_LED_MODULE`:
   specified `pos` location.
 * The `clear()` and `clearToEnd()` functions provide ways to clear the LED
   display.
+* A stateful cursor that remembers its current `pos` digit in the `LedModule`.
 
-The public methods of the class look like this:
+All other `XxxWriter` classes are built on top of this class. If multiple
+writers are used in an application (which happens often because each Writer is
+responsible for writing different things), the application should make sure that
+only a single instance of `PatternWriter` is created. Otherwise, the "current"
+position may become confusing.
+
+The public methods and constants of the class look like this:
 
 ```C++
 namespace ace_segment {
@@ -356,10 +364,25 @@ class PatternWriter {
 }
 ```
 
+The `writePattern()` function writes the given `pattern` at the current `pos`.
+The `pos` is automatically incremented by one.
+
+The `pos()` function sets or gets the current position.
+
+The `home()` function sets the current position to 0.
+
+The `clear()` function clears all the digits of the `ledModule`. The
+`clearToEnd()` clears only the digits from the current position to the end. In
+both cases, the `home()` function is automatically called to set the position to
+0.
+
 The decimal point is stored as bit 7 (the most significant bit) of the `uint8_t`
 byte for a given digit. This bit is cleared by the other `writePattern()` or
 `writePatterns()` functions. So the `setDecimalPointAt()` method should be
 called **after** the other write methods are called.
+
+Here is how to create an instance of `PatternWriter` from an instance of
+`LedModule`:
 
 ```C++
 PatternWriter<LedModule> patternWriter(ledModule);
@@ -426,6 +449,13 @@ symbols, so `[0,17]`:
 * `ace_segment::kDigitSpace`
 * `ace_segment::kDigitMinus`
 
+An instance of `NumberWriter` is created like this:
+
+```C++
+PatternWriter<LedModule> patternWriter(ledModule);
+NumberWriter<LedModule> numberWriter(patternWriter);
+```
+
 ![NumberWriter](docs/writers/number_writer_hex.jpg)
 
 ![NumberWriter](docs/writers/number_writer_decimal.jpg)
@@ -467,11 +497,17 @@ class ClockWriter {
 }
 ```
 
-You can write the letters `A` and `P` using the underlying `patternWriter()`:
+An instance of `ClockWriter` is created like this:
 
 ```C++
-uint8_t pos = ...;
-ClockWriter<LedModule> clockWriter(...);
+PatternWriter<LedModule> patternWriter(ledModule);
+NumberWriter<LedModule> numberWriter(patternWriter);
+ClockWriter<LedModule> clockWriter(numberWriter);
+```
+
+You can write the letters `A` and `P` using the underlying `patternWriter()`:
+
+```
 clockWriter.patternWriter().writePattern(ace_segment::kPatternA);
 ```
 
@@ -512,6 +548,14 @@ class TemperatureWriter {
 };
 
 }
+```
+
+An instance of `TemperatureWriter` is created like this:
+
+```C++
+PatternWriter<LedModule> patternWriter(ledModule);
+NumberWriter<LedModule> numberWriter(patternWriter);
+TemperatureWriter<LedModule> temperatureWriter(numberWriter);
 ```
 
 ![TemperatureWriter-Celsius](docs/writers/temperature_writer_celsius.jpg)
@@ -567,6 +611,16 @@ class CharWriter {
 }
 ```
 
+An instance of `CharWriter` is created like this:
+
+```C++
+PatternWriter<LedModule> patternWriter(ledModule);
+CharWriter<LedModule> charWriter(patternWriter);
+```
+
+You can use a custom font by providing an array of segment bit patterns
+`patterns[]` in the constructor of `CharWriter`.
+
 ![CharWriter](docs/writers/char_writer.jpg)
 
 <a name="StringWriter"></a>
@@ -611,16 +665,21 @@ The actual number of LED digits written is returned by `writeString()`. For
 example, writing `"1.2"` returns 2 because the decimal point was merged into the
 previous digit and only 2 digits are written.
 
-The `clearToEnd()` method clears the LED display from the given `pos` to the end
-of the display.
+The `clearToEnd()` method clears the LED display from the current `pos` to the
+end of the display.
 
-The following sequence of calls will write the given string and clear all digits
-after the end of the string:
+An instance of `StringWriter` is created like this:
 
 ```C++
-CharWriter<LedModule> charWriter(ledModule);
+PatternWriter<LedModule> patternWriter(ledModule);
+CharWriter<LedModule> charWriter(patternWriter);
 StringWriter<LedModule> stringWriter(charWriter);
+```
 
+The following will write the given string and clear all digits after the end of
+the string:
+
+```
 stringWriter.writeString(s);
 stringWriter.clearToEnd();
 ```
@@ -652,6 +711,13 @@ class LevelWriter {
 };
 
 }
+```
+
+An instance of `LevelWriter` is created like this:
+
+```C++
+PatternWriter<LedModule> patternWriter(ledModule);
+LevelWriter<LedModule> levelWriter(patternWriter);
 ```
 
 There are 2 vertical bars available per per digit. So the maximum level
@@ -690,6 +756,14 @@ class StringScroller {
 };
 
 }
+```
+
+An instance of `StringScroller` is built from its underlying classes like this:
+
+```C++
+PatternWriter<LedModule> patternWriter(ledModule);
+CharWriter<LedModule> charWriter(patternWriter);
+StringScroller<LedModule> stringScroller(charWriter);
 ```
 
 To scroll a string to the left, initialize the string using `initScrollLeft()`,

@@ -66,14 +66,17 @@ class ClockWriter {
     /** Get the underlying NumberWriter. */
     NumberWriter<T_LED_MODULE>& numberWriter() { return mNumberWriter; }
 
+    /** Reset cursor to home. */
+    void home() { mNumberWriter.home(); }
+
     /**
      * Write the hour and minute in 24-hour format (i.e. leading 0), and the
      * colon in one-shot, assuming the LED module is a 4-digit clock module.
      * This is a convenience function.
      */
     void writeHourMinute24(uint8_t hh, uint8_t mm) {
-      mNumberWriter.writeDec2At(0, hh);
-      mNumberWriter.writeDec2At(2, mm);
+      mNumberWriter.writeDec2(hh);
+      mNumberWriter.writeDec2(mm);
       writeColon();
     }
 
@@ -83,8 +86,8 @@ class ClockWriter {
      * This is a convenience function.
      */
     void writeHourMinute12(uint8_t hh, uint8_t mm) {
-      mNumberWriter.writeDec2At(0, hh, kPatternSpace);
-      mNumberWriter.writeDec2At(2, mm);
+      mNumberWriter.writeDec2(hh, kPatternSpace);
+      mNumberWriter.writeDec2(mm);
       writeColon();
     }
 
@@ -94,14 +97,14 @@ class ClockWriter {
      * @param state Set to false to turn off the colon.
      */
     void writeColon(bool state = true) {
-      mNumberWriter.writeDecimalPointAt(mColonDigit, state);
+      mNumberWriter.setDecimalPointAt(mColonDigit, state);
     }
 
     /** Clear the entire display. */
     void clear() { mNumberWriter.clear(); }
 
     /** Clear the display from `pos` to the end. */
-    void clearToEnd(uint8_t pos) { mNumberWriter.clearToEnd(pos); }
+    void clearToEnd() { mNumberWriter.clearToEnd(); }
 
   private:
     // disable copy-constructor and assignment operator

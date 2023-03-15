@@ -111,7 +111,10 @@ class PatternWriter {
      * Constructor.
      * @param ledModule an instance of LedModule or one of its subclasses
      */
-    explicit PatternWriter(T_LED_MODULE& ledModule) : mLedModule(ledModule) {}
+    explicit PatternWriter(T_LED_MODULE& ledModule)
+        : mLedModule(ledModule),
+          mPos(0)
+    {}
 
     /** Return the underlying LedModule. */
     T_LED_MODULE& ledModule() const { return mLedModule; }
@@ -119,44 +122,32 @@ class PatternWriter {
     /** Return the number of digits supported by this display instance. */
     uint8_t getNumDigits() const { return mLedModule.getNumDigits(); }
 
-    /**
-     * Write the pattern for a given pos. If the pos is out of bounds, the
-     * method does nothing.
-     */
-    void writePatternAt(uint8_t pos, uint8_t pattern) {
-      if (pos >= mLedModule.getNumDigits()) return;
-      mLedModule.setPatternAt(pos, pattern);
+    /** Set the cursor to the beginning. */
+    void home() { mPos = 0; }
+
+    uint8_t pos() const { return mPos; }
+
+    /** Write pattern at the current cursor. */
+    void writePattern(uint8_t pattern) {
+      if (mPos >= mLedModule.getNumDigits()) return;
+      mLedModule.setPatternAt(mPos, pattern);
+      mPos++;
     }
 
-    /**
-     * Write the array of `patterns` of length `len`, starting at `pos`. If an
-     * element of patterns attempts to write to a digit beyond the last digit of
-     * the LED module, nothing happens.
-     *
-     * The default implementation calls writePatternAt(), which should be
-     * sufficient in most cases. Subclasses can override if needed.
-     */
-    void writePatternsAt(uint8_t pos, const uint8_t patterns[], uint8_t len) {
+    void writePatterns(const uint8_t patterns[], uint8_t len) {
       for (uint8_t i = 0; i < len; i++) {
-        if (pos >= mLedModule.getNumDigits()) break;
-        mLedModule.setPatternAt(pos++, patterns[i]);
+        if (mPos >= mLedModule.getNumDigits()) break;
+        mLedModule.setPatternAt(mPos, patterns[i]);
+        mPos++;
       }
     }
 
-    /**
-     * Write the array of `patterns` of length `len`, which are stored in flash
-     * memory through PROGMEM, starting at `pos`. If an element of patterns
-     * attempts to write to a digit beyond the last digit of the LED module,
-     * nothing happens.
-     *
-     * The default implementation calls writePatternAt(), which should be
-     * sufficient in most cases. Subclasses can override if needed.
-     */
-    void writePatternsAt_P(uint8_t pos, const uint8_t patterns[], uint8_t len) {
+    void writePatterns_P(const uint8_t patterns[], uint8_t len) {
       for (uint8_t i = 0; i < len; i++) {
-        if (pos >= mLedModule.getNumDigits()) break;
+        if (mPos >= mLedModule.getNumDigits()) break;
         uint8_t pattern = pgm_read_byte(patterns + i);
-        mLedModule.setPatternAt(pos++, pattern);
+        mLedModule.setPatternAt(mPos, pattern);
+        mPos++;
       }
     }
 
@@ -164,25 +155,19 @@ class PatternWriter {
      * Write the decimal point for the pos. Clock LED modules will attach the
      * colon segment to one of the decimal points.
      */
-    void writeDecimalPointAt(uint8_t pos, bool state = true) {
-      if (pos >= mLedModule.getNumDigits()) return;
-      uint8_t pattern = mLedModule.getPatternAt(pos);
-      if (state) {
-        pattern |= 0x80;
-      } else {
-        pattern &= ~0x80;
-      }
-      mLedModule.setPatternAt(pos, pattern);
+    void setDecimalPointAt(uint8_t pos, bool state = true) {
+      mLedModule.setDecimalPointAt(pos, state);
     }
 
     /** Clear the entire display. */
-    void clear() { clearToEnd(0); }
+    void clear() { home(); clearToEnd(); }
 
     /** Clear the display from `pos` to the end. */
-    void clearToEnd(uint8_t pos) {
-      for (uint8_t i = pos; i < mLedModule.getNumDigits(); ++i) {
+    void clearToEnd() {
+      for (uint8_t i = mPos; i < mLedModule.getNumDigits(); ++i) {
         mLedModule.setPatternAt(i, 0);
       }
+      home();
     }
 
   private:
@@ -192,6 +177,7 @@ class PatternWriter {
 
   private:
     T_LED_MODULE& mLedModule;
+    uint8_t mPos;
 };
 
 } // ace_segment

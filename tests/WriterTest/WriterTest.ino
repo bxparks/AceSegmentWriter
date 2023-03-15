@@ -21,6 +21,7 @@ const uint8_t NUM_DIGITS = 4;
 
 // TestableModule allocates 1 more byte than NUM_DIGITS to test buffer overflow.
 TestableLedModule<NUM_DIGITS> ledModule;
+
 NumberWriter<LedModule> numberWriter(ledModule);
 ClockWriter<LedModule> clockWriter(ledModule);
 TemperatureWriter<LedModule> temperatureWriter(ledModule);
@@ -42,14 +43,18 @@ class CharWriterTest : public TestOnce {
 };
 
 testF(CharWriterTest, writeAt) {
-  charWriter.writeCharAt(0, '0');
+  charWriter.writeChar('0');
   assertEqual(kPattern0, mPatterns[0]);
-}
+  charWriter.writeChar('1');
+  assertEqual(kPattern1, mPatterns[1]);
+  charWriter.writeChar('2');
+  assertEqual(kPattern2, mPatterns[2]);
+  charWriter.writeChar('3');
+  assertEqual(kPattern3, mPatterns[3]);
 
-testF(CharWriterTest, writeAt_outOfBounds) {
+  // This should not write to mPatterns[4]
   mPatterns[4] = 0;
-
-  charWriter.writeCharAt(4, 'a');
+  charWriter.writeChar('a');
   assertEqual(0, mPatterns[4]);
 }
 
@@ -77,8 +82,8 @@ class StringWriterTest : public TestOnce {
     uint8_t* mPatterns;
 };
 
-testF(StringWriterTest, writeStringAt) {
-  stringWriter.writeStringAt(0, ".1.2.3");
+testF(StringWriterTest, writeString) {
+  stringWriter.writeString(".1.2.3");
 
   // Should be (".", "1.", "2.", "3") as the 4 digits
   assertPatternsEqual(
@@ -104,175 +109,172 @@ class NumberWriterTest : public TestOnce {
     uint8_t* mPatterns;
 };
 
-testF(NumberWriterTest, writeHexCharAt) {
-  numberWriter.writeHexCharAt(0, 0);
+testF(NumberWriterTest, writeDigit) {
+  numberWriter.writeDigit(0);
   assertEqual(kPattern0, mPatterns[0]);
 
-  numberWriter.writeHexCharAt(1, 0);
-  numberWriter.writeDecimalPointAt(1);
+  numberWriter.writeDigit(0);
+  numberWriter.setDecimalPointAt(1);
   assertEqual(kPattern0 | 0x80, mPatterns[1]);
 
-  numberWriter.writeDecimalPointAt(1, false);
+  numberWriter.setDecimalPointAt(1, false);
   assertEqual(kPattern0, mPatterns[1]);
 }
 
-testF(NumberWriterTest, writeHexCharAt_invalid_char_becomes_space) {
-  numberWriter.writeHexCharAt(0, 255);
+testF(NumberWriterTest, writeDigit_invalid_char_becomes_space) {
+  numberWriter.writeDigit(255);
   assertEqual(kPatternSpace, mPatterns[0]);
 }
 
-testF(NumberWriterTest, writeHexCharAt_outOfBounds_writes_nothing) {
+testF(NumberWriterTest, writeDigit_outOfBounds_writes_nothing) {
   mPatterns[4] = 0;  // TestableLedModule allocates an extra byte to test this
 
-  numberWriter.writeHexCharAt(4, kHexCharMinus);
-  numberWriter.writeDecimalPointAt(4);
+  numberWriter.writeDigit(kDigitMinus);
+  numberWriter.setDecimalPointAt(4);
   assertEqual(0, mPatterns[4]);
 }
 
-testF(NumberWriterTest, writeHexChars2At) {
-  numberWriter.writeHexChars2At(0, 3, 4);
-
-  assertEqual(kPattern3, mPatterns[0]);
-  assertEqual(kPattern4, mPatterns[1]);
-}
-
-testF(NumberWriterTest, writeHexChars2At_invalid_char_becomes_space) {
-  numberWriter.writeHexChars2At(0, 3, 255);
-
-  assertEqual(kPattern3, mPatterns[0]);
-  assertEqual(kPatternSpace, mPatterns[1]);
-}
-
-testF(NumberWriterTest, writeHexCharsAt) {
-  const hexchar_t CHARS[] = {2, 3};
-  numberWriter.writeHexCharsAt(0, CHARS, 2);
+testF(NumberWriterTest, writeDigits) {
+  const digit_t CHARS[] = {2, 3};
+  numberWriter.writeDigits(CHARS, 2);
 
   assertEqual(kPattern2, mPatterns[0]);
   assertEqual(kPattern3, mPatterns[1]);
 }
 
-testF(NumberWriterTest, writeBcd2At) {
-  numberWriter.writeBcd2At(0, 0x12);
+testF(NumberWriterTest, writeBcd) {
+  numberWriter.writeBcd(0x12);
   assertEqual(kPattern1, mPatterns[0]);
   assertEqual(kPattern2, mPatterns[1]);
 
-  numberWriter.writeBcd2At(2, 0x34);
+  numberWriter.writeBcd(0x34);
   assertEqual(kPattern3, mPatterns[2]);
   assertEqual(kPattern4, mPatterns[3]);
 }
 
-testF(NumberWriterTest, writeDec2At_pad_zero) {
-  numberWriter.writeDec2At(0, 1);
+testF(NumberWriterTest, writeDec2_pad_zero) {
+  numberWriter.writeDec2(1);
   assertEqual(kPattern0, mPatterns[0]);
   assertEqual(kPattern1, mPatterns[1]);
 
-  numberWriter.writeDec2At(0, 12);
-  assertEqual(kPattern1, mPatterns[0]);
-  assertEqual(kPattern2, mPatterns[1]);
+  numberWriter.writeDec2(12);
+  assertEqual(kPattern1, mPatterns[2]);
+  assertEqual(kPattern2, mPatterns[3]);
 
   // Number is too big, so 2 spaces are written.
-  numberWriter.writeDec2At(0, 123, kPatternSpace);
+  numberWriter.clear();
+  numberWriter.writeDec2(123, kPatternSpace);
   assertEqual(kPatternSpace, mPatterns[0]);
   assertEqual(kPatternSpace, mPatterns[1]);
 }
 
-testF(NumberWriterTest, writeDec2At_pad_space) {
-  numberWriter.writeDec2At(0, 1, kPatternSpace);
+testF(NumberWriterTest, writeDec2_pad_space) {
+  numberWriter.writeDec2(1, kPatternSpace);
   assertEqual(kPatternSpace, mPatterns[0]);
   assertEqual(kPattern1, mPatterns[1]);
 
-  numberWriter.writeDec2At(0, 12, kPatternSpace);
+  numberWriter.clear();
+  numberWriter.writeDec2(12, kPatternSpace);
   assertEqual(kPattern1, mPatterns[0]);
   assertEqual(kPattern2, mPatterns[1]);
 
   // Number is too big, so 2 spaces are written.
-  numberWriter.writeDec2At(0, 123, kPatternSpace);
+  numberWriter.clear();
+  numberWriter.writeDec2(123, kPatternSpace);
   assertEqual(kPatternSpace, mPatterns[0]);
   assertEqual(kPatternSpace, mPatterns[1]);
 }
 
-testF(NumberWriterTest, writeDec4At_pad_zero) {
-  numberWriter.writeDec4At(0, 1);
+testF(NumberWriterTest, writeDec4_pad_zero) {
+  numberWriter.writeDec4(1);
   assertEqual(kPattern0, mPatterns[0]);
   assertEqual(kPattern0, mPatterns[1]);
   assertEqual(kPattern0, mPatterns[2]);
   assertEqual(kPattern1, mPatterns[3]);
 
-  numberWriter.writeDec4At(0, 12);
+  numberWriter.clear();
+  numberWriter.writeDec4(12);
   assertEqual(kPattern0, mPatterns[0]);
   assertEqual(kPattern0, mPatterns[1]);
   assertEqual(kPattern1, mPatterns[2]);
   assertEqual(kPattern2, mPatterns[3]);
 
-  numberWriter.writeDec4At(0, 123);
+  numberWriter.clear();
+  numberWriter.writeDec4(123);
   assertEqual(kPattern0, mPatterns[0]);
   assertEqual(kPattern1, mPatterns[1]);
   assertEqual(kPattern2, mPatterns[2]);
   assertEqual(kPattern3, mPatterns[3]);
 
-  numberWriter.writeDec4At(0, 1234);
+  numberWriter.clear();
+  numberWriter.writeDec4(1234);
   assertEqual(kPattern1, mPatterns[0]);
   assertEqual(kPattern2, mPatterns[1]);
   assertEqual(kPattern3, mPatterns[2]);
   assertEqual(kPattern4, mPatterns[3]);
 
   // Number is too big, so 4 spaces are written.
-  numberWriter.writeDec4At(0, 12345);
+  numberWriter.clear();
+  numberWriter.writeDec4(12345);
   assertEqual(kPatternSpace, mPatterns[0]);
   assertEqual(kPatternSpace, mPatterns[1]);
   assertEqual(kPatternSpace, mPatterns[2]);
   assertEqual(kPatternSpace, mPatterns[3]);
 }
 
-testF(NumberWriterTest, writeDec4At_pad_space) {
-  numberWriter.writeDec4At(0, 1, kPatternSpace);
+testF(NumberWriterTest, writeDec4_pad_space) {
+  numberWriter.writeDec4(1, kPatternSpace);
   assertEqual(kPatternSpace, mPatterns[0]);
   assertEqual(kPatternSpace, mPatterns[1]);
   assertEqual(kPatternSpace, mPatterns[2]);
   assertEqual(kPattern1, mPatterns[3]);
 
-  numberWriter.writeDec4At(0, 12, kPatternSpace);
+  numberWriter.clear();
+  numberWriter.writeDec4(12, kPatternSpace);
   assertEqual(kPatternSpace, mPatterns[0]);
   assertEqual(kPatternSpace, mPatterns[1]);
   assertEqual(kPattern1, mPatterns[2]);
   assertEqual(kPattern2, mPatterns[3]);
 
-  numberWriter.writeDec4At(0, 123, kPatternSpace);
+  numberWriter.clear();
+  numberWriter.writeDec4(123, kPatternSpace);
   assertEqual(kPatternSpace, mPatterns[0]);
   assertEqual(kPattern1, mPatterns[1]);
   assertEqual(kPattern2, mPatterns[2]);
   assertEqual(kPattern3, mPatterns[3]);
 
-  numberWriter.writeDec4At(0, 1234, kPatternSpace);
+  numberWriter.clear();
+  numberWriter.writeDec4(1234, kPatternSpace);
   assertEqual(kPattern1, mPatterns[0]);
   assertEqual(kPattern2, mPatterns[1]);
   assertEqual(kPattern3, mPatterns[2]);
   assertEqual(kPattern4, mPatterns[3]);
 
   // Number is too big, so 4 spaces are written.
-  numberWriter.writeDec4At(0, 12345);
+  numberWriter.clear();
+  numberWriter.writeDec4(12345);
   assertEqual(kPatternSpace, mPatterns[0]);
   assertEqual(kPatternSpace, mPatterns[1]);
   assertEqual(kPatternSpace, mPatterns[2]);
   assertEqual(kPatternSpace, mPatterns[3]);
 }
 
-testF(NumberWriterTest, writeHexByteAt) {
-  numberWriter.writeHexByteAt(0, 0x1F);
+testF(NumberWriterTest, writeHexByte) {
+  numberWriter.writeHexByte(0x1F);
   assertEqual(kPattern1, mPatterns[0]);
   assertEqual(kPatternF, mPatterns[1]);
 }
 
-testF(NumberWriterTest, writeHexWordAt) {
-  numberWriter.writeHexWordAt(0, 0x12AB);
+testF(NumberWriterTest, writeHexWord) {
+  numberWriter.writeHexWord(0x12AB);
   assertEqual(kPattern1, mPatterns[0]);
   assertEqual(kPattern2, mPatterns[1]);
   assertEqual(kPatternA, mPatterns[2]);
   assertEqual(kPatternB, mPatterns[3]);
 }
 
-testF(NumberWriterTest, writeUnsignedDecimalAt) {
-  uint8_t written = numberWriter.writeUnsignedDecimalAt(0, 123);
+testF(NumberWriterTest, writeUnsignedDecimal) {
+  uint8_t written = numberWriter.writeUnsignedDecimal(123);
   assertEqual(3, written);
   assertEqual(kPattern1, mPatterns[0]);
   assertEqual(kPattern2, mPatterns[1]);
@@ -281,24 +283,24 @@ testF(NumberWriterTest, writeUnsignedDecimalAt) {
   // Even if it goes off the end of the LED module, the return value is the
   // number of characters that would have been written if the LED module was
   // long enough.
-  written = numberWriter.writeUnsignedDecimalAt(3, 123);
+  written = numberWriter.writeUnsignedDecimal(123);
   assertEqual(3, written);
 }
 
-testF(NumberWriterTest, writeUnsignedDecimalAt_boxed) {
-  uint8_t written = numberWriter.writeUnsignedDecimalAt(0, 34, 4);
+testF(NumberWriterTest, writeUnsignedDecimal_boxed) {
+  uint8_t written = numberWriter.writeUnsignedDecimal(34, 4);
   assertEqual(4, written);
   assertEqual(kPatternSpace, mPatterns[0]);
   assertEqual(kPatternSpace, mPatterns[1]);
   assertEqual(kPattern3, mPatterns[2]);
   assertEqual(kPattern4, mPatterns[3]);
 
-  written = numberWriter.writeUnsignedDecimalAt(0, 34, 2);
+  written = numberWriter.writeUnsignedDecimal(34, 2);
   assertEqual(2, written);
 }
 
-testF(NumberWriterTest, writeSignedDecimalAt) {
-  uint8_t written = numberWriter.writeSignedDecimalAt(0, -23);
+testF(NumberWriterTest, writeSignedDecimal) {
+  uint8_t written = numberWriter.writeSignedDecimal(-23);
   assertEqual(3, written);
   assertEqual(kPatternMinus, mPatterns[0]);
   assertEqual(kPattern2, mPatterns[1]);
@@ -306,7 +308,7 @@ testF(NumberWriterTest, writeSignedDecimalAt) {
 }
 
 testF(NumberWriterTest, writeSignedDecimalAt_boxed) {
-  uint8_t written = numberWriter.writeSignedDecimalAt(0, -12, 4);
+  uint8_t written = numberWriter.writeSignedDecimal(-12, 4);
   assertEqual(4, written);
   assertEqual(kPatternSpace, mPatterns[0]);
   assertEqual(kPatternMinus, mPatterns[1]);
@@ -329,8 +331,8 @@ class ClockWriterTest: public TestOnce {
 };
 
 testF(ClockWriterTest, writeColon) {
-  clockWriter.numberWriter().writeDec2At(0, 12);
-  clockWriter.numberWriter().writeDec2At(2, 34);
+  clockWriter.numberWriter().writeDec2(12);
+  clockWriter.numberWriter().writeDec2(34);
 
   // no colon by default
   assertEqual(kPattern2, mPatterns[1]);
@@ -370,14 +372,15 @@ class TemperatureWriterTest: public TestOnce {
     uint8_t* mPatterns;
 };
 
-testF(TemperatureWriterTest, writeTempDegAt) {
-  uint8_t written = temperatureWriter.writeTempDegAt(0, -9);
+testF(TemperatureWriterTest, writeTempDeg) {
+  uint8_t written = temperatureWriter.writeTempDeg(-9);
   assertEqual(3, written);
   assertEqual(kPatternMinus, mPatterns[0]); // -
   assertEqual(kPattern9, mPatterns[1]); // 9
   assertEqual(kPatternDeg, mPatterns[2]); // deg
 
-  written = temperatureWriter.writeTempDegAt(0, -9 /*temp*/, 4 /*boxSize*/);
+  temperatureWriter.clear();
+  written = temperatureWriter.writeTempDeg(-9 /*temp*/, 4 /*boxSize*/);
   assertEqual(4, written);
   assertEqual(kPatternSpace, mPatterns[0]); // space
   assertEqual(kPatternMinus, mPatterns[1]); // -
@@ -385,9 +388,8 @@ testF(TemperatureWriterTest, writeTempDegAt) {
   assertEqual(kPatternDeg, mPatterns[3]); // deg
 }
 
-testF(TemperatureWriterTest, writeTempDegCAt) {
-  uint8_t written = temperatureWriter.writeTempDegCAt(
-      0, -9 /*temp*/, 4 /*boxSize*/);
+testF(TemperatureWriterTest, writeTempDegC) {
+  uint8_t written = temperatureWriter.writeTempDegC(-9 /*temp*/, 4 /*boxSize*/);
   assertEqual(4, written);
   assertEqual(kPatternMinus, mPatterns[0]); // -
   assertEqual(kPattern9, mPatterns[1]); // 9
@@ -395,9 +397,8 @@ testF(TemperatureWriterTest, writeTempDegCAt) {
   assertEqual(kPatternC, mPatterns[3]); // C
 }
 
-testF(TemperatureWriterTest, writeTempDegFAt) {
-  uint8_t written = temperatureWriter.writeTempDegFAt(
-      0, -9 /*temp*/, 4 /*boxSize*/);
+testF(TemperatureWriterTest, writeTempDegF) {
+  uint8_t written = temperatureWriter.writeTempDegF(-9 /*temp*/, 4 /*boxSize*/);
   assertEqual(4, written);
   assertEqual(kPatternMinus, mPatterns[0]); // -
   assertEqual(kPattern9, mPatterns[1]); // 9

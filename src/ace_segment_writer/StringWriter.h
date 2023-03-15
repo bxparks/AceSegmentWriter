@@ -60,18 +60,17 @@ class StringWriter {
     /** Get the underlying CharWriter. */
     CharWriter<T_LED_MODULE>& charWriter() { return mCharWriter; }
 
+    /** Set the cursor to the beginning. */
+    void home() { mCharWriter.home(); }
+
     /**
      * Write c-string `cs` at specified position `pos` up to `numChar`
      * characters.
      *
      * @return number of actual LED digits written
      */
-    uint8_t writeStringAt(
-        uint8_t pos,
-        const char* cs,
-        uint8_t numChar = 255
-    ) {
-      return writeStringInternalAt<const char*>(pos, cs, numChar);
+    uint8_t writeString(const char* cs, uint8_t numChar = 255) {
+      return writeStringInternal<const char*>(cs, numChar);
     }
 
     /**
@@ -80,13 +79,9 @@ class StringWriter {
      *
      * @return number of actual LED digits written
      */
-    uint8_t writeStringAt(
-        uint8_t pos,
-        const __FlashStringHelper* fs,
-        uint8_t numChar = 255
-    ) {
-      return writeStringInternalAt<ace_common::FlashString>(
-          pos, ace_common::FlashString(fs), numChar);
+    uint8_t writeString(const __FlashStringHelper* fs, uint8_t numChar = 255) {
+      return writeStringInternal<ace_common::FlashString>(
+          ace_common::FlashString(fs), numChar);
     }
 
     /** Clear the entire display. */
@@ -112,34 +107,35 @@ class StringWriter {
      *    FlashString(const __FlashStringHelper*)
      */
     template <typename T>
-    uint8_t writeStringInternalAt(uint8_t pos, T s, uint8_t numChar) {
+    uint8_t writeStringInternal(T s, uint8_t numChar) {
       const uint8_t numDigits = mCharWriter.getNumDigits();
-      const uint8_t originalPos = pos;
       bool charWasWritten = false;
+      uint8_t numWritten = 0;
 
       while (numChar--) {
         char c = *s;
         if (c == '\0') break;
+        uint8_t pos = patternWriter().pos();
         if (pos >= numDigits) break;
 
         // Use the decimal point just after a digit to render the '.' character.
         if (c == '.') {
           if (charWasWritten) {
-            mCharWriter.writeDecimalPointAt(pos - 1);
+            mCharWriter.setDecimalPointAt(pos - 1);
           } else {
-            mCharWriter.writeCharAt(pos, '.');
+            mCharWriter.writeChar('.');
             charWasWritten = false;
-            pos++;
+            numWritten++;
           }
         } else {
-          mCharWriter.writeCharAt(pos, c);
+          mCharWriter.writeChar(c);
           charWasWritten = true;
-          pos++;
+          numWritten++;
         }
         s++;
       }
 
-      return pos - originalPos;
+      return numWritten;
     }
 
   private:

@@ -132,7 +132,8 @@ class StringScroller {
     void writeString() {
       uint8_t numDigits = getNumDigits();
       int16_t stringPos = mStringPos;
-      for (uint8_t pos = 0; pos < numDigits; pos++) {
+      mCharWriter.home();
+      for (uint8_t i = 0; i < numDigits; i++) {
         char c;
         if (stringPos < 0 || stringPos >= mStringLength) {
           c = ' ';
@@ -148,7 +149,7 @@ class StringScroller {
             c = *((const char*) mString + stringPos);
           }
         }
-        mCharWriter.writeCharAt(pos, c);
+        mCharWriter.writeChar(c);
         stringPos++;
       }
     }

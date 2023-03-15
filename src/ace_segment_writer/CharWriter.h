@@ -87,10 +87,12 @@ class CharWriter {
     /** Get number of characters in current character set. */
     uint8_t getNumChars() const { return mNumChars; }
 
+    /** Set the cursor to the beginning. */
+    void home() { mPatternWriter.home(); }
+
     /** Write the character at the specified position. */
-    void writeCharAt(uint8_t pos, char c) {
-      if (pos >= mPatternWriter.getNumDigits()) return;
-      mPatternWriter.writePatternAt(pos, getPattern(c));
+    void writeChar(char c) {
+      mPatternWriter.writePattern(getPattern(c));
     }
 
     /** Get segment pattern for character 'c'. */
@@ -102,15 +104,15 @@ class CharWriter {
     }
 
     /** Write the decimal point for the pos. */
-    void writeDecimalPointAt(uint8_t pos, bool state = true) {
-      mPatternWriter.writeDecimalPointAt(pos, state);
+    void setDecimalPointAt(uint8_t pos, bool state = true) {
+      mPatternWriter.setDecimalPointAt(pos, state);
     }
 
     /** Clear the entire display. */
-    void clear() { clearToEnd(0); }
+    void clear() { mPatternWriter.clear(); }
 
     /** Clear the display from `pos` to the end. */
-    void clearToEnd(uint8_t pos) { mPatternWriter.clearToEnd(pos); }
+    void clearToEnd() { mPatternWriter.clearToEnd(); }
 
   private:
     // disable copy-constructor and assignment operator

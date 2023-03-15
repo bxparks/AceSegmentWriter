@@ -72,15 +72,16 @@ class LevelWriter {
       uint8_t partialDigit = level & 0x1;
       uint8_t numDigits = mPatternWriter.getNumDigits();
 
-      uint8_t pos = 0;
-      while (pos < fullDigits && pos < numDigits) {
-        mPatternWriter.writePatternAt(
-            pos++, kPatternLevelLeft | kPatternLevelRight);
+      mPatternWriter.home();
+      for (;;) {
+        uint8_t pos = mPatternWriter.pos();
+        if (pos >= fullDigits || pos >= numDigits) { break; }
+        mPatternWriter.writePattern(kPatternLevelLeft | kPatternLevelRight);
       }
-      if (partialDigit && pos < numDigits) {
-        mPatternWriter.writePatternAt(pos++, kPatternLevelLeft);
+      if (partialDigit && mPatternWriter.pos() < numDigits) {
+        mPatternWriter.writePattern(kPatternLevelLeft);
       }
-      mPatternWriter.clearToEnd(pos);
+      mPatternWriter.clearToEnd();
     }
 
   private:

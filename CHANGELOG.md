@@ -1,6 +1,15 @@
 # Changelog
 
 * Unreleased
+* 0.4 (2023-03-15)
+    * **Breaking Change**
+        * `PatternWriter` is now stateful and holds the current `pos`.
+        * `PatternWriter::writePattern()` writes a position, and automatically
+          increments.
+        * Various `writeXxxAt()` have been replaced with simpler `writeXxx()`
+          methods.
+        * Added `PatternWriter::home()`, `PatternWriter::clear()`, and
+          `PatternWriter::clearToEnd()`.
 * 0.3 (2022-02-02)
     * Upgrade to AceTMI v0.5.
         * Rename `SimpleTmiInterface` to `SimpleTmi1637Interface`.

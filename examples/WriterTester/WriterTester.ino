@@ -864,13 +864,13 @@ const uint8_t NUM_SUBFIELDS = 1;
 #endif
 
 PatternWriter<LedModule> patternWriter(ledModule);
-NumberWriter<LedModule> numberWriter(ledModule);
-ClockWriter<LedModule> clockWriter(ledModule);
-TemperatureWriter<LedModule> temperatureWriter(ledModule);
-CharWriter<LedModule> charWriter(ledModule);
+NumberWriter<LedModule> numberWriter(patternWriter);
+ClockWriter<LedModule> clockWriter(numberWriter);
+TemperatureWriter<LedModule> temperatureWriter(numberWriter);
+CharWriter<LedModule> charWriter(patternWriter);
 StringWriter<LedModule> stringWriter(charWriter);
 StringScroller<LedModule> stringScroller(charWriter);
-LevelWriter<LedModule> levelWriter(ledModule);
+LevelWriter<LedModule> levelWriter(patternWriter);
 
 // Setup the various resources.
 void setupAceSegment() {
@@ -981,7 +981,8 @@ static const uint16_t DEMO_INTERNAL_DELAY[DEMO_MODE_COUNT] = {
 void writeHexNumbers() {
   static uint16_t w = 0;
 
-  numberWriter.writeHexWordAt(0, w);
+  numberWriter.home();
+  numberWriter.writeHexWord(w);
   w++;
 }
 
@@ -990,8 +991,9 @@ void writeHexNumbers() {
 void writeUnsignedDecNumbers() {
   static uint16_t w = 0;
 
-  uint8_t written = numberWriter.writeUnsignedDecimalAt(0, w, -3);
-  numberWriter.clearToEnd(written);
+  numberWriter.home();
+  numberWriter.writeUnsignedDecimal(w, -3);
+  numberWriter.clearToEnd();
   incrementMod(w, (uint16_t) 2000);
 }
 
@@ -1000,7 +1002,8 @@ void writeUnsignedDecNumbers() {
 void writeSignedDecNumbers() {
   static int16_t w = -999;
 
-  numberWriter.writeSignedDecimalAt(0, w, 4);
+  numberWriter.home();
+  numberWriter.writeSignedDecimal(w, 4);
   w++;
   if (w > 999) w = -999;
 }
@@ -1010,7 +1013,8 @@ void writeSignedDecNumbers() {
 void writeTemperatureC() {
   static int16_t w = -9;
 
-  temperatureWriter.writeTempDegCAt(0, w, 4);
+  temperatureWriter.home();
+  temperatureWriter.writeTempDegC(w, 4);
   w++;
   if (w > 99) w = -9;
 }
@@ -1020,7 +1024,8 @@ void writeTemperatureC() {
 void writeTemperatureF() {
   static int16_t w = -9;
 
-  temperatureWriter.writeTempDegFAt(0, w, 4);
+  temperatureWriter.home();
+  temperatureWriter.writeTempDegF(w, 4);
   w++;
   if (w > 99) w = -9;
 }
@@ -1044,9 +1049,10 @@ void writeClock() {
 void writeChars() {
   static uint8_t b = 0;
 
-  numberWriter.writeHexByteAt(0, b);
-  charWriter.writeCharAt(2, '-');
-  charWriter.writeCharAt(3, b);
+  numberWriter.home();
+  numberWriter.writeHexByte(b);
+  charWriter.writeChar('-');
+  charWriter.writeChar(b);
 
   uint8_t numChars = charWriter.getNumChars();
   if (numChars == 0) { // 0 means 256
@@ -1074,8 +1080,9 @@ void writeStrings() {
 
   static uint8_t i = 0;
 
-  uint8_t written = stringWriter.writeStringAt(0, STRINGS[i]);
-  stringWriter.clearToEnd(written);
+  stringWriter.home();
+  stringWriter.writeString(STRINGS[i]);
+  stringWriter.clearToEnd();
 
   incrementMod(i, NUM_STRINGS);
 }
@@ -1128,7 +1135,8 @@ const uint8_t SPIN_PATTERNS[NUM_SPIN_PATTERNS][4] PROGMEM = {
 void spinDisplay() {
   static uint8_t i = 0;
   const uint8_t* patterns = SPIN_PATTERNS[i];
-  patternWriter.writePatternsAt_P(0, patterns, 4);
+  patternWriter.home();
+  patternWriter.writePatterns_P(patterns, 4);
 
   incrementMod(i, NUM_SPIN_PATTERNS);
 }
@@ -1149,7 +1157,8 @@ const uint8_t SPIN_PATTERNS_2[NUM_SPIN_PATTERNS_2][4] PROGMEM = {
 void spinDisplay2() {
   static uint8_t i = 0;
   const uint8_t* patterns = SPIN_PATTERNS_2[i];
-  patternWriter.writePatternsAt_P(0, patterns, 4 /*len*/);
+  patternWriter.home();
+  patternWriter.writePatterns_P(patterns, 4 /*len*/);
 
   incrementMod(i, NUM_SPIN_PATTERNS_2);
 }

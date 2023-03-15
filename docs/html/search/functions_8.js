@@ -1,27 +1,4 @@
 var searchData=
 [
-  ['writebcd2at_71',['writeBcd2At',['../classace__segment_1_1NumberWriter.html#abbd11e1cdb436f9c888026760aa948ae',1,'ace_segment::NumberWriter']]],
-  ['writecharat_72',['writeCharAt',['../classace__segment_1_1CharWriter.html#a5fad7d70e4dceca93ba91fed86e3e334',1,'ace_segment::CharWriter']]],
-  ['writecolon_73',['writeColon',['../classace__segment_1_1ClockWriter.html#ac22d6c6d2db9f60adc93331569e4ba0d',1,'ace_segment::ClockWriter']]],
-  ['writedec2at_74',['writeDec2At',['../classace__segment_1_1NumberWriter.html#ac953783c4c4b47272bdd40ac66231001',1,'ace_segment::NumberWriter']]],
-  ['writedec4at_75',['writeDec4At',['../classace__segment_1_1NumberWriter.html#a1b62210c1c99ce3dd4e3e189f7524429',1,'ace_segment::NumberWriter']]],
-  ['writedecimalpointat_76',['writeDecimalPointAt',['../classace__segment_1_1CharWriter.html#a8afd396b1caf035531252ca6ae93fabf',1,'ace_segment::CharWriter::writeDecimalPointAt()'],['../classace__segment_1_1NumberWriter.html#a3587ef4b33649bbaf31db481c4a823d8',1,'ace_segment::NumberWriter::writeDecimalPointAt()'],['../classace__segment_1_1PatternWriter.html#ab5b887f78065e179a2d14cd3b43f75c9',1,'ace_segment::PatternWriter::writeDecimalPointAt()']]],
-  ['writehexbyteat_77',['writeHexByteAt',['../classace__segment_1_1NumberWriter.html#a0eda7e82f50d659d3802588be6d69626',1,'ace_segment::NumberWriter']]],
-  ['writehexcharat_78',['writeHexCharAt',['../classace__segment_1_1NumberWriter.html#afe54c89df9f10b5c98b3343abe58ef63',1,'ace_segment::NumberWriter']]],
-  ['writehexchars2at_79',['writeHexChars2At',['../classace__segment_1_1NumberWriter.html#ae42eede46dacc4068a546eafb3176366',1,'ace_segment::NumberWriter']]],
-  ['writehexcharsat_80',['writeHexCharsAt',['../classace__segment_1_1NumberWriter.html#a6dc7f52a0ae322d53319ea2918eaab6d',1,'ace_segment::NumberWriter']]],
-  ['writehexwordat_81',['writeHexWordAt',['../classace__segment_1_1NumberWriter.html#a6b0192a74c029cb21aef85cbec6a8918',1,'ace_segment::NumberWriter']]],
-  ['writehourminute12_82',['writeHourMinute12',['../classace__segment_1_1ClockWriter.html#a8fa46744a1c85b794c036b07dfcd6543',1,'ace_segment::ClockWriter']]],
-  ['writehourminute24_83',['writeHourMinute24',['../classace__segment_1_1ClockWriter.html#ab4279391856f2ae6877919f0a15eeee6',1,'ace_segment::ClockWriter']]],
-  ['writelevel_84',['writeLevel',['../classace__segment_1_1LevelWriter.html#abfb515f8175bb3cdb1762cd0ff15ab2b',1,'ace_segment::LevelWriter']]],
-  ['writepatternat_85',['writePatternAt',['../classace__segment_1_1PatternWriter.html#a6818b0f903f7a3477f63f11a0882d009',1,'ace_segment::PatternWriter']]],
-  ['writepatternsat_86',['writePatternsAt',['../classace__segment_1_1PatternWriter.html#ab1bd26dc529459eeaaf7e3d3ec6c3dad',1,'ace_segment::PatternWriter']]],
-  ['writepatternsat_5fp_87',['writePatternsAt_P',['../classace__segment_1_1PatternWriter.html#a87f651c4fc3c9f4d01e1d43fcd46bdf1',1,'ace_segment::PatternWriter']]],
-  ['writesigneddecimalat_88',['writeSignedDecimalAt',['../classace__segment_1_1NumberWriter.html#a29d68690fa592a5ed1678ad60f7e61d8',1,'ace_segment::NumberWriter']]],
-  ['writestringat_89',['writeStringAt',['../classace__segment_1_1StringWriter.html#ad97043d493105b5acaa61d85295a65cc',1,'ace_segment::StringWriter::writeStringAt(uint8_t pos, const char *cs, uint8_t numChar=255)'],['../classace__segment_1_1StringWriter.html#add0cfb191a1d0472d6a5a20ed9d2a5af',1,'ace_segment::StringWriter::writeStringAt(uint8_t pos, const __FlashStringHelper *fs, uint8_t numChar=255)']]],
-  ['writetempat_90',['writeTempAt',['../classace__segment_1_1TemperatureWriter.html#a7101aa6783779f33d4dc1d9109e82c17',1,'ace_segment::TemperatureWriter']]],
-  ['writetempdegat_91',['writeTempDegAt',['../classace__segment_1_1TemperatureWriter.html#a92065b8142378065091946e232c27406',1,'ace_segment::TemperatureWriter']]],
-  ['writetempdegcat_92',['writeTempDegCAt',['../classace__segment_1_1TemperatureWriter.html#ab314d5623594e8836d2ef6924476a1d1',1,'ace_segment::TemperatureWriter']]],
-  ['writetempdegfat_93',['writeTempDegFAt',['../classace__segment_1_1TemperatureWriter.html#a9076b341853b7cffa2a7837d80e7a750',1,'ace_segment::TemperatureWriter']]],
-  ['writeunsigneddecimalat_94',['writeUnsignedDecimalAt',['../classace__segment_1_1NumberWriter.html#a54136c3c8f2a74562ecc5b2d1cd09419',1,'ace_segment::NumberWriter']]]
+  ['temperaturewriter_81',['TemperatureWriter',['../classace__segment_1_1TemperatureWriter.html#a39e0abdbe0ca7b468d57c0a332d8b998',1,'ace_segment::TemperatureWriter']]]
 ];

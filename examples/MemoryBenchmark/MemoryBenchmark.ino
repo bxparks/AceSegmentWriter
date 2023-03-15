@@ -42,7 +42,7 @@ class StubModule {
   public:
     StubModule() {}
 
-    uint8_t getNumDigits() const { return NUM_DIGITS; }
+    uint8_t size() const { return NUM_DIGITS; }
 
     void setPatternAt(uint8_t pos, uint8_t pattern) {
       mPatterns[pos] = pattern;
@@ -60,6 +60,15 @@ class StubModule {
       return mBrightness;
     }
 
+    void setDecimalPointAt(uint8_t pos, bool state = true) {
+      if (pos >= size()) return;
+      if (state) {
+        mPatterns[pos] |= 0x80;
+      } else {
+        mPatterns[pos] &= ~0x80;
+      }
+    }
+
   private:
     uint8_t mPatterns[NUM_DIGITS];
     uint8_t mBrightness;
@@ -74,33 +83,42 @@ class StubModule {
 
 #elif FEATURE == FEATURE_NUMBER_WRITER
   StubModule stubModule;
-  NumberWriter<StubModule> numberWriter(stubModule);
+  PatternWriter<StubModule> patternWriter(stubModule);
+  NumberWriter<StubModule> numberWriter(patternWriter);
 
 #elif FEATURE == FEATURE_CLOCK_WRITER
   StubModule stubModule;
-  ClockWriter<StubModule> clockWriter(stubModule);
+  PatternWriter<StubModule> patternWriter(stubModule);
+  NumberWriter<StubModule> numberWriter(patternWriter);
+  ClockWriter<StubModule> clockWriter(numberWriter);
 
 #elif FEATURE == FEATURE_TEMPERATURE_WRITER
   StubModule stubModule;
-  TemperatureWriter<StubModule> temperatureWriter(stubModule);
+  PatternWriter<StubModule> patternWriter(stubModule);
+  NumberWriter<StubModule> numberWriter(patternWriter);
+  TemperatureWriter<StubModule> temperatureWriter(numberWriter);
 
 #elif FEATURE == FEATURE_CHAR_WRITER
   StubModule stubModule;
-  CharWriter<StubModule> charWriter(stubModule);
+  PatternWriter<StubModule> patternWriter(stubModule);
+  CharWriter<StubModule> charWriter(patternWriter);
 
 #elif FEATURE == FEATURE_STRING_WRITER
   StubModule stubModule;
-  CharWriter<StubModule> charWriter(stubModule);
+  PatternWriter<StubModule> patternWriter(stubModule);
+  CharWriter<StubModule> charWriter(patternWriter);
   StringWriter<StubModule> stringWriter(charWriter);
 
 #elif FEATURE == FEATURE_STRING_SCROLLER
   StubModule stubModule;
-  CharWriter<StubModule> charWriter(stubModule);
+  PatternWriter<StubModule> patternWriter(stubModule);
+  CharWriter<StubModule> charWriter(patternWriter);
   StringScroller<StubModule> stringScroller(charWriter);
 
 #elif FEATURE == FEATURE_LEVEL_WRITER
   StubModule stubModule;
-  LevelWriter<StubModule> levelWriter(stubModule);
+  PatternWriter<StubModule> patternWriter(stubModule);
+  LevelWriter<StubModule> levelWriter(patternWriter);
 
 #else
   #error Unknown FEATURE
@@ -142,23 +160,23 @@ void loop() {
   // do nothing
 
 #elif FEATURE == FEATURE_PATTERN_WRITER
-  patternWriter.writePatternAt(0, disableCompilerOptimization);
+  patternWriter.writePattern(disableCompilerOptimization);
 
 #elif FEATURE == FEATURE_NUMBER_WRITER
-  numberWriter.writeUnsignedDecimalAt(0, disableCompilerOptimization);
+  numberWriter.writeUnsignedDecimal(disableCompilerOptimization);
 
 #elif FEATURE == FEATURE_CLOCK_WRITER
   clockWriter.writeHourMinute24(10, disableCompilerOptimization);
 
 #elif FEATURE == FEATURE_TEMPERATURE_WRITER
-  temperatureWriter.writeTempDegCAt(
-      0, disableCompilerOptimization /*temp*/, 4 /*boxSize*/);
+  temperatureWriter.writeTempDegC(
+      disableCompilerOptimization /*temp*/, 4 /*boxSize*/);
 
 #elif FEATURE == FEATURE_CHAR_WRITER
-  charWriter.writeCharAt(0, disableCompilerOptimization);
+  charWriter.writeChar(disableCompilerOptimization);
 
 #elif FEATURE == FEATURE_STRING_WRITER
-  stringWriter.writeStringAt(0, F("Hello"));
+  stringWriter.writeString(F("Hello"));
 
 #elif FEATURE == FEATURE_STRING_SCROLLER
   stringScroller.initScrollLeft(F("Hello"));

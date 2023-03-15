@@ -14,7 +14,7 @@ by the runtime environment of the processor. For example, it often seems like
 the ESP8266 allocates flash memory in blocks of a certain quantity, so the
 calculated flash size can jump around in unexpected ways.
 
-**Version**: AceSegmentWriter 0.3
+**Version**: AceSegmentWriter 0.4
 
 **DO NOT EDIT**: This file was auto-generated using `make README.md`.
 
@@ -77,7 +77,7 @@ program for various Writer classes.
 ### ATtiny85
 
 * 8MHz ATtiny85
-* Arduino IDE 1.8.19, Arduino CLI 0.19.2
+* Arduino IDE 1.8.19, Arduino CLI 0.31.0
 * SpenceKonde/ATTinyCore 1.5.2
 
 ```
@@ -86,14 +86,14 @@ program for various Writer classes.
 |---------------------------------+--------------+-------------|
 | baseline                        |    274/   11 |     0/    0 |
 |---------------------------------+--------------+-------------|
-| PatternWriter                   |    350/   18 |    76/    7 |
-| NumberWriter                    |    534/   18 |   260/    7 |
-| ClockWriter                     |    550/   19 |   276/    8 |
-| TemperatureWriter               |    718/   18 |   444/    7 |
-| CharWriter                      |    518/   21 |   244/   10 |
-| StringWriter                    |    640/   23 |   366/   12 |
-| StringScroller                  |    700/   29 |   426/   18 |
-| LevelWriter                     |    434/   18 |   160/    7 |
+| PatternWriter                   |    376/   19 |   102/    8 |
+| NumberWriter                    |    584/   21 |   310/   10 |
+| ClockWriter                     |    630/   24 |   356/   13 |
+| TemperatureWriter               |    750/   23 |   476/   12 |
+| CharWriter                      |    568/   24 |   294/   13 |
+| StringWriter                    |    670/   26 |   396/   15 |
+| StringScroller                  |    768/   32 |   494/   21 |
+| LevelWriter                     |    478/   21 |   204/   10 |
 +--------------------------------------------------------------+
 
 ```
@@ -101,8 +101,8 @@ program for various Writer classes.
 ### Arduino Nano
 
 * 16MHz ATmega328P
-* Arduino IDE 1.8.19, Arduino CLI 0.19.2
-* Arduino AVR Boards 1.8.4
+* Arduino IDE 1.8.19, Arduino CLI 0.31.0
+* Arduino AVR Boards 1.8.5
 
 ```
 +--------------------------------------------------------------+
@@ -110,14 +110,14 @@ program for various Writer classes.
 |---------------------------------+--------------+-------------|
 | baseline                        |    470/   11 |     0/    0 |
 |---------------------------------+--------------+-------------|
-| PatternWriter                   |    548/   18 |    78/    7 |
-| NumberWriter                    |    720/   18 |   250/    7 |
-| ClockWriter                     |    748/   19 |   278/    8 |
-| TemperatureWriter               |    906/   18 |   436/    7 |
-| CharWriter                      |    716/   21 |   246/   10 |
-| StringWriter                    |    838/   23 |   368/   12 |
-| StringScroller                  |    916/   29 |   446/   18 |
-| LevelWriter                     |    634/   18 |   164/    7 |
+| PatternWriter                   |    574/   19 |   104/    8 |
+| NumberWriter                    |    758/   21 |   288/   10 |
+| ClockWriter                     |    834/   24 |   364/   13 |
+| TemperatureWriter               |    954/   23 |   484/   12 |
+| CharWriter                      |    768/   24 |   298/   13 |
+| StringWriter                    |    876/   26 |   406/   15 |
+| StringScroller                  |    980/   32 |   510/   21 |
+| LevelWriter                     |    678/   21 |   208/   10 |
 +--------------------------------------------------------------+
 
 ```
@@ -125,7 +125,7 @@ program for various Writer classes.
 ### Sparkfun Pro Micro
 
 * 16 MHz ATmega32U4
-* Arduino IDE 1.8.19, Arduino CLI 0.19.2
+* Arduino IDE 1.8.19, Arduino CLI 0.31.0
 * SparkFun AVR Boards 1.1.13
 
 ```
@@ -134,14 +134,14 @@ program for various Writer classes.
 |---------------------------------+--------------+-------------|
 | baseline                        |   3486/  151 |     0/    0 |
 |---------------------------------+--------------+-------------|
-| PatternWriter                   |   3526/  158 |    40/    7 |
-| NumberWriter                    |   3698/  158 |   212/    7 |
-| ClockWriter                     |   3726/  159 |   240/    8 |
-| TemperatureWriter               |   3884/  158 |   398/    7 |
-| CharWriter                      |   3694/  161 |   208/   10 |
-| StringWriter                    |   3816/  163 |   330/   12 |
-| StringScroller                  |   3894/  169 |   408/   18 |
-| LevelWriter                     |   3612/  158 |   126/    7 |
+| PatternWriter                   |   3552/  159 |    66/    8 |
+| NumberWriter                    |   3736/  161 |   250/   10 |
+| ClockWriter                     |   3812/  164 |   326/   13 |
+| TemperatureWriter               |   3932/  163 |   446/   12 |
+| CharWriter                      |   3746/  164 |   260/   13 |
+| StringWriter                    |   3850/  166 |   364/   15 |
+| StringScroller                  |   3958/  172 |   472/   21 |
+| LevelWriter                     |   3656/  161 |   170/   10 |
 +--------------------------------------------------------------+
 
 ```
@@ -149,23 +149,23 @@ program for various Writer classes.
 ### STM32 Blue Pill
 
 * STM32F103C8, 72 MHz ARM Cortex-M3
-* Arduino IDE 1.8.19, Arduino CLI 0.19.2
-* STM32duino 2.2.0
+* Arduino IDE 1.8.19, Arduino CLI 0.31.0
+* STM32duino 2.4.0
 
 ```
 +--------------------------------------------------------------+
 | functionality                   |  flash/  ram |       delta |
 |---------------------------------+--------------+-------------|
-| baseline                        |  21892/ 3548 |     0/    0 |
+| baseline                        |  21408/ 3564 |     0/    0 |
 |---------------------------------+--------------+-------------|
-| PatternWriter                   |  21924/ 3552 |    32/    4 |
-| NumberWriter                    |  22044/ 3552 |   152/    4 |
-| ClockWriter                     |  22036/ 3556 |   144/    8 |
-| TemperatureWriter               |  22168/ 3552 |   276/    4 |
-| CharWriter                      |  22080/ 3560 |   188/   12 |
-| StringWriter                    |  22192/ 3564 |   300/   16 |
-| StringScroller                  |  22176/ 3572 |   284/   24 |
-| LevelWriter                     |  21988/ 3552 |    96/    4 |
+| PatternWriter                   |  21456/ 3572 |    48/    8 |
+| NumberWriter                    |  21572/ 3576 |   164/   12 |
+| ClockWriter                     |  21648/ 3584 |   240/   20 |
+| TemperatureWriter               |  21692/ 3580 |   284/   16 |
+| CharWriter                      |  21620/ 3584 |   212/   20 |
+| StringWriter                    |  21720/ 3588 |   312/   24 |
+| StringScroller                  |  21736/ 3596 |   328/   32 |
+| LevelWriter                     |  21532/ 3576 |   124/   12 |
 +--------------------------------------------------------------+
 
 ```
@@ -173,7 +173,7 @@ program for various Writer classes.
 ### ESP8266
 
 * NodeMCU 1.0, 80MHz ESP8266
-* Arduino IDE 1.8.19, Arduino CLI 0.19.2
+* Arduino IDE 1.8.19, Arduino CLI 0.31.0
 * ESP8266 Boards 3.0.2
 
 ```
@@ -182,44 +182,38 @@ program for various Writer classes.
 |---------------------------------+--------------+-------------|
 | baseline                        | 260121/27900 |     0/    0 |
 |---------------------------------+--------------+-------------|
-| PatternWriter                   | 260157/27912 |    36/   12 |
-| NumberWriter                    | 260381/27912 |   260/   12 |
-| ClockWriter                     | 260445/27912 |   324/   12 |
-| TemperatureWriter               | 260525/27912 |   404/   12 |
-| CharWriter                      | 260333/27920 |   212/   20 |
-| StringWriter                    | 260517/27920 |   396/   20 |
-| StringScroller                  | 260501/27928 |   380/   28 |
-| LevelWriter                     | 260221/27912 |   100/   12 |
+| PatternWriter                   | 260173/27912 |    52/   12 |
+| NumberWriter                    | 260397/27920 |   276/   20 |
+| ClockWriter                     | 260477/27928 |   356/   28 |
+| TemperatureWriter               | 260541/27920 |   420/   20 |
+| CharWriter                      | 260365/27928 |   244/   28 |
+| StringWriter                    | 260501/27928 |   380/   28 |
+| StringScroller                  | 260533/27936 |   412/   36 |
+| LevelWriter                     | 260253/27920 |   132/   20 |
 +--------------------------------------------------------------+
 
 ```
 
-NOTE:
-
-* The `-4` bytes of RAM is probably an artifact of compiler optimizations that
-  were triggered when additional code was added to the
-  `MemoryBenchmark.ino` program compared to the `baseline` condition.
-
 ### ESP32
 
 * ESP32-01 Dev Board, 240 MHz Tensilica LX6
-* Arduino IDE 1.8.19, Arduino CLI 0.19.2
-* ESP32 Boards 2.0.2
+* Arduino IDE 1.8.19, Arduino CLI 0.31.0
+* ESP32 Boards 2.0.7
 
 ```
 +--------------------------------------------------------------+
 | functionality                   |  flash/  ram |       delta |
 |---------------------------------+--------------+-------------|
-| baseline                        | 204793/16100 |     0/    0 |
+| baseline                        | 229425/21984 |     0/    0 |
 |---------------------------------+--------------+-------------|
-| PatternWriter                   | 204821/16100 |    28/    0 |
-| NumberWriter                    | 204985/16100 |   192/    0 |
-| ClockWriter                     | 205041/16108 |   248/    8 |
-| TemperatureWriter               | 205121/16100 |   328/    0 |
-| CharWriter                      | 204989/16108 |   196/    8 |
-| StringWriter                    | 205125/16116 |   332/   16 |
-| StringScroller                  | 205105/16124 |   312/   24 |
-| LevelWriter                     | 204889/16100 |    96/    0 |
+| PatternWriter                   | 229489/21992 |    64/    8 |
+| NumberWriter                    | 229629/22000 |   204/   16 |
+| ClockWriter                     | 229697/22008 |   272/   24 |
+| TemperatureWriter               | 229761/22000 |   336/   16 |
+| CharWriter                      | 229661/22008 |   236/   24 |
+| StringWriter                    | 229773/22008 |   348/   24 |
+| StringScroller                  | 229793/22016 |   368/   32 |
+| LevelWriter                     | 229569/22000 |   144/   16 |
 +--------------------------------------------------------------+
 
 ```
@@ -227,24 +221,24 @@ NOTE:
 ### Teensy 3.2
 
 * 96 MHz ARM Cortex-M4
-* Arduino IDE 1.8.19, Arduino CLI 0.19.2
-* Teensyduino 1.56
+* Arduino IDE 1.8.19, Arduino CLI 0.31.0
+* Teensyduino 1.57
 * Compiler options: "Faster"
 
 ```
 +--------------------------------------------------------------+
 | functionality                   |  flash/  ram |       delta |
 |---------------------------------+--------------+-------------|
-| baseline                        |  10232/ 4160 |     0/    0 |
+| baseline                        |  10108/ 4160 |     0/    0 |
 |---------------------------------+--------------+-------------|
-| PatternWriter                   |  10264/ 4164 |    32/    4 |
-| NumberWriter                    |  10428/ 4164 |   196/    4 |
-| ClockWriter                     |  10392/ 4168 |   160/    8 |
-| TemperatureWriter               |  10584/ 4164 |   352/    4 |
-| CharWriter                      |  10420/ 4172 |   188/   12 |
-| StringWriter                    |  10544/ 4176 |   312/   16 |
-| StringScroller                  |  10520/ 4184 |   288/   24 |
-| LevelWriter                     |  10352/ 4164 |   120/    4 |
+| PatternWriter                   |  10156/ 4168 |    48/    8 |
+| NumberWriter                    |  10336/ 4172 |   228/   12 |
+| ClockWriter                     |  10464/ 4180 |   356/   20 |
+| TemperatureWriter               |  10532/ 4176 |   424/   16 |
+| CharWriter                      |  10328/ 4180 |   220/   20 |
+| StringWriter                    |  10440/ 4184 |   332/   24 |
+| StringScroller                  |  10456/ 4192 |   348/   32 |
+| LevelWriter                     |  10244/ 4172 |   136/   12 |
 +--------------------------------------------------------------+
 
 ```

@@ -11,6 +11,8 @@
 using ace_tmi::SimpleTmi1637Interface;
 using ace_segment::LedModule;
 using ace_segment::Tm1637Module;
+using ace_segment::PatternWriter;
+using ace_segment::NumberWriter;
 using ace_segment::TemperatureWriter;
 
 // Replace these with the PIN numbers of your dev board.
@@ -27,8 +29,9 @@ const uint8_t DELAY_MICROS = 100;
 using TmiInterface = SimpleTmi1637Interface;
 TmiInterface tmiInterface(DIO_PIN, CLK_PIN, DELAY_MICROS);
 Tm1637Module<TmiInterface, NUM_DIGITS> ledModule(tmiInterface);
-
-TemperatureWriter<LedModule> tempeartureWriter(ledModule);
+PatternWriter<LedModule> patternWriter(ledModule);
+NumberWriter<LedModule> numberWriter(patternWriter);
+TemperatureWriter<LedModule> tempeartureWriter(numberWriter);
 
 void setup() {
   delay(1000);
@@ -37,7 +40,7 @@ void setup() {
   ledModule.begin();
 
   // Write "-5 C" to the LED module.
-  tempeartureWriter.writeTempDegCAt(0, -5);
+  tempeartureWriter.writeTempDegC(-5);
 
   ledModule.setBrightness(2);
 

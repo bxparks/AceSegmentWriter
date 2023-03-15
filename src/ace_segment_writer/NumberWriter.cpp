@@ -42,7 +42,7 @@ namespace ace_segment {
 // Segment: DP G F E D C B A
 //    Bits: 7  6 5 4 3 2 1 0
 //
-const uint8_t kHexCharPatterns[kNumHexCharPatterns] PROGMEM = {
+const uint8_t kDigitPatterns[kNumDigitPatterns] PROGMEM = {
   0b00111111, /* 0 */
   0b00000110, /* 1 */
   0b01011011, /* 2 */

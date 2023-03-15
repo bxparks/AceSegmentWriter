@@ -41,17 +41,17 @@ class ClockWriter {
     /**
      * Constructor.
      *
-     * @param ledModule instance of T_LED_MODULE
+     * @param numberWriter instance of NumberWriter<T_LED_MODULE>
      * @param colonDigit The digit which has the colon (":") character,
      *    mapped to bit 7 (i.e. 'H' segment). In many 4-digit LED clock
      *    display modules, this is digit 1 (counting from the left, 0-based,
      *    so the second digit from the left).
      */
     explicit ClockWriter(
-        T_LED_MODULE& ledModule,
+        NumberWriter<T_LED_MODULE>& numberWriter,
         uint8_t colonDigit = 1
     ) :
-        mNumberWriter(ledModule),
+        mNumberWriter(numberWriter),
         mColonDigit(colonDigit)
     {}
 
@@ -66,14 +66,17 @@ class ClockWriter {
     /** Get the underlying NumberWriter. */
     NumberWriter<T_LED_MODULE>& numberWriter() { return mNumberWriter; }
 
+    /** Reset cursor to home. */
+    void home() { mNumberWriter.home(); }
+
     /**
      * Write the hour and minute in 24-hour format (i.e. leading 0), and the
      * colon in one-shot, assuming the LED module is a 4-digit clock module.
      * This is a convenience function.
      */
     void writeHourMinute24(uint8_t hh, uint8_t mm) {
-      mNumberWriter.writeDec2At(0, hh);
-      mNumberWriter.writeDec2At(2, mm);
+      mNumberWriter.writeDec2(hh);
+      mNumberWriter.writeDec2(mm);
       writeColon();
     }
 
@@ -83,8 +86,8 @@ class ClockWriter {
      * This is a convenience function.
      */
     void writeHourMinute12(uint8_t hh, uint8_t mm) {
-      mNumberWriter.writeDec2At(0, hh, kPatternSpace);
-      mNumberWriter.writeDec2At(2, mm);
+      mNumberWriter.writeDec2(hh, kPatternSpace);
+      mNumberWriter.writeDec2(mm);
       writeColon();
     }
 
@@ -94,21 +97,21 @@ class ClockWriter {
      * @param state Set to false to turn off the colon.
      */
     void writeColon(bool state = true) {
-      mNumberWriter.writeDecimalPointAt(mColonDigit, state);
+      mNumberWriter.setDecimalPointAt(mColonDigit, state);
     }
 
     /** Clear the entire display. */
     void clear() { mNumberWriter.clear(); }
 
     /** Clear the display from `pos` to the end. */
-    void clearToEnd(uint8_t pos) { mNumberWriter.clearToEnd(pos); }
+    void clearToEnd() { mNumberWriter.clearToEnd(); }
 
   private:
     // disable copy-constructor and assignment operator
     ClockWriter(const ClockWriter&) = delete;
     ClockWriter& operator=(const ClockWriter&) = delete;
 
-    NumberWriter<T_LED_MODULE> mNumberWriter;
+    NumberWriter<T_LED_MODULE>& mNumberWriter;
     uint8_t const mColonDigit;
 };
 

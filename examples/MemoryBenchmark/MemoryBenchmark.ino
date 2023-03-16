@@ -19,12 +19,13 @@ using namespace ace_segment;
 #define FEATURE_BASELINE 0
 #define FEATURE_PATTERN_WRITER 1
 #define FEATURE_NUMBER_WRITER 2
-#define FEATURE_CLOCK_WRITER 3
-#define FEATURE_TEMPERATURE_WRITER 4
-#define FEATURE_CHAR_WRITER 5
-#define FEATURE_STRING_WRITER 6
-#define FEATURE_STRING_SCROLLER 7
-#define FEATURE_LEVEL_WRITER 8
+#define FEATURE_NUMBER_WRITER_WRITE_FLOAT 3
+#define FEATURE_CLOCK_WRITER 4
+#define FEATURE_TEMPERATURE_WRITER 5
+#define FEATURE_CHAR_WRITER 6
+#define FEATURE_STRING_WRITER 7
+#define FEATURE_STRING_SCROLLER 8
+#define FEATURE_LEVEL_WRITER 9
 
 // A volatile integer to prevent the compiler from optimizing away the entire
 // program.
@@ -82,6 +83,11 @@ class StubModule {
   PatternWriter<StubModule> patternWriter(stubModule);
 
 #elif FEATURE == FEATURE_NUMBER_WRITER
+  StubModule stubModule;
+  PatternWriter<StubModule> patternWriter(stubModule);
+  NumberWriter<StubModule> numberWriter(patternWriter);
+
+#elif FEATURE == FEATURE_NUMBER_WRITER_WRITE_FLOAT
   StubModule stubModule;
   PatternWriter<StubModule> patternWriter(stubModule);
   NumberWriter<StubModule> numberWriter(patternWriter);
@@ -164,6 +170,9 @@ void loop() {
 
 #elif FEATURE == FEATURE_NUMBER_WRITER
   numberWriter.writeUnsignedDecimal(disableCompilerOptimization);
+
+#elif FEATURE == FEATURE_NUMBER_WRITER_WRITE_FLOAT
+  numberWriter.writeFloat((float) disableCompilerOptimization);
 
 #elif FEATURE == FEATURE_CLOCK_WRITER
   clockWriter.writeHourMinute24(10, disableCompilerOptimization);

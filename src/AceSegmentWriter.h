@@ -43,8 +43,8 @@ SOFTWARE.
 #endif
 
 // Version format: xxyyzz == "xx.yy.zz"
-#define ACE_SEGMENT_WRITER_VERSION 400
-#define ACE_SEGMENT_WRITER_VERSION_STRING "0.4.0"
+#define ACE_SEGMENT_WRITER_VERSION 500
+#define ACE_SEGMENT_WRITER_VERSION_STRING "0.5.0"
 
 #include "ace_segment_writer/PatternWriter.h"
 #include "ace_segment_writer/NumberWriter.h"

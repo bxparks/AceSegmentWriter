@@ -1,16 +1,19 @@
 # Changelog
 
 * Unreleased
+* 0.5 (2023-03-16)
     * `PatternWriter`
         * Add `writeDecimalPoint()` which writes the decimal point in the
           *previous* digit from the current cursor.
+        * Retain `setDecimalPointAt()` as an escape hatch for applications with
+          advanced needs.
     * `NumberWriter`
         * Add `writeDecimalPoint()` to replace `setDecimalPointAt()`.
         * Add `writeFloat()` which delegates the floating point conversion to
           the `Print::print(float x, int digits = 2)` method that is implemented
           by the Arduino `Print` class.
         * Add `writeChar()` which supports a restricted set of ASCII characters,
-          enough to implement `writeFloat()`:
+          enough to implement `writeFloat()`.
             * `'0'` to `'9'`, `'-'`, and `'.'`
             * All others are printed as a space `' '`, including the space
               character itself.

@@ -17,7 +17,7 @@ the public methods that appear in the `LedModule` class. But `T_LED_MODULE` is
 *not* required to inherit from `LedModule` which preserves the decoupling
 between the AceSegmentWriter and AceSegment libraries.
 
-**Version**: 0.4 (2023-03-15)
+**Version**: 0.5 (2023-03-16)
 
 **Changelog**: [CHANGELOG.md](CHANGELOG.md)
 

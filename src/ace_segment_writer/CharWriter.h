@@ -104,11 +104,6 @@ class CharWriter {
       return pattern;
     }
 
-    /** Write the decimal point for the pos. */
-    void setDecimalPointAt(uint8_t pos, bool state = true) {
-      mPatternWriter.setDecimalPointAt(pos, state);
-    }
-
     /** Clear the entire display. */
     void clear() { mPatternWriter.clear(); }
 

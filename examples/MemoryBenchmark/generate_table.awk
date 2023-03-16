@@ -9,12 +9,13 @@ BEGIN {
   labels[0] = "baseline"
   labels[1] = "PatternWriter";
   labels[2] = "NumberWriter";
-  labels[3] = "ClockWriter";
-  labels[4] = "TemperatureWriter";
-  labels[5] = "CharWriter";
-  labels[6] = "StringWriter";
-  labels[7] = "StringScroller";
-  labels[8] = "LevelWriter";
+  labels[3] = "NumberWriter::writeFloat()";
+  labels[4] = "ClockWriter";
+  labels[5] = "TemperatureWriter";
+  labels[6] = "CharWriter";
+  labels[7] = "StringWriter";
+  labels[8] = "StringScroller";
+  labels[9] = "LevelWriter";
   record_index = 0
 }
 {

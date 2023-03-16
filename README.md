@@ -17,7 +17,7 @@ the public methods that appear in the `LedModule` class. But `T_LED_MODULE` is
 *not* required to inherit from `LedModule` which preserves the decoupling
 between the AceSegmentWriter and AceSegment libraries.
 
-**Version**: 0.4 (2023-03-15)
+**Version**: 0.5 (2023-03-16)
 
 **Changelog**: [CHANGELOG.md](CHANGELOG.md)
 
@@ -355,6 +355,7 @@ class PatternWriter {
     void writePattern(uint8_t pattern);
     void writePatterns(const uint8_t patterns[], uint8_t len);
     void writePatterns_P(const uint8_t patterns[], uint8_t len);
+    void writeDecimalPoint(bool state = true);
     void setDecimalPointAt(uint8_t pos, bool state = true);
 
     void clear();
@@ -367,6 +368,22 @@ class PatternWriter {
 The `writePattern()` function writes the given `pattern` at the current `pos`.
 The `pos` is automatically incremented by one.
 
+The `writeDecimalPoint()` function writes a decimal point in the *previous*
+digit, because that's where the decimal point is located on a seven-segment LED
+display. If the current position is `0`, this function does nothing. If the
+current position is equal to `ledModule.size()` which is one position after the
+end, this function sets the decimal point on the last digit.
+
+The `setDecimalPointAt()` function writes the decimal point at the given `pos`.
+This provides an escape hatch in cases where `writeDecimalPoint()` is not
+sufficient.
+
+The decimal point is stored as bit 7 (the most significant bit) of the `uint8_t`
+byte for a given digit. This bit is cleared by the `writePattern()` and
+`writePatterns()` functions. So the `writeDecimalPoint()` and
+`setDecimalPointAt() methods must be called **after** the `writePattern()`
+methods.
+
 The `pos()` function sets or gets the current position.
 
 The `home()` function sets the current position to 0.
@@ -375,11 +392,6 @@ The `clear()` function clears all the digits of the `ledModule`. The
 `clearToEnd()` clears only the digits from the current position to the end. In
 both cases, the `home()` function is automatically called to set the position to
 0.
-
-The decimal point is stored as bit 7 (the most significant bit) of the `uint8_t`
-byte for a given digit. This bit is cleared by the other `writePattern()` or
-`writePatterns()` functions. So the `setDecimalPointAt()` method should be
-called **after** the other write methods are called.
 
 Here is how to create an instance of `PatternWriter` from an instance of
 `LedModule`:
@@ -431,7 +443,8 @@ class NumberWriter {
     void writeUnsignedDecimal(uint16_t num, int8_t boxSize = 0);
     void writeSignedDecimal(int16_t num, int8_t boxSize = 0);
 
-    void setDecimalPointAt(uint8_t pos, bool state = true);
+    void writeFloat(float x, uint8_t places = 2);
+    void writeDecimalPoint(bool state = true);
 
     void clear();
     void clearToEnd(uint8_t pos);
@@ -601,8 +614,7 @@ class CharWriter {
     uint8_t size() const;
     void home();
 
-    void writeChar(uint8_t pos, char c);
-    void setDecimalPointAt(uint8_t pos, bool state = true);
+    void writeChar(char c);
 
     void clear();
     void clearToEnd();
@@ -802,10 +814,11 @@ the flash and static memory consumptions.
 |---------------------------------+--------------+-------------|
 | PatternWriter                   |    574/   19 |   104/    8 |
 | NumberWriter                    |    758/   21 |   288/   10 |
+| NumberWriter::writeFloat()      |   2476/   45 |  2006/   34 |
 | ClockWriter                     |    834/   24 |   364/   13 |
 | TemperatureWriter               |    954/   23 |   484/   12 |
 | CharWriter                      |    768/   24 |   298/   13 |
-| StringWriter                    |    876/   26 |   406/   15 |
+| StringWriter                    |    864/   26 |   394/   15 |
 | StringScroller                  |    980/   32 |   510/   21 |
 | LevelWriter                     |    678/   21 |   208/   10 |
 +--------------------------------------------------------------+
@@ -821,6 +834,7 @@ the flash and static memory consumptions.
 |---------------------------------+--------------+-------------|
 | PatternWriter                   | 260173/27912 |    52/   12 |
 | NumberWriter                    | 260397/27920 |   276/   20 |
+| NumberWriter::writeFloat()      | 261741/27920 |  1620/   20 |
 | ClockWriter                     | 260477/27928 |   356/   28 |
 | TemperatureWriter               | 260541/27920 |   420/   20 |
 | CharWriter                      | 260365/27928 |   244/   28 |
@@ -916,30 +930,18 @@ them.
 <a name="BugsAndLimitations"></a>
 ## Bugs and Limitations
 
-* The `NumberWriter` class does not support floating point numbers.
-    * The primary reason is that I almost never use floating point numbers on
-      embedded microcontrollers. Most embedded processors do not have hardware
-      FPU, so floating point operations are implemented using software, which
-      consumes significant amounts of memory and CPU cycles.
-    * The second reason is that floating point formatting is very complex. There
-      are numerous options to consider. For example: left justified, right
-      justified, left pad with space, left padding with zeros, right padding
-      with space, right padding with zeros, specifying the number of digits
-      after the decimal point, and formating using scientific notation.
-    * With so many different formatting options to consider, the easiest
-      solution might be to defer this problem to the `vsnprintf()` function, to
-      convert a float to a string, then render that string on the LED module.
-      Except that on 8-bit AVR processors, the `vnsprintf()` function does not
-      support floating point numbers.
-    * The other potential solution is to use the `Print::print()` function to
-      print a float to a string buffer, such as the `PrintStr<N>` class in
-      [AceCommon](https://github.com/bxparks/AceCommon), then print the string
-      to the LED module. This might be the most practical solution on an Arduino
-      platform.
-    * In any case, I think the code for printing floating point numbers should
-      not go into the `NumberWriter` class, but into a new class called
-      something like `FloatWriter`. The `FloatWriter` class could pull in a
-      `NumberWriter` object and build on top of it.
+* The `NumberWriter` class supports limited functionality for floating numbers.
+    * It reuses the algorithm implemented by `Print::print(double x, int
+      digits = 2)` which prints a number to 2 decimal places after the decimal
+      point by default.
+    * `print()` does not support scientific notation (e.g. "1.3e-7".
+    * `print()` underflows small numbers to "0.00".
+    * `print()` overflows for numbers larger than about `2^32` (but not
+      exactly). It returns the string `ovf`, which is printed as 3 spaces
+      on an LED module.
+    * Different applications will want to handle overflow errors in different
+      ways (e.g. print "---", "err", or print nothing), so the application
+      should check for overflows before calling `NumberWriter::printFloat()`.
 
 <a name="AlternativeLibraries"></a>
 ## Alternative Libraries

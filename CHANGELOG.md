@@ -1,15 +1,42 @@
 # Changelog
 
 * Unreleased
+* 0.5 (2023-03-16)
+    * `PatternWriter`
+        * Add `writeDecimalPoint()` which writes the decimal point in the
+          *previous* digit from the current cursor.
+        * Retain `setDecimalPointAt()` as an escape hatch for applications with
+          advanced needs.
+    * `NumberWriter`
+        * Add `writeDecimalPoint()` to replace `setDecimalPointAt()`.
+        * Add `writeFloat()` which delegates the floating point conversion to
+          the `Print::print(float x, int digits = 2)` method that is implemented
+          by the Arduino `Print` class.
+        * Add `writeChar()` which supports a restricted set of ASCII characters,
+          enough to implement `writeFloat()`.
+            * `'0'` to `'9'`, `'-'`, and `'.'`
+            * All others are printed as a space `' '`, including the space
+              character itself.
 * 0.4 (2023-03-15)
     * **Breaking Change**
-        * `PatternWriter` is now stateful and holds the current `pos`.
-        * `PatternWriter::writePattern()` writes a position, and automatically
-          increments.
-        * Various `writeXxxAt()` have been replaced with simpler `writeXxx()`
-          methods.
-        * Added `PatternWriter::home()`, `PatternWriter::clear()`, and
-          `PatternWriter::clearToEnd()`.
+        * `PatternWriter`
+            * `PatternWriter` is now stateful and holds the current `pos`.
+            * `writePattern()` writes the pattern at the current position, and
+              automatically increments.
+            * Various `writeXxxAt()` replaced with simpler `writeXxx()` methods.
+            * Added `PatternWriter::home()`, `PatternWriter::clear()`, and
+              `PatternWriter::clearToEnd()`.
+        * `NumberWriter`
+            * Rename `hexchar_t` to `digit_t`.
+            * Rename `kHexCharXxx` constants to `kDigitXxx`.
+            * Rename `writeHexCharXxxAt()` to `writeDigitXxx()`
+            * Rename `writeDecXxAt()` to `writeDecXx()`
+            * Rename `writeUnsignedDecimalAt()` to `writeUnsignedDecimal()`
+            * Rename `writeSignedDecimalAt()` to `writeSignedDecimal()`
+        * `CharWriter`
+            * Rename `writeCharAt()` to `writeChar()`.
+        * `TemperatureWriter`
+            * Rename `writeXxxAt()` to `writeXxx()`
 * 0.3 (2022-02-02)
     * Upgrade to AceTMI v0.5.
         * Rename `SimpleTmiInterface` to `SimpleTmi1637Interface`.

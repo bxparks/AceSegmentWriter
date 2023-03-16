@@ -121,7 +121,7 @@ class StringWriter {
         // Use the decimal point just after a digit to render the '.' character.
         if (c == '.') {
           if (charWasWritten) {
-            mCharWriter.setDecimalPointAt(pos - 1);
+            mCharWriter.patternWriter().writeDecimalPoint();
           } else {
             mCharWriter.writeChar('.');
             charWasWritten = false;

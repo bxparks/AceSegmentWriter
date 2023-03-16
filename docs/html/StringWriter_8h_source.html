@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AceSegmentWriter
-   &#160;<span id="projectnumber">0.4</span>
+   &#160;<span id="projectnumber">0.5</span>
    </div>
    <div id="projectbrief">Write decimal numbers, hex numbers, temperature, clock digits, characters, and strings to seven segment LED modules</div>
   </td>
@@ -156,7 +156,7 @@ $(function() {
 <div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;        <span class="comment">// Use the decimal point just after a digit to render the &#39;.&#39; character.</span></div>
 <div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;        <span class="keywordflow">if</span> (c == <span class="charliteral">&#39;.&#39;</span>) {</div>
 <div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;          <span class="keywordflow">if</span> (charWasWritten) {</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;            mCharWriter.setDecimalPointAt(pos - 1);</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;            mCharWriter.patternWriter().writeDecimalPoint();</div>
 <div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;          } <span class="keywordflow">else</span> {</div>
 <div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;            mCharWriter.writeChar(<span class="charliteral">&#39;.&#39;</span>);</div>
 <div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;            charWasWritten = <span class="keyword">false</span>;</div>
@@ -181,7 +181,7 @@ $(function() {
 <div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160; </div>
 <div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aclassace__segment_1_1CharWriter_html"><div class="ttname"><a href="classace__segment_1_1CharWriter.html">ace_segment::CharWriter</a></div><div class="ttdoc">The CharWriter supports mapping of an 8-bit character set to segment patterns supported by LedModule.</div><div class="ttdef"><b>Definition:</b> <a href="CharWriter_8h_source.html#l00058">CharWriter.h:58</a></div></div>
-<div class="ttc" id="aclassace__segment_1_1PatternWriter_html"><div class="ttname"><a href="classace__segment_1_1PatternWriter.html">ace_segment::PatternWriter</a></div><div class="ttdoc">Write LED segment patterns to the underlying LedModule.</div><div class="ttdef"><b>Definition:</b> <a href="PatternWriter_8h_source.html#l00108">PatternWriter.h:108</a></div></div>
+<div class="ttc" id="aclassace__segment_1_1PatternWriter_html"><div class="ttname"><a href="classace__segment_1_1PatternWriter.html">ace_segment::PatternWriter</a></div><div class="ttdoc">Write LED segment patterns to the underlying LedModule.</div><div class="ttdef"><b>Definition:</b> <a href="PatternWriter_8h_source.html#l00113">PatternWriter.h:113</a></div></div>
 <div class="ttc" id="aclassace__segment_1_1StringWriter_html"><div class="ttname"><a href="classace__segment_1_1StringWriter.html">ace_segment::StringWriter</a></div><div class="ttdoc">Class that writes out a string, collapsing '.</div><div class="ttdef"><b>Definition:</b> <a href="StringWriter_8h_source.html#l00045">StringWriter.h:45</a></div></div>
 <div class="ttc" id="aclassace__segment_1_1StringWriter_html_a0c5441ce1ce51d9852ae06f480737f37"><div class="ttname"><a href="classace__segment_1_1StringWriter.html#a0c5441ce1ce51d9852ae06f480737f37">ace_segment::StringWriter::home</a></div><div class="ttdeci">void home()</div><div class="ttdoc">Set the cursor to the beginning.</div><div class="ttdef"><b>Definition:</b> <a href="StringWriter_8h_source.html#l00064">StringWriter.h:64</a></div></div>
 <div class="ttc" id="aclassace__segment_1_1StringWriter_html_a1db3ac016159e8ff0b8d5ca009c6f197"><div class="ttname"><a href="classace__segment_1_1StringWriter.html#a1db3ac016159e8ff0b8d5ca009c6f197">ace_segment::StringWriter::StringWriter</a></div><div class="ttdeci">StringWriter(CharWriter&lt; T_LED_MODULE &gt; &amp;charWriter)</div><div class="ttdoc">Constructor.</div><div class="ttdef"><b>Definition:</b> <a href="StringWriter_8h_source.html#l00048">StringWriter.h:48</a></div></div>

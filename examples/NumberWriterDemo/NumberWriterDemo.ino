@@ -14,8 +14,8 @@ using ace_segment::PatternWriter;
 using ace_segment::NumberWriter;
 
 // Replace these with the PIN numbers of your dev board.
-const uint8_t CLK_PIN = A0;
-const uint8_t DIO_PIN = 9;
+const uint8_t CLK_PIN = D5;
+const uint8_t DIO_PIN = D7;
 const uint8_t NUM_DIGITS = 4;
 
 // Many TM1637 LED modules contain 10 nF capacitors on their DIO and CLK lines
@@ -36,13 +36,38 @@ void setup() {
   tmiInterface.begin();
   ledModule.begin();
 
-  // Write "00Cb" hexadecimal number to the LED module.
-  numberWriter.writeHexWord(0x00CB);
-
   ledModule.setBrightness(2);
-
-  ledModule.flush();
 }
 
-void loop() {}
+void loop() {
+  // Write "1234" decimal to the LED module.
+  numberWriter.clear();
+  numberWriter.writeDec4(1234);
+  ledModule.flush();
+  delay(500);
 
+  // Write "-123" decimal to the LED module.
+  numberWriter.clear();
+  numberWriter.writeSignedDecimal(-123);
+  ledModule.flush();
+  delay(500);
+
+  // Write "42", right justified in a box of 3 digits.
+  numberWriter.clear();
+  numberWriter.writeUnsignedDecimal(42, 3);
+  ledModule.flush();
+  delay(500);
+
+  // Write "890A" hexadecimal number to the LED module.
+  numberWriter.clear();
+  numberWriter.writeHexWord(0x890A);
+  ledModule.flush();
+  delay(500);
+
+  // Write "-1.23" floating point number.
+  numberWriter.clear();
+  numberWriter.writeFloat(-1.23);
+  ledModule.flush();
+  delay(500);
+
+}

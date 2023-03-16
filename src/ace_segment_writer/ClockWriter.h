@@ -97,7 +97,7 @@ class ClockWriter {
      * @param state Set to false to turn off the colon.
      */
     void writeColon(bool state = true) {
-      mNumberWriter.setDecimalPointAt(mColonDigit, state);
+      mNumberWriter.patternWriter().setDecimalPointAt(mColonDigit, state);
     }
 
     /** Clear the entire display. */

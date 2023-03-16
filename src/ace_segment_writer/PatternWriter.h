@@ -97,9 +97,14 @@ const uint8_t kPatternP = 0b01110011;
  * classes provide additional functionality on top of this class (e.g.
  * NumberWriter, ClockWriter, TemperatureWriter, CharWriter, StringWriter).
  *
- * This class is stateless and does not contain any virtual functions. If the
- * method calls are made on the PatternWriter object directly, the compiler can
- * optimize away the indirection and call LedModule methods directly.
+ * The class implements a stateful cursor that remembers its current digit
+ * position. A call to `writePattern()` writes to the current position and
+ * automatically increments the position by one. The `home()` and `pos()`
+ * methods allow the cursor to be manipulated.
+ *
+ * This class does not contain any virtual functions. If the method calls are
+ * made on the PatternWriter object directly, the compiler can optimize away the
+ * indirection and call LedModule methods directly.
  *
  * @tparam T_LED_MODULE the class of the underlying LED Module, often LedModule
  *    but other classes with the same generic public methods can be substituted
@@ -161,17 +166,30 @@ class PatternWriter {
     }
 
     /**
+     * Write a decimal point to the digit *previous* to the current position.
+     * This allows floating point numbers to be written according to how they
+     * are represented as a string, e.g. "1.23", means '1', followed by a
+     * decimal point on that digit, then '2', then '3'.
+     */
+    void writeDecimalPoint(bool state = true) {
+      if (mPos == 0) return; // cannot write before start
+      if (mPos > mLedModule.size()) return; // cannot write beyond end
+      mLedModule.setDecimalPointAt(mPos - 1, state);
+    }
+
+    /**
      * Write the decimal point for the pos. Clock LED modules will attach the
      * colon segment to one of the decimal points.
      */
     void setDecimalPointAt(uint8_t pos, bool state = true) {
+      if (pos >= mLedModule.size()) return;
       mLedModule.setDecimalPointAt(pos, state);
     }
 
-    /** Clear the entire display. */
+    /** Clear the entire display, set the cursor to `home()`. */
     void clear() { home(); clearToEnd(); }
 
-    /** Clear the display from `pos` to the end. */
+    /** Clear the display from `pos` to the end, set the cursor to `home()`. */
     void clearToEnd() {
       for (uint8_t i = mPos; i < mLedModule.size(); ++i) {
         mLedModule.setPatternAt(i, 0);

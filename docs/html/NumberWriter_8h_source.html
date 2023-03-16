@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AceSegmentWriter
-   &#160;<span id="projectnumber">0.4</span>
+   &#160;<span id="projectnumber">0.5</span>
    </div>
    <div id="projectbrief">Write decimal numbers, hex numbers, temperature, clock digits, characters, and strings to seven segment LED modules</div>
   </td>
@@ -99,7 +99,7 @@ $(function() {
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#define ACE_SEGMENT_WRITER_NUMBER_WRITER_H</span></div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; </div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;stdint.h&gt;</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;AceCommon.h&gt;</span> <span class="comment">// decToBcd()</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;AceCommon.h&gt;</span> <span class="comment">// PrintStr&lt;N&gt;</span></div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &quot;PatternWriter.h&quot;</span></div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; </div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="keyword">namespace </span>ace_segment {</div>
@@ -219,95 +219,121 @@ $(function() {
 <div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;      <span class="keywordflow">return</span> writeDigitsInsideBox(&amp;buf[start], bufSize - start, boxSize);</div>
 <div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;    }</div>
 <div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160; </div>
-<div class="line"><a name="l00227"></a><span class="lineno"><a class="line" href="classace__segment_1_1NumberWriter.html#a133423318fbde8f97e6290e759fd14ec">  227</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classace__segment_1_1NumberWriter.html#a133423318fbde8f97e6290e759fd14ec">setDecimalPointAt</a>(uint8_t pos, <span class="keywordtype">bool</span> state = <span class="keyword">true</span>) {</div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;      mPatternWriter.setDecimalPointAt(pos, state);</div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;    }</div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160; </div>
-<div class="line"><a name="l00232"></a><span class="lineno"><a class="line" href="classace__segment_1_1NumberWriter.html#a853dfc1ce8c791a7c1fd145678c3b56a">  232</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classace__segment_1_1NumberWriter.html#a853dfc1ce8c791a7c1fd145678c3b56a">clear</a>() { mPatternWriter.clear(); }</div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160; </div>
-<div class="line"><a name="l00239"></a><span class="lineno"><a class="line" href="classace__segment_1_1NumberWriter.html#a5c23d1fa18278c28f84fbb8cf315537d">  239</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classace__segment_1_1NumberWriter.html#a5c23d1fa18278c28f84fbb8cf315537d">clearToEnd</a>() { mPatternWriter.clearToEnd(); }</div>
-<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160; </div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;  <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;    <span class="comment">// disable copy-constructor and assignment operator</span></div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;    <a class="code" href="classace__segment_1_1NumberWriter.html#a9355b57dc273757d2417435d1a24b202">NumberWriter</a>(<span class="keyword">const</span> <a class="code" href="classace__segment_1_1NumberWriter.html">NumberWriter</a>&amp;) = <span class="keyword">delete</span>;</div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;    <a class="code" href="classace__segment_1_1NumberWriter.html">NumberWriter</a>&amp; operator=(<span class="keyword">const</span> <a class="code" href="classace__segment_1_1NumberWriter.html">NumberWriter</a>&amp;) = <span class="keyword">delete</span>;</div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160; </div>
-<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;    <span class="keywordtype">void</span> write(digit_t c) {</div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;      uint8_t pattern = pgm_read_byte(&amp;kDigitPatterns[(uint8_t) c]);</div>
-<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;      mPatternWriter.writePattern(pattern);</div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;    }</div>
-<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160; </div>
-<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;    <span class="keywordtype">void</span> writeInternalDigits(<span class="keyword">const</span> digit_t s[], uint8_t len) {</div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;      <span class="keywordflow">for</span> (uint8_t i = 0; i &lt; len; ++i) {</div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;        write(s[i]);</div>
-<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;      }</div>
-<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;    }</div>
-<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160; </div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;    uint8_t writeDigitsInsideBox(</div>
-<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;        <span class="keyword">const</span> digit_t s[], uint8_t len, int8_t boxSize) {</div>
-<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160; </div>
-<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;      uint8_t absBoxSize = (boxSize &lt; 0) ? -boxSize : boxSize;</div>
+<div class="line"><a name="l00231"></a><span class="lineno"><a class="line" href="classace__segment_1_1NumberWriter.html#a018cc6fe5920c8b48ae407a3de5b666e">  231</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classace__segment_1_1NumberWriter.html#a018cc6fe5920c8b48ae407a3de5b666e">writeFloat</a>(<span class="keywordtype">float</span> x, uint8_t prec = 2) {</div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;      ace_common::PrintStr&lt;16&gt; buf;</div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;      buf.print(x, prec);</div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;      <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keywordtype">char</span> *s = buf.cstr(); *s != <span class="charliteral">&#39;\0&#39;</span>; s++) {</div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;        <a class="code" href="classace__segment_1_1NumberWriter.html#ae52686a4ba135d89947c1e57912b1dd3">writeChar</a>(*s);</div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;      }</div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;    }</div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160; </div>
+<div class="line"><a name="l00246"></a><span class="lineno"><a class="line" href="classace__segment_1_1NumberWriter.html#ae52686a4ba135d89947c1e57912b1dd3">  246</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classace__segment_1_1NumberWriter.html#ae52686a4ba135d89947c1e57912b1dd3">writeChar</a>(<span class="keywordtype">char</span> c) {</div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;      <span class="keywordflow">if</span> (c == <span class="charliteral">&#39;.&#39;</span>) {</div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;        <a class="code" href="classace__segment_1_1NumberWriter.html#adfaff94a73fc34edf3df757e79bcd3c4">writeDecimalPoint</a>();</div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;      } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;        uint8_t d;</div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;        <span class="keywordflow">if</span> (c &gt;= <span class="charliteral">&#39;0&#39;</span> &amp;&amp; c &lt;= <span class="charliteral">&#39;9&#39;</span>) {</div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;          d = c - <span class="charliteral">&#39;0&#39;</span>;</div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;        } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (c == <span class="charliteral">&#39;-&#39;</span>) {</div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;          d = kDigitMinus;</div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;        } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;          d = kDigitSpace;</div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;        }</div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;        <a class="code" href="classace__segment_1_1NumberWriter.html#ac6995bd7fbe9ffdd4bb2d3dd137c4542">writeDigit</a>(d);</div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;      }</div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;    }</div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160; </div>
+<div class="line"><a name="l00267"></a><span class="lineno"><a class="line" href="classace__segment_1_1NumberWriter.html#adfaff94a73fc34edf3df757e79bcd3c4">  267</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classace__segment_1_1NumberWriter.html#adfaff94a73fc34edf3df757e79bcd3c4">writeDecimalPoint</a>(<span class="keywordtype">bool</span> state = <span class="keyword">true</span>) {</div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;      mPatternWriter.writeDecimalPoint(state);</div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;    }</div>
 <div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160; </div>
-<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;      <span class="comment">// if the box is too small, print normally</span></div>
-<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;      <span class="keywordflow">if</span> (len &gt;= absBoxSize) {</div>
-<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;        writeInternalDigits(s, len);</div>
-<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;        <span class="keywordflow">return</span> len;</div>
-<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;      }</div>
-<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160; </div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;      <span class="comment">// Print either left justified or right justified inside box</span></div>
-<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;      uint8_t padSize = absBoxSize - len;</div>
-<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;      <span class="keywordflow">if</span> (boxSize &lt; 0) {</div>
-<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;        <span class="comment">// left justified</span></div>
-<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;        writeInternalDigits(s, len);</div>
-<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;        <span class="keywordflow">while</span> (padSize--) write(kDigitSpace);</div>
-<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;      } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;        <span class="comment">// right justified</span></div>
-<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;        <span class="keywordflow">while</span> (padSize--) write(kDigitSpace);</div>
-<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;        writeInternalDigits(s, len);</div>
-<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;      }</div>
-<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160; </div>
-<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;      <span class="keywordflow">return</span> absBoxSize;</div>
+<div class="line"><a name="l00272"></a><span class="lineno"><a class="line" href="classace__segment_1_1NumberWriter.html#a853dfc1ce8c791a7c1fd145678c3b56a">  272</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classace__segment_1_1NumberWriter.html#a853dfc1ce8c791a7c1fd145678c3b56a">clear</a>() { mPatternWriter.clear(); }</div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160; </div>
+<div class="line"><a name="l00279"></a><span class="lineno"><a class="line" href="classace__segment_1_1NumberWriter.html#a5c23d1fa18278c28f84fbb8cf315537d">  279</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classace__segment_1_1NumberWriter.html#a5c23d1fa18278c28f84fbb8cf315537d">clearToEnd</a>() { mPatternWriter.clearToEnd(); }</div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160; </div>
+<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;  <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;    <span class="comment">// disable copy-constructor and assignment operator</span></div>
+<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;    <a class="code" href="classace__segment_1_1NumberWriter.html#a9355b57dc273757d2417435d1a24b202">NumberWriter</a>(<span class="keyword">const</span> <a class="code" href="classace__segment_1_1NumberWriter.html">NumberWriter</a>&amp;) = <span class="keyword">delete</span>;</div>
+<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;    <a class="code" href="classace__segment_1_1NumberWriter.html">NumberWriter</a>&amp; operator=(<span class="keyword">const</span> <a class="code" href="classace__segment_1_1NumberWriter.html">NumberWriter</a>&amp;) = <span class="keyword">delete</span>;</div>
+<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160; </div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;    <span class="keywordtype">void</span> write(digit_t c) {</div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;      uint8_t pattern = pgm_read_byte(&amp;kDigitPatterns[(uint8_t) c]);</div>
+<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;      mPatternWriter.writePattern(pattern);</div>
 <div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;    }</div>
 <div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160; </div>
-<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;    <span class="keyword">static</span> uint8_t toDecimal(uint16_t num, digit_t buf[], uint8_t bufSize) {</div>
-<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;      uint8_t pos = bufSize;</div>
-<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;      <span class="keywordflow">while</span> (<span class="keyword">true</span>) {</div>
-<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;        <span class="keywordflow">if</span> (num &lt; 10) {</div>
-<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;          buf[--pos] = num;</div>
-<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;          <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;        }</div>
-<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;        uint16_t quot = num / 10;</div>
-<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;        buf[--pos] = num - quot * 10;</div>
-<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;        num = quot;</div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;    <span class="keywordtype">void</span> writeInternalDigits(<span class="keyword">const</span> digit_t s[], uint8_t len) {</div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;      <span class="keywordflow">for</span> (uint8_t i = 0; i &lt; len; ++i) {</div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;        write(s[i]);</div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;      }</div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;    }</div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160; </div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;    uint8_t writeDigitsInsideBox(</div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;        <span class="keyword">const</span> digit_t s[], uint8_t len, int8_t boxSize) {</div>
+<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160; </div>
+<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;      uint8_t absBoxSize = (boxSize &lt; 0) ? -boxSize : boxSize;</div>
+<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160; </div>
+<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;      <span class="comment">// if the box is too small, print normally</span></div>
+<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;      <span class="keywordflow">if</span> (len &gt;= absBoxSize) {</div>
+<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;        writeInternalDigits(s, len);</div>
+<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;        <span class="keywordflow">return</span> len;</div>
 <div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;      }</div>
-<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;      <span class="keywordflow">return</span> pos;</div>
-<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;    }</div>
-<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160; </div>
-<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;  <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;    PatternWriter&lt;T_LED_MODULE&gt; &amp;mPatternWriter;</div>
-<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;};</div>
-<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160; </div>
-<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;}</div>
-<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160; </div>
-<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160; </div>
+<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;      <span class="comment">// Print either left justified or right justified inside box</span></div>
+<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;      uint8_t padSize = absBoxSize - len;</div>
+<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;      <span class="keywordflow">if</span> (boxSize &lt; 0) {</div>
+<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;        <span class="comment">// left justified</span></div>
+<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;        writeInternalDigits(s, len);</div>
+<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;        <span class="keywordflow">while</span> (padSize--) write(kDigitSpace);</div>
+<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;      } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;        <span class="comment">// right justified</span></div>
+<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;        <span class="keywordflow">while</span> (padSize--) write(kDigitSpace);</div>
+<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;        writeInternalDigits(s, len);</div>
+<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;      }</div>
+<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160; </div>
+<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;      <span class="keywordflow">return</span> absBoxSize;</div>
+<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;    }</div>
+<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160; </div>
+<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;    <span class="keyword">static</span> uint8_t toDecimal(uint16_t num, digit_t buf[], uint8_t bufSize) {</div>
+<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;      uint8_t pos = bufSize;</div>
+<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;      <span class="keywordflow">while</span> (<span class="keyword">true</span>) {</div>
+<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;        <span class="keywordflow">if</span> (num &lt; 10) {</div>
+<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;          buf[--pos] = num;</div>
+<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;          <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;        }</div>
+<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;        uint16_t quot = num / 10;</div>
+<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;        buf[--pos] = num - quot * 10;</div>
+<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;        num = quot;</div>
+<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;      }</div>
+<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;      <span class="keywordflow">return</span> pos;</div>
+<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;    }</div>
+<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160; </div>
+<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;  <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;    PatternWriter&lt;T_LED_MODULE&gt; &amp;mPatternWriter;</div>
+<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;};</div>
+<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160; </div>
+<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;}</div>
+<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160; </div>
+<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aclassace__segment_1_1NumberWriter_html"><div class="ttname"><a href="classace__segment_1_1NumberWriter.html">ace_segment::NumberWriter</a></div><div class="ttdoc">The NumberWriter supports converting decimal and hexadecimal numbers to segment patterns expected by ...</div><div class="ttdef"><b>Definition:</b> <a href="NumberWriter_8h_source.html#l00072">NumberWriter.h:72</a></div></div>
-<div class="ttc" id="aclassace__segment_1_1NumberWriter_html_a133423318fbde8f97e6290e759fd14ec"><div class="ttname"><a href="classace__segment_1_1NumberWriter.html#a133423318fbde8f97e6290e759fd14ec">ace_segment::NumberWriter::setDecimalPointAt</a></div><div class="ttdeci">void setDecimalPointAt(uint8_t pos, bool state=true)</div><div class="ttdoc">Write the decimal point for the pos.</div><div class="ttdef"><b>Definition:</b> <a href="NumberWriter_8h_source.html#l00227">NumberWriter.h:227</a></div></div>
+<div class="ttc" id="aclassace__segment_1_1NumberWriter_html_a018cc6fe5920c8b48ae407a3de5b666e"><div class="ttname"><a href="classace__segment_1_1NumberWriter.html#a018cc6fe5920c8b48ae407a3de5b666e">ace_segment::NumberWriter::writeFloat</a></div><div class="ttdeci">void writeFloat(float x, uint8_t prec=2)</div><div class="ttdoc">Write a float using the same format as the Print class.</div><div class="ttdef"><b>Definition:</b> <a href="NumberWriter_8h_source.html#l00231">NumberWriter.h:231</a></div></div>
 <div class="ttc" id="aclassace__segment_1_1NumberWriter_html_a1ac01369eceb0cd83bdd306db231c7ed"><div class="ttname"><a href="classace__segment_1_1NumberWriter.html#a1ac01369eceb0cd83bdd306db231c7ed">ace_segment::NumberWriter::writeDec2</a></div><div class="ttdeci">void writeDec2(uint8_t d, uint8_t padPattern=kPattern0)</div><div class="ttdoc">Write a 2-digit decimal number at position digit, right justified with the given padPattern (default ...</div><div class="ttdef"><b>Definition:</b> <a href="NumberWriter_8h_source.html#l00113">NumberWriter.h:113</a></div></div>
 <div class="ttc" id="aclassace__segment_1_1NumberWriter_html_a1e37945ffe31ff57f3f18ad7ededa9b8"><div class="ttname"><a href="classace__segment_1_1NumberWriter.html#a1e37945ffe31ff57f3f18ad7ededa9b8">ace_segment::NumberWriter::writeDigits</a></div><div class="ttdeci">void writeDigits(const digit_t s[], uint8_t len)</div><div class="ttdoc">Write the len hex characters given by s at LED pos.</div><div class="ttdef"><b>Definition:</b> <a href="NumberWriter_8h_source.html#l00098">NumberWriter.h:98</a></div></div>
 <div class="ttc" id="aclassace__segment_1_1NumberWriter_html_a4ca5e12add7c4f5a867463d924b03d84"><div class="ttname"><a href="classace__segment_1_1NumberWriter.html#a4ca5e12add7c4f5a867463d924b03d84">ace_segment::NumberWriter::patternWriter</a></div><div class="ttdeci">PatternWriter&lt; T_LED_MODULE &gt; &amp; patternWriter()</div><div class="ttdoc">Get the underlying PatternWriter.</div><div class="ttdef"><b>Definition:</b> <a href="NumberWriter_8h_source.html#l00083">NumberWriter.h:83</a></div></div>
-<div class="ttc" id="aclassace__segment_1_1NumberWriter_html_a5c23d1fa18278c28f84fbb8cf315537d"><div class="ttname"><a href="classace__segment_1_1NumberWriter.html#a5c23d1fa18278c28f84fbb8cf315537d">ace_segment::NumberWriter::clearToEnd</a></div><div class="ttdeci">void clearToEnd()</div><div class="ttdoc">Clear the display from the current position to the end.</div><div class="ttdef"><b>Definition:</b> <a href="NumberWriter_8h_source.html#l00239">NumberWriter.h:239</a></div></div>
+<div class="ttc" id="aclassace__segment_1_1NumberWriter_html_a5c23d1fa18278c28f84fbb8cf315537d"><div class="ttname"><a href="classace__segment_1_1NumberWriter.html#a5c23d1fa18278c28f84fbb8cf315537d">ace_segment::NumberWriter::clearToEnd</a></div><div class="ttdeci">void clearToEnd()</div><div class="ttdoc">Clear the display from the current position to the end.</div><div class="ttdef"><b>Definition:</b> <a href="NumberWriter_8h_source.html#l00279">NumberWriter.h:279</a></div></div>
 <div class="ttc" id="aclassace__segment_1_1NumberWriter_html_a6a9aa7449d0b2a8f04fd13c2edf3fb99"><div class="ttname"><a href="classace__segment_1_1NumberWriter.html#a6a9aa7449d0b2a8f04fd13c2edf3fb99">ace_segment::NumberWriter::writeSignedDecimal</a></div><div class="ttdeci">uint8_t writeSignedDecimal(int16_t num, int8_t boxSize=0)</div><div class="ttdoc">Same as writeUnsignedDecimal() but prepends a '-' sign if negative.</div><div class="ttdef"><b>Definition:</b> <a href="NumberWriter_8h_source.html#l00208">NumberWriter.h:208</a></div></div>
 <div class="ttc" id="aclassace__segment_1_1NumberWriter_html_a72e61d11cc8183957bfa8b989db0bea6"><div class="ttname"><a href="classace__segment_1_1NumberWriter.html#a72e61d11cc8183957bfa8b989db0bea6">ace_segment::NumberWriter::writeUnsignedDecimal</a></div><div class="ttdeci">uint8_t writeUnsignedDecimal(uint16_t num, int8_t boxSize=0)</div><div class="ttdoc">Write the 16-bit unsigned number num as a decimal number at pos.</div><div class="ttdef"><b>Definition:</b> <a href="NumberWriter_8h_source.html#l00199">NumberWriter.h:199</a></div></div>
-<div class="ttc" id="aclassace__segment_1_1NumberWriter_html_a853dfc1ce8c791a7c1fd145678c3b56a"><div class="ttname"><a href="classace__segment_1_1NumberWriter.html#a853dfc1ce8c791a7c1fd145678c3b56a">ace_segment::NumberWriter::clear</a></div><div class="ttdeci">void clear()</div><div class="ttdoc">Clear the entire display.</div><div class="ttdef"><b>Definition:</b> <a href="NumberWriter_8h_source.html#l00232">NumberWriter.h:232</a></div></div>
+<div class="ttc" id="aclassace__segment_1_1NumberWriter_html_a853dfc1ce8c791a7c1fd145678c3b56a"><div class="ttname"><a href="classace__segment_1_1NumberWriter.html#a853dfc1ce8c791a7c1fd145678c3b56a">ace_segment::NumberWriter::clear</a></div><div class="ttdeci">void clear()</div><div class="ttdoc">Clear the entire display.</div><div class="ttdef"><b>Definition:</b> <a href="NumberWriter_8h_source.html#l00272">NumberWriter.h:272</a></div></div>
 <div class="ttc" id="aclassace__segment_1_1NumberWriter_html_a9355b57dc273757d2417435d1a24b202"><div class="ttname"><a href="classace__segment_1_1NumberWriter.html#a9355b57dc273757d2417435d1a24b202">ace_segment::NumberWriter::NumberWriter</a></div><div class="ttdeci">NumberWriter(PatternWriter&lt; T_LED_MODULE &gt; &amp;patternWriter)</div><div class="ttdoc">Constructor.</div><div class="ttdef"><b>Definition:</b> <a href="NumberWriter_8h_source.html#l00075">NumberWriter.h:75</a></div></div>
 <div class="ttc" id="aclassace__segment_1_1NumberWriter_html_ab322593037e120b1f1dc62efcee8458c"><div class="ttname"><a href="classace__segment_1_1NumberWriter.html#ab322593037e120b1f1dc62efcee8458c">ace_segment::NumberWriter::ledModule</a></div><div class="ttdeci">T_LED_MODULE &amp; ledModule()</div><div class="ttdoc">Get the underlying LedModule.</div><div class="ttdef"><b>Definition:</b> <a href="NumberWriter_8h_source.html#l00080">NumberWriter.h:80</a></div></div>
 <div class="ttc" id="aclassace__segment_1_1NumberWriter_html_ab3b4e13e74f00fe28d69c4951613e506"><div class="ttname"><a href="classace__segment_1_1NumberWriter.html#ab3b4e13e74f00fe28d69c4951613e506">ace_segment::NumberWriter::writeHexWord</a></div><div class="ttdeci">void writeHexWord(uint16_t w)</div><div class="ttdoc">Write the 4 digit (16-bit) hexadecimal word at pos.</div><div class="ttdef"><b>Definition:</b> <a href="NumberWriter_8h_source.html#l00177">NumberWriter.h:177</a></div></div>
 <div class="ttc" id="aclassace__segment_1_1NumberWriter_html_ac6995bd7fbe9ffdd4bb2d3dd137c4542"><div class="ttname"><a href="classace__segment_1_1NumberWriter.html#ac6995bd7fbe9ffdd4bb2d3dd137c4542">ace_segment::NumberWriter::writeDigit</a></div><div class="ttdeci">void writeDigit(digit_t c)</div><div class="ttdoc">Write the digit c at position pos.</div><div class="ttdef"><b>Definition:</b> <a href="NumberWriter_8h_source.html#l00093">NumberWriter.h:93</a></div></div>
 <div class="ttc" id="aclassace__segment_1_1NumberWriter_html_ac89b925ea91978acf262a0bae00d144f"><div class="ttname"><a href="classace__segment_1_1NumberWriter.html#ac89b925ea91978acf262a0bae00d144f">ace_segment::NumberWriter::writeHexByte</a></div><div class="ttdeci">void writeHexByte(uint8_t b)</div><div class="ttdoc">Write the 2-digit (8-bit) hexadecimal byte 'b' at pos.</div><div class="ttdef"><b>Definition:</b> <a href="NumberWriter_8h_source.html#l00169">NumberWriter.h:169</a></div></div>
 <div class="ttc" id="aclassace__segment_1_1NumberWriter_html_adf3534e26a3273369527a7ed4f26dcd4"><div class="ttname"><a href="classace__segment_1_1NumberWriter.html#adf3534e26a3273369527a7ed4f26dcd4">ace_segment::NumberWriter::writeDec4</a></div><div class="ttdeci">void writeDec4(uint16_t dd, uint8_t padPattern=kPattern0)</div><div class="ttdoc">Write the 4 digit decimal number dd at pos, right justified, padded with a the padPattern (default kP...</div><div class="ttdef"><b>Definition:</b> <a href="NumberWriter_8h_source.html#l00134">NumberWriter.h:134</a></div></div>
+<div class="ttc" id="aclassace__segment_1_1NumberWriter_html_adfaff94a73fc34edf3df757e79bcd3c4"><div class="ttname"><a href="classace__segment_1_1NumberWriter.html#adfaff94a73fc34edf3df757e79bcd3c4">ace_segment::NumberWriter::writeDecimalPoint</a></div><div class="ttdeci">void writeDecimalPoint(bool state=true)</div><div class="ttdoc">Write the decimal point at the digit before the current position.</div><div class="ttdef"><b>Definition:</b> <a href="NumberWriter_8h_source.html#l00267">NumberWriter.h:267</a></div></div>
+<div class="ttc" id="aclassace__segment_1_1NumberWriter_html_ae52686a4ba135d89947c1e57912b1dd3"><div class="ttname"><a href="classace__segment_1_1NumberWriter.html#ae52686a4ba135d89947c1e57912b1dd3">ace_segment::NumberWriter::writeChar</a></div><div class="ttdeci">void writeChar(char c)</div><div class="ttdoc">Write a limited set of ASCII characters, enough to support floating point numbers without scientific ...</div><div class="ttdef"><b>Definition:</b> <a href="NumberWriter_8h_source.html#l00246">NumberWriter.h:246</a></div></div>
 <div class="ttc" id="aclassace__segment_1_1NumberWriter_html_afedbf7c3996fb623489431463ab947dd"><div class="ttname"><a href="classace__segment_1_1NumberWriter.html#afedbf7c3996fb623489431463ab947dd">ace_segment::NumberWriter::home</a></div><div class="ttdeci">void home()</div><div class="ttdoc">Reset cursor to home.</div><div class="ttdef"><b>Definition:</b> <a href="NumberWriter_8h_source.html#l00086">NumberWriter.h:86</a></div></div>
 <div class="ttc" id="aclassace__segment_1_1NumberWriter_html_aff9921e27ce786726658840b9ab74a48"><div class="ttname"><a href="classace__segment_1_1NumberWriter.html#aff9921e27ce786726658840b9ab74a48">ace_segment::NumberWriter::writeBcd</a></div><div class="ttdeci">void writeBcd(uint8_t bcd)</div><div class="ttdoc">Write a 2-digit BCD number at position, which involves just printing the number as a hexadecimal numb...</div><div class="ttdef"><b>Definition:</b> <a href="NumberWriter_8h_source.html#l00159">NumberWriter.h:159</a></div></div>
-<div class="ttc" id="aclassace__segment_1_1PatternWriter_html"><div class="ttname"><a href="classace__segment_1_1PatternWriter.html">ace_segment::PatternWriter</a></div><div class="ttdoc">Write LED segment patterns to the underlying LedModule.</div><div class="ttdef"><b>Definition:</b> <a href="PatternWriter_8h_source.html#l00108">PatternWriter.h:108</a></div></div>
+<div class="ttc" id="aclassace__segment_1_1PatternWriter_html"><div class="ttname"><a href="classace__segment_1_1PatternWriter.html">ace_segment::PatternWriter</a></div><div class="ttdoc">Write LED segment patterns to the underlying LedModule.</div><div class="ttdef"><b>Definition:</b> <a href="PatternWriter_8h_source.html#l00113">PatternWriter.h:113</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AceSegmentWriter
-   &#160;<span id="projectnumber">0.4</span>
+   &#160;<span id="projectnumber">0.5</span>
    </div>
    <div id="projectbrief">Write decimal numbers, hex numbers, temperature, clock digits, characters, and strings to seven segment LED modules</div>
   </td>
@@ -129,9 +129,15 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__segment_1_1NumberWriter.html#a6a9aa7449d0b2a8f04fd13c2edf3fb99">writeSignedDecimal</a> (int16_t num, int8_t boxSize=0)</td></tr>
 <tr class="memdesc:a6a9aa7449d0b2a8f04fd13c2edf3fb99"><td class="mdescLeft">&#160;</td><td class="mdescRight">Same as <a class="el" href="classace__segment_1_1NumberWriter.html#a72e61d11cc8183957bfa8b989db0bea6" title="Write the 16-bit unsigned number num as a decimal number at pos.">writeUnsignedDecimal()</a> but prepends a '-' sign if negative. <br /></td></tr>
 <tr class="separator:a6a9aa7449d0b2a8f04fd13c2edf3fb99"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a133423318fbde8f97e6290e759fd14ec"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__segment_1_1NumberWriter.html#a133423318fbde8f97e6290e759fd14ec">setDecimalPointAt</a> (uint8_t pos, bool state=true)</td></tr>
-<tr class="memdesc:a133423318fbde8f97e6290e759fd14ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write the decimal point for the pos.  <a href="classace__segment_1_1NumberWriter.html#a133423318fbde8f97e6290e759fd14ec">More...</a><br /></td></tr>
-<tr class="separator:a133423318fbde8f97e6290e759fd14ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a018cc6fe5920c8b48ae407a3de5b666e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__segment_1_1NumberWriter.html#a018cc6fe5920c8b48ae407a3de5b666e">writeFloat</a> (float x, uint8_t prec=2)</td></tr>
+<tr class="memdesc:a018cc6fe5920c8b48ae407a3de5b666e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write a float using the same format as the Print class.  <a href="classace__segment_1_1NumberWriter.html#a018cc6fe5920c8b48ae407a3de5b666e">More...</a><br /></td></tr>
+<tr class="separator:a018cc6fe5920c8b48ae407a3de5b666e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae52686a4ba135d89947c1e57912b1dd3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__segment_1_1NumberWriter.html#ae52686a4ba135d89947c1e57912b1dd3">writeChar</a> (char c)</td></tr>
+<tr class="memdesc:ae52686a4ba135d89947c1e57912b1dd3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write a limited set of ASCII characters, enough to support floating point numbers without scientific notation.  <a href="classace__segment_1_1NumberWriter.html#ae52686a4ba135d89947c1e57912b1dd3">More...</a><br /></td></tr>
+<tr class="separator:ae52686a4ba135d89947c1e57912b1dd3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adfaff94a73fc34edf3df757e79bcd3c4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__segment_1_1NumberWriter.html#adfaff94a73fc34edf3df757e79bcd3c4">writeDecimalPoint</a> (bool state=true)</td></tr>
+<tr class="memdesc:adfaff94a73fc34edf3df757e79bcd3c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write the decimal point at the digit before the current position.  <a href="classace__segment_1_1NumberWriter.html#adfaff94a73fc34edf3df757e79bcd3c4">More...</a><br /></td></tr>
+<tr class="separator:adfaff94a73fc34edf3df757e79bcd3c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a853dfc1ce8c791a7c1fd145678c3b56a"><td class="memItemLeft" align="right" valign="top"><a id="a853dfc1ce8c791a7c1fd145678c3b56a"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__segment_1_1NumberWriter.html#a853dfc1ce8c791a7c1fd145678c3b56a">clear</a> ()</td></tr>
 <tr class="memdesc:a853dfc1ce8c791a7c1fd145678c3b56a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear the entire display. <br /></td></tr>
@@ -183,50 +189,7 @@ template&lt;typename T_LED_MODULE &gt; </div>
 <p>Clear the display from the current position to the end. </p>
 <p>Useful after calling <a class="el" href="classace__segment_1_1NumberWriter.html#a6a9aa7449d0b2a8f04fd13c2edf3fb99" title="Same as writeUnsignedDecimal() but prepends a &#39;-&#39; sign if negative.">writeSignedDecimal()</a> and <a class="el" href="classace__segment_1_1NumberWriter.html#a72e61d11cc8183957bfa8b989db0bea6" title="Write the 16-bit unsigned number num as a decimal number at pos.">writeUnsignedDecimal()</a> which prints a variable number of digits. </p>
 
-<p class="definition">Definition at line <a class="el" href="NumberWriter_8h_source.html#l00239">239</a> of file <a class="el" href="NumberWriter_8h_source.html">NumberWriter.h</a>.</p>
-
-</div>
-</div>
-<a id="a133423318fbde8f97e6290e759fd14ec"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a133423318fbde8f97e6290e759fd14ec">&#9670;&nbsp;</a></span>setDecimalPointAt()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T_LED_MODULE &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void <a class="el" href="classace__segment_1_1NumberWriter.html">ace_segment::NumberWriter</a>&lt; T_LED_MODULE &gt;::setDecimalPointAt </td>
-          <td>(</td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>pos</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>state</em> = <code>true</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Write the decimal point for the pos. </p>
-<p>Clock LED modules will attach the colon segment to one of the decimal points. </p>
-
-<p class="definition">Definition at line <a class="el" href="NumberWriter_8h_source.html#l00227">227</a> of file <a class="el" href="NumberWriter_8h_source.html">NumberWriter.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="NumberWriter_8h_source.html#l00279">279</a> of file <a class="el" href="NumberWriter_8h_source.html">NumberWriter.h</a>.</p>
 
 </div>
 </div>
@@ -260,6 +223,39 @@ template&lt;typename T_LED_MODULE &gt; </div>
 <p>For example, 0x12 is printed as "12", but 0x1A is printed as "1 ". </p>
 
 <p class="definition">Definition at line <a class="el" href="NumberWriter_8h_source.html#l00159">159</a> of file <a class="el" href="NumberWriter_8h_source.html">NumberWriter.h</a>.</p>
+
+</div>
+</div>
+<a id="ae52686a4ba135d89947c1e57912b1dd3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae52686a4ba135d89947c1e57912b1dd3">&#9670;&nbsp;</a></span>writeChar()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T_LED_MODULE &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classace__segment_1_1NumberWriter.html">ace_segment::NumberWriter</a>&lt; T_LED_MODULE &gt;::writeChar </td>
+          <td>(</td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>c</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Write a limited set of ASCII characters, enough to support floating point numbers without scientific notation. </p>
+<p>Supports '0'-'9', '.', and '-'. Everything else is printed as a space ' ', including the space character itself. The period character '.' triggers a call to <a class="el" href="classace__segment_1_1NumberWriter.html#adfaff94a73fc34edf3df757e79bcd3c4" title="Write the decimal point at the digit before the current position.">writeDecimalPoint()</a> which is usually the desired behavior. </p>
+
+<p class="definition">Definition at line <a class="el" href="NumberWriter_8h_source.html#l00246">246</a> of file <a class="el" href="NumberWriter_8h_source.html">NumberWriter.h</a>.</p>
 
 </div>
 </div>
@@ -356,6 +352,39 @@ template&lt;typename T_LED_MODULE &gt; </div>
 
 </div>
 </div>
+<a id="adfaff94a73fc34edf3df757e79bcd3c4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adfaff94a73fc34edf3df757e79bcd3c4">&#9670;&nbsp;</a></span>writeDecimalPoint()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T_LED_MODULE &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classace__segment_1_1NumberWriter.html">ace_segment::NumberWriter</a>&lt; T_LED_MODULE &gt;::writeDecimalPoint </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>state</em> = <code>true</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Write the decimal point at the digit before the current position. </p>
+<p>If this is not sufficient, applications can call the lower level PatternWriter::setDecimalPointAt(pos, state) method for more control. </p>
+
+<p class="definition">Definition at line <a class="el" href="NumberWriter_8h_source.html#l00267">267</a> of file <a class="el" href="NumberWriter_8h_source.html">NumberWriter.h</a>.</p>
+
+</div>
+</div>
 <a id="ac6995bd7fbe9ffdd4bb2d3dd137c4542"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac6995bd7fbe9ffdd4bb2d3dd137c4542">&#9670;&nbsp;</a></span>writeDigit()</h2>
 
@@ -386,6 +415,56 @@ template&lt;typename T_LED_MODULE &gt; </div>
 <p>If <code>c</code> falls outside the valid range of the kDigitPatterns set, a <code>kDigitSpace</code> character is printed instead. </p>
 
 <p class="definition">Definition at line <a class="el" href="NumberWriter_8h_source.html#l00093">93</a> of file <a class="el" href="NumberWriter_8h_source.html">NumberWriter.h</a>.</p>
+
+</div>
+</div>
+<a id="a018cc6fe5920c8b48ae407a3de5b666e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a018cc6fe5920c8b48ae407a3de5b666e">&#9670;&nbsp;</a></span>writeFloat()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T_LED_MODULE &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classace__segment_1_1NumberWriter.html">ace_segment::NumberWriter</a>&lt; T_LED_MODULE &gt;::writeFloat </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>prec</em> = <code>2</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Write a float using the same format as the Print class. </p>
+<p>Scientific notation (e.g. "1.3e8") is not supported, and the largest floating point number seems to be about 2^32 (but not exactly).</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">x</td><td>floating point number </td></tr>
+    <tr><td class="paramname">prec</td><td>number of digits after the decimal point, default 2 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="NumberWriter_8h_source.html#l00231">231</a> of file <a class="el" href="NumberWriter_8h_source.html">NumberWriter.h</a>.</p>
 
 </div>
 </div>

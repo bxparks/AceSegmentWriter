@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AceSegmentWriter
-   &#160;<span id="projectnumber">0.4</span>
+   &#160;<span id="projectnumber">0.5</span>
    </div>
    <div id="projectbrief">Write decimal numbers, hex numbers, temperature, clock digits, characters, and strings to seven segment LED modules</div>
   </td>
@@ -138,7 +138,7 @@ $(function() {
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    }</div>
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160; </div>
 <div class="line"><a name="l00099"></a><span class="lineno"><a class="line" href="classace__segment_1_1ClockWriter.html#ac22d6c6d2db9f60adc93331569e4ba0d">   99</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classace__segment_1_1ClockWriter.html#ac22d6c6d2db9f60adc93331569e4ba0d">writeColon</a>(<span class="keywordtype">bool</span> state = <span class="keyword">true</span>) {</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;      mNumberWriter.setDecimalPointAt(mColonDigit, state);</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;      mNumberWriter.patternWriter().setDecimalPointAt(mColonDigit, state);</div>
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    }</div>
 <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160; </div>
 <div class="line"><a name="l00104"></a><span class="lineno"><a class="line" href="classace__segment_1_1ClockWriter.html#a02255e3f02578ace9d13592b7ada20c0">  104</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classace__segment_1_1ClockWriter.html#a02255e3f02578ace9d13592b7ada20c0">clear</a>() { mNumberWriter.clear(); }</div>
@@ -169,7 +169,7 @@ $(function() {
 <div class="ttc" id="aclassace__segment_1_1ClockWriter_html_ad6449a0cf53bf70b2f3b27507cd62229"><div class="ttname"><a href="classace__segment_1_1ClockWriter.html#ad6449a0cf53bf70b2f3b27507cd62229">ace_segment::ClockWriter::home</a></div><div class="ttdeci">void home()</div><div class="ttdoc">Reset cursor to home.</div><div class="ttdef"><b>Definition:</b> <a href="ClockWriter_8h_source.html#l00070">ClockWriter.h:70</a></div></div>
 <div class="ttc" id="aclassace__segment_1_1ClockWriter_html_ad8946a14056fb0db7d109ae09308d00a"><div class="ttname"><a href="classace__segment_1_1ClockWriter.html#ad8946a14056fb0db7d109ae09308d00a">ace_segment::ClockWriter::ledModule</a></div><div class="ttdeci">T_LED_MODULE &amp; ledModule()</div><div class="ttdoc">Get the underlying LedModule.</div><div class="ttdef"><b>Definition:</b> <a href="ClockWriter_8h_source.html#l00059">ClockWriter.h:59</a></div></div>
 <div class="ttc" id="aclassace__segment_1_1NumberWriter_html"><div class="ttname"><a href="classace__segment_1_1NumberWriter.html">ace_segment::NumberWriter</a></div><div class="ttdoc">The NumberWriter supports converting decimal and hexadecimal numbers to segment patterns expected by ...</div><div class="ttdef"><b>Definition:</b> <a href="NumberWriter_8h_source.html#l00072">NumberWriter.h:72</a></div></div>
-<div class="ttc" id="aclassace__segment_1_1PatternWriter_html"><div class="ttname"><a href="classace__segment_1_1PatternWriter.html">ace_segment::PatternWriter</a></div><div class="ttdoc">Write LED segment patterns to the underlying LedModule.</div><div class="ttdef"><b>Definition:</b> <a href="PatternWriter_8h_source.html#l00108">PatternWriter.h:108</a></div></div>
+<div class="ttc" id="aclassace__segment_1_1PatternWriter_html"><div class="ttname"><a href="classace__segment_1_1PatternWriter.html">ace_segment::PatternWriter</a></div><div class="ttdoc">Write LED segment patterns to the underlying LedModule.</div><div class="ttdef"><b>Definition:</b> <a href="PatternWriter_8h_source.html#l00113">PatternWriter.h:113</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

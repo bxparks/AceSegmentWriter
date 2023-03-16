@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AceSegmentWriter
-   &#160;<span id="projectnumber">0.4</span>
+   &#160;<span id="projectnumber">0.5</span>
    </div>
    <div id="projectbrief">Write decimal numbers, hex numbers, temperature, clock digits, characters, and strings to seven segment LED modules</div>
   </td>
@@ -116,16 +116,19 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a123e52bdd131143610d0b7e5c778e394"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__segment_1_1PatternWriter.html#a123e52bdd131143610d0b7e5c778e394">writePatterns_P</a> (const uint8_t patterns[], uint8_t len)</td></tr>
 <tr class="memdesc:a123e52bdd131143610d0b7e5c778e394"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write the array <code>patterns[]</code> of length <code>len</code> to the led module.  <a href="classace__segment_1_1PatternWriter.html#a123e52bdd131143610d0b7e5c778e394">More...</a><br /></td></tr>
 <tr class="separator:a123e52bdd131143610d0b7e5c778e394"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3188518cfeb16eee226d013a56e082ca"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__segment_1_1PatternWriter.html#a3188518cfeb16eee226d013a56e082ca">writeDecimalPoint</a> (bool state=true)</td></tr>
+<tr class="memdesc:a3188518cfeb16eee226d013a56e082ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write a decimal point to the digit <em>previous</em> to the current position.  <a href="classace__segment_1_1PatternWriter.html#a3188518cfeb16eee226d013a56e082ca">More...</a><br /></td></tr>
+<tr class="separator:a3188518cfeb16eee226d013a56e082ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a14254837d740cea1bc6aa646c8e66264"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__segment_1_1PatternWriter.html#a14254837d740cea1bc6aa646c8e66264">setDecimalPointAt</a> (uint8_t <a class="el" href="classace__segment_1_1PatternWriter.html#adacedaf35806b8153bcc95e6b289fbfc">pos</a>, bool state=true)</td></tr>
 <tr class="memdesc:a14254837d740cea1bc6aa646c8e66264"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write the decimal point for the pos.  <a href="classace__segment_1_1PatternWriter.html#a14254837d740cea1bc6aa646c8e66264">More...</a><br /></td></tr>
 <tr class="separator:a14254837d740cea1bc6aa646c8e66264"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaad86591a1cdee5a0b201f645aaa751d"><td class="memItemLeft" align="right" valign="top"><a id="aaad86591a1cdee5a0b201f645aaa751d"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__segment_1_1PatternWriter.html#aaad86591a1cdee5a0b201f645aaa751d">clear</a> ()</td></tr>
-<tr class="memdesc:aaad86591a1cdee5a0b201f645aaa751d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear the entire display. <br /></td></tr>
+<tr class="memdesc:aaad86591a1cdee5a0b201f645aaa751d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear the entire display, set the cursor to <code><a class="el" href="classace__segment_1_1PatternWriter.html#a7ded853f97cc3c69732edb79bd873b91" title="Set the cursor to the beginning.">home()</a></code>. <br /></td></tr>
 <tr class="separator:aaad86591a1cdee5a0b201f645aaa751d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afba6a0dd46123bd92b1c27aa50fd7030"><td class="memItemLeft" align="right" valign="top"><a id="afba6a0dd46123bd92b1c27aa50fd7030"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__segment_1_1PatternWriter.html#afba6a0dd46123bd92b1c27aa50fd7030">clearToEnd</a> ()</td></tr>
-<tr class="memdesc:afba6a0dd46123bd92b1c27aa50fd7030"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear the display from <code>pos</code> to the end. <br /></td></tr>
+<tr class="memdesc:afba6a0dd46123bd92b1c27aa50fd7030"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear the display from <code>pos</code> to the end, set the cursor to <code><a class="el" href="classace__segment_1_1PatternWriter.html#a7ded853f97cc3c69732edb79bd873b91" title="Set the cursor to the beginning.">home()</a></code>. <br /></td></tr>
 <tr class="separator:afba6a0dd46123bd92b1c27aa50fd7030"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -134,7 +137,8 @@ class ace_segment::PatternWriter&lt; T_LED_MODULE &gt;</h3>
 
 <p>Write LED segment patterns to the underlying LedModule. </p>
 <p>Other 'Writer' classes provide additional functionality on top of this class (e.g. <a class="el" href="classace__segment_1_1NumberWriter.html" title="The NumberWriter supports converting decimal and hexadecimal numbers to segment patterns expected by ...">NumberWriter</a>, <a class="el" href="classace__segment_1_1ClockWriter.html" title="The ClockWriter writes &quot;hh:mm&quot; and &quot;yyyy&quot; to the LedModule.">ClockWriter</a>, <a class="el" href="classace__segment_1_1TemperatureWriter.html" title="The TemperatureWriter supports writing integer temperature values in Celcius or Farenheit.">TemperatureWriter</a>, <a class="el" href="classace__segment_1_1CharWriter.html" title="The CharWriter supports mapping of an 8-bit character set to segment patterns supported by LedModule.">CharWriter</a>, <a class="el" href="classace__segment_1_1StringWriter.html" title="Class that writes out a string, collapsing &#39;.">StringWriter</a>).</p>
-<p>This class is stateless and does not contain any virtual functions. If the method calls are made on the <a class="el" href="classace__segment_1_1PatternWriter.html" title="Write LED segment patterns to the underlying LedModule.">PatternWriter</a> object directly, the compiler can optimize away the indirection and call LedModule methods directly.</p>
+<p>The class implements a stateful cursor that remembers its current digit position. A call to <code><a class="el" href="classace__segment_1_1PatternWriter.html#a94e5d9dd45cdedc6ebf0c59e0be7d003" title="Write pattern at the current cursor.">writePattern()</a></code> writes to the current position and automatically increments the position by one. The <code><a class="el" href="classace__segment_1_1PatternWriter.html#a7ded853f97cc3c69732edb79bd873b91" title="Set the cursor to the beginning.">home()</a></code> and <code><a class="el" href="classace__segment_1_1PatternWriter.html#adacedaf35806b8153bcc95e6b289fbfc" title="Return the current cursor position.">pos()</a></code> methods allow the cursor to be manipulated.</p>
+<p>This class does not contain any virtual functions. If the method calls are made on the <a class="el" href="classace__segment_1_1PatternWriter.html" title="Write LED segment patterns to the underlying LedModule.">PatternWriter</a> object directly, the compiler can optimize away the indirection and call LedModule methods directly.</p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">T_LED_MODULE</td><td>the class of the underlying LED Module, often LedModule but other classes with the same generic public methods can be substituted </td></tr>
@@ -142,7 +146,7 @@ class ace_segment::PatternWriter&lt; T_LED_MODULE &gt;</h3>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="PatternWriter_8h_source.html#l00108">108</a> of file <a class="el" href="PatternWriter_8h_source.html">PatternWriter.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="PatternWriter_8h_source.html#l00113">113</a> of file <a class="el" href="PatternWriter_8h_source.html">PatternWriter.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a756881556540ea0e296eb2bb4bcfc69c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a756881556540ea0e296eb2bb4bcfc69c">&#9670;&nbsp;</a></span>PatternWriter()</h2>
@@ -178,7 +182,7 @@ template&lt;typename T_LED_MODULE &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="PatternWriter_8h_source.html#l00114">114</a> of file <a class="el" href="PatternWriter_8h_source.html">PatternWriter.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="PatternWriter_8h_source.html#l00119">119</a> of file <a class="el" href="PatternWriter_8h_source.html">PatternWriter.h</a>.</p>
 
 </div>
 </div>
@@ -222,7 +226,40 @@ template&lt;typename T_LED_MODULE &gt; </div>
 <p>Write the decimal point for the pos. </p>
 <p>Clock LED modules will attach the colon segment to one of the decimal points. </p>
 
-<p class="definition">Definition at line <a class="el" href="PatternWriter_8h_source.html#l00167">167</a> of file <a class="el" href="PatternWriter_8h_source.html">PatternWriter.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="PatternWriter_8h_source.html#l00184">184</a> of file <a class="el" href="PatternWriter_8h_source.html">PatternWriter.h</a>.</p>
+
+</div>
+</div>
+<a id="a3188518cfeb16eee226d013a56e082ca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3188518cfeb16eee226d013a56e082ca">&#9670;&nbsp;</a></span>writeDecimalPoint()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T_LED_MODULE &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classace__segment_1_1PatternWriter.html">ace_segment::PatternWriter</a>&lt; T_LED_MODULE &gt;::writeDecimalPoint </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>state</em> = <code>true</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Write a decimal point to the digit <em>previous</em> to the current position. </p>
+<p>This allows floating point numbers to be written according to how they are represented as a string, e.g. "1.23", means '1', followed by a decimal point on that digit, then '2', then '3'. </p>
+
+<p class="definition">Definition at line <a class="el" href="PatternWriter_8h_source.html#l00174">174</a> of file <a class="el" href="PatternWriter_8h_source.html">PatternWriter.h</a>.</p>
 
 </div>
 </div>
@@ -265,7 +302,7 @@ template&lt;typename T_LED_MODULE &gt; </div>
 <p>Write the array <code>patterns[]</code> of length <code>len</code> to the led module. </p>
 <p>The <code>patterns[]</code> is stored in PROGMEM flash memory. </p>
 
-<p class="definition">Definition at line <a class="el" href="PatternWriter_8h_source.html#l00154">154</a> of file <a class="el" href="PatternWriter_8h_source.html">PatternWriter.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="PatternWriter_8h_source.html#l00159">159</a> of file <a class="el" href="PatternWriter_8h_source.html">PatternWriter.h</a>.</p>
 
 </div>
 </div>

@@ -140,13 +140,19 @@ class NumberWriterTest : public TestOnce {
 testF(NumberWriterTest, writeDigit) {
   numberWriter.writeDigit(0);
   assertEqual(kPattern0, mPatterns[0]);
+}
 
+testF(NumberWriterTest, writeDecimalPoint) {
+  assertEqual(0, mPatterns[0]);
+
+  // Writing a decimal point before pos=0 does nothing.
+  numberWriter.writeDecimalPoint();
+  assertEqual(0, mPatterns[0]);
+
+  // Writes decimal point in the previous position.
   numberWriter.writeDigit(0);
-  numberWriter.setDecimalPointAt(1);
-  assertEqual(kPattern0 | 0x80, mPatterns[1]);
-
-  numberWriter.setDecimalPointAt(1, false);
-  assertEqual(kPattern0, mPatterns[1]);
+  numberWriter.writeDecimalPoint();
+  assertEqual(kPattern0 | 0x80, mPatterns[0]);
 }
 
 testF(NumberWriterTest, writeDigit_invalid_char_becomes_space) {
@@ -157,8 +163,15 @@ testF(NumberWriterTest, writeDigit_invalid_char_becomes_space) {
 testF(NumberWriterTest, writeDigit_outOfBounds_writes_nothing) {
   mPatterns[4] = 0;  // TestableLedModule allocates an extra byte to test this
 
+  numberWriter.writeDigit(1);
+  numberWriter.writeDigit(2);
+  numberWriter.writeDigit(3);
+  numberWriter.writeDigit(4);
+
   numberWriter.writeDigit(kDigitMinus);
-  numberWriter.setDecimalPointAt(4);
+  assertEqual(0, mPatterns[4]);
+
+  numberWriter.writeDecimalPoint();
   assertEqual(0, mPatterns[4]);
 }
 
@@ -335,13 +348,32 @@ testF(NumberWriterTest, writeSignedDecimal) {
   assertEqual(kPattern3, mPatterns[2]);
 }
 
-testF(NumberWriterTest, writeSignedDecimalAt_boxed) {
+testF(NumberWriterTest, writeSignedDecimal_boxed) {
   uint8_t written = numberWriter.writeSignedDecimal(-12, 4);
   assertEqual(4, written);
   assertEqual(kPatternSpace, mPatterns[0]);
   assertEqual(kPatternMinus, mPatterns[1]);
   assertEqual(kPattern1, mPatterns[2]);
   assertEqual(kPattern2, mPatterns[3]);
+}
+
+testF(NumberWriterTest, writeFloat) {
+  // Only 2 digits after decimal point are written by default, so this writes
+  // "1.23", which writes only 3 digits on the LED because the decimal point is
+  // merges into the '1'.
+  numberWriter.writeFloat(1.234);
+  assertEqual(kPattern1 | 0x80, mPatterns[0]);
+  assertEqual(kPattern2, mPatterns[1]);
+  assertEqual(kPattern3, mPatterns[2]);
+  assertEqual(kPatternSpace, mPatterns[3]);
+
+  // This writes "-12.3" to the 4-digit LED.
+  numberWriter.clear();
+  numberWriter.writeFloat(-12.345);
+  assertEqual(kPatternMinus, mPatterns[0]);
+  assertEqual(kPattern1, mPatterns[1]);
+  assertEqual(kPattern2 | 0x80, mPatterns[2]);
+  assertEqual(kPattern3, mPatterns[3]);
 }
 
 // ----------------------------------------------------------------------

@@ -166,17 +166,20 @@ class PatternWriter {
     }
 
     /**
+     * Write a decimal point to the digit *previous* to the current position.
+     * This allows floating point numbers to be written according to how they
+     * are represented as a string, e.g. "1.23", means '1', followed by a
+     * decimal point on that digit, then '2', then '3'.
+     */
+    void writeDecimalPoint(bool state = true) {
+      if (mPos == 0) return; // cannot write before start
+      if (mPos > mLedModule.size()) return; // cannot write beyond end
+      mLedModule.setDecimalPointAt(mPos - 1, state);
+    }
+
+    /**
      * Write the decimal point for the pos. Clock LED modules will attach the
      * colon segment to one of the decimal points.
-     *
-     * This method accepts a `pos` argument instead of using the current cursor
-     * position, because a `writePattern()` clobbers the decimal point of the
-     * current digit. If this was implemented as a `writeDecimalPoint()` that
-     * used the current cursor position, it would need to be called *after* the
-     * `writePattern()`. But `writePattern()` autoincrements the current cursor,
-     * so the `writeDecimalPoint()` would modify the wrong digit. It may be
-     * possible to implement a `writeDecimalPoint()` by using the digit previous
-     * to the current cursor, but I have not thought through the details yet.
      */
     void setDecimalPointAt(uint8_t pos, bool state = true) {
       if (pos >= mLedModule.size()) return;

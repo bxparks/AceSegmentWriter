@@ -26,7 +26,7 @@ SOFTWARE.
 #define ACE_SEGMENT_WRITER_NUMBER_WRITER_H
 
 #include <stdint.h>
-#include <AceCommon.h> // decToBcd()
+#include <AceCommon.h> // PrintStr<N>
 #include "PatternWriter.h"
 
 namespace ace_segment {
@@ -221,11 +221,51 @@ class NumberWriter {
     }
 
     /**
-     * Write the decimal point for the pos. Clock LED modules will attach the
-     * colon segment to one of the decimal points.
+     * Write a float using the same format as the Print class. Scientific
+     * notation (e.g. "1.3e8") is not supported, and the largest floating point
+     * number seems to be about 2^32 (but not exactly).
+     *
+     * @param x floating point number
+     * @param prec number of digits after the decimal point, default 2
      */
-    void setDecimalPointAt(uint8_t pos, bool state = true) {
-      mPatternWriter.setDecimalPointAt(pos, state);
+    void writeFloat(float x, uint8_t prec = 2) {
+      ace_common::PrintStr<16> buf;
+      buf.print(x, prec);
+      for (const char *s = buf.cstr(); *s != '\0'; s++) {
+        writeChar(*s);
+      }
+    }
+
+    /**
+     * Write a limited set of ASCII characters, enough to support floating point
+     * numbers without scientific notation. Supports '0'-'9', '.', and '-'.
+     * Everything else is printed as a space ' ', including the space character
+     * itself. The period character '.' triggers a call to writeDecimalPoint()
+     * which is usually the desired behavior.
+     */
+    void writeChar(char c) {
+      if (c == '.') {
+        writeDecimalPoint();
+      } else {
+        uint8_t d;
+        if (c >= '0' && c <= '9') {
+          d = c - '0';
+        } else if (c == '-') {
+          d = kDigitMinus;
+        } else {
+          d = kDigitSpace;
+        }
+        writeDigit(d);
+      }
+    }
+
+    /**
+     * Write the decimal point at the digit before the current position.
+     * If this is not sufficient, applications can call the lower level
+     * PatternWriter::setDecimalPointAt(pos, state) method for more control.
+     */
+    void writeDecimalPoint(bool state = true) {
+      mPatternWriter.writeDecimalPoint(state);
     }
 
     /** Clear the entire display. */

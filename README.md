@@ -614,7 +614,7 @@ class CharWriter {
     uint8_t size() const;
     void home();
 
-    void writeChar(uint8_t pos, char c);
+    void writeChar(char c);
 
     void clear();
     void clearToEnd();
@@ -814,10 +814,11 @@ the flash and static memory consumptions.
 |---------------------------------+--------------+-------------|
 | PatternWriter                   |    574/   19 |   104/    8 |
 | NumberWriter                    |    758/   21 |   288/   10 |
+| NumberWriter::writeFloat()      |   2476/   45 |  2006/   34 |
 | ClockWriter                     |    834/   24 |   364/   13 |
 | TemperatureWriter               |    954/   23 |   484/   12 |
 | CharWriter                      |    768/   24 |   298/   13 |
-| StringWriter                    |    876/   26 |   406/   15 |
+| StringWriter                    |    864/   26 |   394/   15 |
 | StringScroller                  |    980/   32 |   510/   21 |
 | LevelWriter                     |    678/   21 |   208/   10 |
 +--------------------------------------------------------------+
@@ -833,6 +834,7 @@ the flash and static memory consumptions.
 |---------------------------------+--------------+-------------|
 | PatternWriter                   | 260173/27912 |    52/   12 |
 | NumberWriter                    | 260397/27920 |   276/   20 |
+| NumberWriter::writeFloat()      | 261741/27920 |  1620/   20 |
 | ClockWriter                     | 260477/27928 |   356/   28 |
 | TemperatureWriter               | 260541/27920 |   420/   20 |
 | CharWriter                      | 260365/27928 |   244/   28 |
